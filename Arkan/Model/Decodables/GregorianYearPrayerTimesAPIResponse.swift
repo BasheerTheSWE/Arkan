@@ -8,5 +8,5 @@
 import Foundation
 
 struct GregorianYearPrayerTimesAPIResponse: Decodable {
-    let data: [String: [PrayerDay]]
+    let data: [String: [PrayerTimesInfo]]
 }

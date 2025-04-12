@@ -14,12 +14,12 @@ struct PrayerTimeCell: View {
     private let systemImage: String
     
     private let prayer: Prayer
-    private let prayerTimes: Timings
+    private let prayerTimes: PrayerTimes
     
     // MARK: - INIT
-    init(index: Int, prayerDay: PrayerDay) {
+    init(index: Int, prayerTimesInfo: PrayerTimesInfo) {
         self.prayer = Prayer.allCases[index]
-        self.prayerTimes = prayerDay.timings
+        self.prayerTimes = prayerTimesInfo.timings
         
         let images = [
             "sunrise",

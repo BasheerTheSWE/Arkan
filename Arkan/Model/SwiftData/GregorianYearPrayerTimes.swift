@@ -24,7 +24,7 @@ class GregorianYearPrayerTimes {
     
     /// Decodes the saved API response which contains an entire year's worth of prayer times divided by months.
     /// - Returns: A dictionary containing 12 items -one for each month- and each item contains 28-31 prayer times.
-    func getPrayerTimesByMonths() throws -> [String: [PrayerDay]]{
+    func getPrayerTimesByMonths() throws -> [String: [PrayerTimesInfo]]{
         let decodedResponse = try JSONDecoder().decode(GregorianYearPrayerTimesAPIResponse.self, from: apiResponseData)
         return decodedResponse.data
     }

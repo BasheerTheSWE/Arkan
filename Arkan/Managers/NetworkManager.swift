@@ -15,7 +15,7 @@ final class NetworkManager {
         case badServerResponse
     }
     
-    static func getPrayerTimes(forYear year: Int, city: String, countryCode: String) async throws -> [String: [PrayerDay]] {
+    static func getPrayerTimes(forYear year: Int, city: String, countryCode: String) async throws -> [String: [PrayerTimesInfo]] {
         guard let url = URL(string: "https://api.aladhan.com/v1/calendarByCity/\(year)?city=\(city)&country=\(countryCode)&shafaq=general&calendarMethod=UAQ") else { throw NetworkError.invalidURL }
         
         var request = URLRequest(url: url)

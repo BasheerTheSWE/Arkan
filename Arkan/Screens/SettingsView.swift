@@ -212,10 +212,10 @@ private struct PrayerTimeFormatPicker: View {
                     prefers24HourTimeFormatState.toggle()
                 }
             } label: {
-                Text(prefers24HourTimeFormatState ? "24h" : "12h A/P")
+                Text(prefers24HourTimeFormatState ? "24 hrs" : "12 hrs")
                     .font(.system(size: 10, weight: .bold))
                     .foregroundStyle(.secondary)
-                    .frame(width: 75, height: 24)
+                    .frame(width: 75, height: 30)
                     .background(Color(.secondarySystemFill))
                     .clipShape(.rect(cornerRadius: 4))
                     .contentTransition(.numericText())
