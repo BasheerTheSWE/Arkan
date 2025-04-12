@@ -28,6 +28,7 @@
 		3A94BC1A2DAA3F2900EF3FCD /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC192DAA3F2900EF3FCD /* MenuButton.swift */; };
 		3A94BC1C2DAA440E00EF3FCD /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC1B2DAA440E00EF3FCD /* SettingsView.swift */; };
 		3A94BC1F2DAA446D00EF3FCD /* MailComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC1E2DAA446D00EF3FCD /* MailComposeView.swift */; };
+		3A94BC212DAA677800EF3FCD /* GregorianYearPrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC202DAA677800EF3FCD /* GregorianYearPrayerTimes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 		3A94BC192DAA3F2900EF3FCD /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		3A94BC1B2DAA440E00EF3FCD /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		3A94BC1E2DAA446D00EF3FCD /* MailComposeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailComposeView.swift; sourceTree = "<group>"; };
+		3A94BC202DAA677800EF3FCD /* GregorianYearPrayerTimes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GregorianYearPrayerTimes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +163,7 @@
 		3A94BBFF2DAA2BA700EF3FCD /* SwiftData */ = {
 			isa = PBXGroup;
 			children = (
+				3A94BC202DAA677800EF3FCD /* GregorianYearPrayerTimes.swift */,
 			);
 			path = SwiftData;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 				3A94BBED2DAA0C1F00EF3FCD /* ArkanApp.swift in Sources */,
 				3A94BBFE2DAA1EBA00EF3FCD /* GregorianYearPrayerTimesAPIResponse.swift in Sources */,
 				3A94BC112DAA2D2900EF3FCD /* MainHeaderView.swift in Sources */,
+				3A94BC212DAA677800EF3FCD /* GregorianYearPrayerTimes.swift in Sources */,
 				3A94BC1F2DAA446D00EF3FCD /* MailComposeView.swift in Sources */,
 				3A94BC082DAA2C0A00EF3FCD /* GregorianDate.swift in Sources */,
 				3A94BBF92DAA0D5D00EF3FCD /* OnboardingView.swift in Sources */,

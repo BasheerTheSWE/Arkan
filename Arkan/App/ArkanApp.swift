@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct ArkanApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .tint(Color(.label))
+                .modelContainer(for: GregorianYearPrayerTimes.self)
         }
     }
 }

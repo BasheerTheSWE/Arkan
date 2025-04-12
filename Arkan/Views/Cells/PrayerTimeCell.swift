@@ -12,9 +12,10 @@ struct PrayerTimeCell: View {
     private let index: Int
     private let title: String
     private let systemImage: String
+    let prayerTime: String
     
     // MARK: - INIT
-    init(index: Int) {
+    init(index: Int, prayerDay: PrayerDay) {
         self.index = index
         
         switch index {
@@ -22,30 +23,36 @@ struct PrayerTimeCell: View {
             /// Fajr prayer
             self.title = "Fajr"
             self.systemImage = "sunrise"
+            self.prayerTime = prayerDay.timings.Fajr
             
         case 1:
             /// Dhuhr prayer
             self.title = "Dhuhr"
             self.systemImage = "sun.max"
+            self.prayerTime = prayerDay.timings.Dhuhr
             
         case 2:
             /// Asr prayer
             self.title = "Asr"
             self.systemImage = "cloud.sun"
+            self.prayerTime = prayerDay.timings.Asr
             
         case 3:
             /// Maghrib prayer
             self.title = "Maghrib"
             self.systemImage = "sunset"
+            self.prayerTime = prayerDay.timings.Maghrib
             
         case 4:
             /// Isha prayer
             self.title = "Isha"
             self.systemImage = "moon"
+            self.prayerTime = prayerDay.timings.Isha
             
         default:
             self.title = ""
             self.systemImage = ""
+            self.prayerTime = prayerDay.timings.Fajr
         }
     }
     
@@ -63,7 +70,7 @@ struct PrayerTimeCell: View {
             
             Spacer()
             
-            Text("4:43 AM")
+            Text(prayerTime)
                 .font(.system(size: 14, weight: .medium, design: .monospaced))
                 .foregroundStyle(.secondary)
             
@@ -84,6 +91,6 @@ struct PrayerTimeCell: View {
     }
 }
 
-#Preview {
-    PrayerTimeCell(index: 0)
-}
+//#Preview {
+//    PrayerTimeCell(index: 0)
+//}

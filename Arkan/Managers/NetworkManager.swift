@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 
 final class NetworkManager {
     
@@ -25,8 +26,25 @@ final class NetworkManager {
         
         guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else { throw NetworkError.badServerResponse }
         
-        let prayerTimesResponse = try JSONDecoder().decode(GregorianYearPrayerTimesAPIResponse.self, from: data)
-        return prayerTimesResponse.data
+        /// Caching the downloaded prayer times into CoreData and removing previous saves for the passed-in year if any were found
+        if let context = try? ModelContext(.init(for: GregorianYearPrayerTimes.self)) {
+            let fetchDescriptor = FetchDescriptor<GregorianYearPrayerTimes>(predicate: #Predicate { $0.year == year && $0.city == city && $0.countryCode == countryCode })
+            
+            /// Getting all existing duplicates if there were any
+            if let existingDuplicates = try? context.fetch(fetchDescriptor) {
+                existingDuplicates.forEach { duplicate in
+                    context.delete(duplicate)
+                }
+            }
+            
+            /// Saving the newly downloaded prayer times
+            let prayerTimes = GregorianYearPrayerTimes(year: year, city: city, countryCode: countryCode, apiResponseData: data)
+            context.insert(prayerTimes)
+            try? context.save()
+        }
+        
+        let decodedPrayerTimesAPIResponse = try JSONDecoder().decode(GregorianYearPrayerTimesAPIResponse.self, from: data)
+        return decodedPrayerTimesAPIResponse.data
     }
     
 //    static func getPrayerTimes(forDate dateComponents: DateComponents) {
