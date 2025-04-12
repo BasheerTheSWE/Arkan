@@ -7,14 +7,15 @@
 
 import WidgetKit
 import SwiftUI
+import SwiftData
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent())
+        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent(), prayerTimesInfo: .mock)
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: configuration)
+        SimpleEntry(date: Date(), configuration: configuration, prayerTimesInfo: .mock)
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
@@ -24,7 +25,11 @@ struct Provider: AppIntentTimelineProvider {
         let currentDate = Date()
         for hourOffset in 0 ..< 5 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration)
+            
+            /// Getting the prayerTimesInfo
+            guard let prayerTimesInfo = try? await PrayerTimesInfo.getInfoForToday() else { continue }
+            
+            let entry = SimpleEntry(date: entryDate, configuration: configuration, prayerTimesInfo: prayerTimesInfo)
             entries.append(entry)
         }
         
@@ -39,11 +44,16 @@ struct Provider: AppIntentTimelineProvider {
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
+    let prayerTimesInfo: PrayerTimesInfo
 }
 
 struct DailyPrayerTimesWidgetEntryView : View {
     
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.modelContext) private var context
+    @Query private var archivedYearlyPrayerTimes: [GregorianYearPrayerTimes]
+    
+    @State private var prayerTimesInfoForToday: PrayerTimesInfo?
     
     var entry: Provider.Entry
     
@@ -55,22 +65,25 @@ struct DailyPrayerTimesWidgetEntryView : View {
             
             VStack {
                 Spacer()
-                
+                                
                 HStack(spacing: 16) {
-                    ForEach(0..<5) { _ in
-                        VStack {
-                            Image(systemName: "sunset")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24, height: 24)
-                            
-                            Text("4:43")
-                                .font(.system(size: 18, weight: .bold))
-                                .lineLimit(1)
-                                .scaledToFit()
-                                .minimumScaleFactor(0.2)
+                    ForEach(0..<5) { index in
+//                        VStack {
+//                            Image(systemName: "sunset")
+//                                .resizable()
+//                                .aspectRatio(contentMode: .fit)
+//                                .frame(width: 24, height: 24)
+//                            
+//                            Text("4:43")
+//                                .font(.system(size: 18, weight: .bold))
+//                                .lineLimit(1)
+//                                .scaledToFit()
+//                                .minimumScaleFactor(0.2)
+//                        }
+                        if let prayerTimesInfoForToday = prayerTimesInfoForToday {
+                            PrayerTimeCell(index: index, prayerTimesInfo: prayerTimesInfoForToday, isCompact: true)
+                                .frame(maxWidth: .infinity)
                         }
-                        .frame(maxWidth: .infinity)
                     }
                 }
                 
@@ -78,7 +91,7 @@ struct DailyPrayerTimesWidgetEntryView : View {
                 Spacer()
                 
                 HStack {
-                    Text("12, April 2025")
+                    Text(Date.getTodaysFormattedDate())
                         .font(.system(size: 10, design: .monospaced))
                     
                     Spacer()
@@ -97,6 +110,19 @@ struct DailyPrayerTimesWidgetEntryView : View {
             .clipShape(RoundedCorner(radius: 16, corners: [.topLeft, .topRight]))
         }
         .background(Color(.secondarySystemBackground))
+        .task {
+            guard let context = try? ModelContext(.init(for: GregorianYearPrayerTimes.self)) else { return }
+            
+            print("R")
+            do {
+                let times = try context.fetch(FetchDescriptor<GregorianYearPrayerTimes>())
+                
+                prayerTimesInfoForToday = try await PrayerTimesManager.getPrayerTimesForToday(from: times)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        .modelContainer(for: GregorianYearPrayerTimes.self)
         
         //        VStack {
         //            Text("Al Taif, SA")
@@ -169,6 +195,6 @@ extension ConfigurationAppIntent {
 #Preview(as: .systemSmall) {
     DailyPrayerTimesWidget()
 } timeline: {
-    SimpleEntry(date: .now, configuration: .smiley)
-    SimpleEntry(date: .now, configuration: .starEyes)
+    SimpleEntry(date: .now, configuration: .smiley, prayerTimesInfo: .mock)
+    SimpleEntry(date: .now, configuration: .starEyes, prayerTimesInfo: .mock)
 }

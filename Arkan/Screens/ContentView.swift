@@ -64,34 +64,11 @@ struct ContentView: View {
         }
         .background(Color(.systemGroupedBackground))
         .task {
-            await getPrayerTimesForToday()
-        }
-    }
-    
-    private func getPrayerTimesForToday() async {
-        let todaysDateComponents = Calendar.current.dateComponents([.day, .month, .year], from: .now)
-        let currentYear = todaysDateComponents.year ?? 0
-        let currentMonth = todaysDateComponents.month ?? 0
-        let currentDay = todaysDateComponents.day ?? 0
-        
-        /// Checking to see if the prayer times for today are archived
-        if let currentYearPrayerTimesData = archivedYearlyPrayerTimes.first(where: { $0.year == currentYear }),
-           let currentYearPrayerTimesByMonths = try? currentYearPrayerTimesData.getPrayerTimesByMonths(),
-           let currentMonthPrayerTimes = currentYearPrayerTimesByMonths[String(currentMonth)] {
-            prayerTimesInfoForToday = currentMonthPrayerTimes[currentDay]
-            
-            return
-        }
-        
-        /// This year's prayer times data is not downloaded
-        /// We'll use the NetworkManager to download and store 'em
-        do {
-            let currentYearPrayerTimesByMonths = try await NetworkManager.getPrayerTimes(forYear: currentYear, city: "Taif", countryCode: "SA")
-            if let currentMonthPrayerTimes = currentYearPrayerTimesByMonths[String(currentMonth)] {
-                prayerTimesInfoForToday = currentMonthPrayerTimes[currentDay]
+            do {
+                prayerTimesInfoForToday = try await PrayerTimesManager.getPrayerTimesForToday(from: archivedYearlyPrayerTimes)
+            } catch {
+                print(error.localizedDescription)
             }
-        } catch {
-            print(error.localizedDescription)
         }
     }
 }
