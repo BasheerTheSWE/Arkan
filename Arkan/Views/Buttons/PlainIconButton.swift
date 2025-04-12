@@ -10,8 +10,17 @@ import SwiftUI
 struct PlainIconButton: View {
     
     let systemImage: String
+    let size: CGFloat
     let action: () -> ()
     
+    // MARK: - INIT
+    init(systemImage: String, size: CGFloat = 16, action: @escaping () -> Void) {
+        self.systemImage = systemImage
+        self.size = size
+        self.action = action
+    }
+    
+    // MARK: - VIEW
     var body: some View {
         Button {
             action()
@@ -19,7 +28,7 @@ struct PlainIconButton: View {
             Image(systemName: systemImage)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 16, height: 16)
+                .frame(width: size, height: size)
             
         }
     }

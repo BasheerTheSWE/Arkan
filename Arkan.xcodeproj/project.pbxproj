@@ -26,6 +26,8 @@
 		3A94BC162DAA3E8200EF3FCD /* MetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC152DAA3E8200EF3FCD /* MetaData.swift */; };
 		3A94BC182DAA3E9400EF3FCD /* MetaDataMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC172DAA3E9400EF3FCD /* MetaDataMethod.swift */; };
 		3A94BC1A2DAA3F2900EF3FCD /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC192DAA3F2900EF3FCD /* MenuButton.swift */; };
+		3A94BC1C2DAA440E00EF3FCD /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC1B2DAA440E00EF3FCD /* SettingsView.swift */; };
+		3A94BC1F2DAA446D00EF3FCD /* MailComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC1E2DAA446D00EF3FCD /* MailComposeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +51,8 @@
 		3A94BC152DAA3E8200EF3FCD /* MetaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaData.swift; sourceTree = "<group>"; };
 		3A94BC172DAA3E9400EF3FCD /* MetaDataMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaDataMethod.swift; sourceTree = "<group>"; };
 		3A94BC192DAA3F2900EF3FCD /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
+		3A94BC1B2DAA440E00EF3FCD /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		3A94BC1E2DAA446D00EF3FCD /* MailComposeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailComposeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +98,7 @@
 		3A94BBF02DAA0C2800EF3FCD /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3A94BC1D2DAA446600EF3FCD /* Representables */,
 				3A94BC0F2DAA2D1B00EF3FCD /* Others */,
 				3A94BC122DAA3C9F00EF3FCD /* Cells */,
 				3A94BBF12DAA0C3100EF3FCD /* Buttons */,
@@ -131,6 +136,7 @@
 			children = (
 				3A94BBEB2DAA0C1F00EF3FCD /* ContentView.swift */,
 				3A94BBF82DAA0D5D00EF3FCD /* OnboardingView.swift */,
+				3A94BC1B2DAA440E00EF3FCD /* SettingsView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -190,6 +196,14 @@
 				3A94BC132DAA3CA800EF3FCD /* PrayerTimeCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		3A94BC1D2DAA446600EF3FCD /* Representables */ = {
+			isa = PBXGroup;
+			children = (
+				3A94BC1E2DAA446D00EF3FCD /* MailComposeView.swift */,
+			);
+			path = Representables;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -268,6 +282,7 @@
 				3A94BBED2DAA0C1F00EF3FCD /* ArkanApp.swift in Sources */,
 				3A94BBFE2DAA1EBA00EF3FCD /* GregorianYearPrayerTimesAPIResponse.swift in Sources */,
 				3A94BC112DAA2D2900EF3FCD /* MainHeaderView.swift in Sources */,
+				3A94BC1F2DAA446D00EF3FCD /* MailComposeView.swift in Sources */,
 				3A94BC082DAA2C0A00EF3FCD /* GregorianDate.swift in Sources */,
 				3A94BBF92DAA0D5D00EF3FCD /* OnboardingView.swift in Sources */,
 				3A94BC042DAA2BF200EF3FCD /* Timings.swift in Sources */,
@@ -282,6 +297,7 @@
 				3A94BC182DAA3E9400EF3FCD /* MetaDataMethod.swift in Sources */,
 				3A94BBEE2DAA0C1F00EF3FCD /* ContentView.swift in Sources */,
 				3A94BC0E2DAA2C3000EF3FCD /* HijriMonth.swift in Sources */,
+				3A94BC1C2DAA440E00EF3FCD /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

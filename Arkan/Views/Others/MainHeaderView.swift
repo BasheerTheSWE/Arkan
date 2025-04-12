@@ -10,12 +10,15 @@ import SwiftUI
 struct MainHeaderView: View {
     
     @Environment(\.colorScheme) private var colorScheme
+    
     @State private var isShowingMenuItems = false
+    
+    @State private var isPresentingSettings = false
     
     var body: some View {
         VStack {
             HStack {
-                PlainIconButton(systemImage: "square.and.arrow.up.fill") {
+                PlainIconButton(systemImage: "square.and.arrow.up") {
                     
                 }
                 
@@ -28,6 +31,7 @@ struct MainHeaderView: View {
                 
                 MenuButton(isToggled: $isShowingMenuItems)
             }
+            .foregroundStyle(.white)
             
             if isShowingMenuItems {
                 VStack {
@@ -36,6 +40,7 @@ struct MainHeaderView: View {
                     } label: {
                         Text("About Us")
                             .font(.system(size: 14, weight: .bold, design: .rounded))
+                            .foregroundStyle(.white)
                             .frame(height: 44)
                             .frame(maxWidth: .infinity)
                             .background(.white.opacity(0.07))
@@ -47,6 +52,7 @@ struct MainHeaderView: View {
                     } label: {
                         Text("Contact Us")
                             .font(.system(size: 14, weight: .bold, design: .rounded))
+                            .foregroundStyle(.white)
                             .frame(height: 44)
                             .frame(maxWidth: .infinity)
                             .background(.white.opacity(0.07))
@@ -54,14 +60,18 @@ struct MainHeaderView: View {
                     }
                     
                     Button {
-                        
+                        isPresentingSettings = true
                     } label: {
                         Text("Settings")
                             .font(.system(size: 14, weight: .bold, design: .rounded))
+                            .foregroundStyle(.white)
                             .frame(height: 44)
                             .frame(maxWidth: .infinity)
                             .background(.white.opacity(0.07))
                             .clipShape(.rect(cornerRadius: 8))
+                    }
+                    .sheet(isPresented: $isPresentingSettings) {
+                        SettingsView()
                     }
                 }
                 .padding(.top)
@@ -70,7 +80,6 @@ struct MainHeaderView: View {
         }
         .padding()
         .padding(.bottom, 12)
-        .foregroundStyle(.white)
         .frame(maxWidth: .infinity)
         .background(colorScheme == .light ? .black : Color(.secondarySystemBackground))
         .overlay(alignment: .bottom) {

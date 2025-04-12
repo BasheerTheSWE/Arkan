@@ -62,4 +62,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .tint(Color(.label))
 }
