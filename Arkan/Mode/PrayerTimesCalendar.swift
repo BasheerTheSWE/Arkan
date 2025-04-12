@@ -13,6 +13,7 @@ struct PrayerTimesCalendar: Decodable {
 
 struct PrayerDay: Decodable {
     let timings: Timings
+    let date: DateInfo
 }
 
 struct Timings: Decodable {
@@ -22,4 +23,34 @@ struct Timings: Decodable {
     let Asr: String
     let Maghrib: String
     let Isha: String
+}
+
+struct DateInfo: Decodable {
+    let gregorian: GregorianDate
+    let hijri: HijriDate
+}
+
+struct GregorianDate: Decodable {
+    let date: String
+    let format: String
+}
+
+struct HijriDate: Decodable {
+    let date: String
+    let format: String
+    let day: String
+    let weekday: HijriWeekday
+    let month: HijriMonth
+    let year: String
+}
+
+struct HijriWeekday: Decodable {
+    let en: String
+    let ar: String
+}
+
+struct HijriMonth: Decodable {
+    let number: Int
+    let en: String
+    let ar: String
 }

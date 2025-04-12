@@ -9,16 +9,21 @@ import Foundation
 
 final class NetworkManager {
     
-    static func getPrayerTimes(forYear year: Int, city: String, countryCode: String) async throws {
-        guard let url = URL(string: "https://api.aladhan.com/v1/calendarByCity/\(year)?city=\(city)&country=\(countryCode)&shafaq=general&calendarMethod=UAQ") else { return }
+    enum NetworkError: Error {
+        case invalidURL
+    }
+    
+    static func getPrayerTimes(forYear year: Int, city: String, countryCode: String) async throws -> [String: [PrayerDay]] {
+        guard let url = URL(string: "https://api.aladhan.com/v1/calendarByCity/\(year)?city=\(city)&country=\(countryCode)&shafaq=general&calendarMethod=UAQ") else { throw NetworkError.invalidURL }
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("application/json", forHTTPHeaderField: "accept")
         
         let (data, response) = try await URLSession.shared.data(for: request)
-        print(try JSONSerialization.jsonObject(with: data))
-        print(response)
+        
+        let prayerTimesCalendar = try JSONDecoder().decode(PrayerTimesCalendar.self, from: data)
+        return prayerTimesCalendar.data
     }
     
 //    static func getPrayerTimes(forDate dateComponents: DateComponents) {
