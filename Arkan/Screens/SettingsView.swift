@@ -30,6 +30,18 @@ struct SettingsView: View {
         NavigationStack {
             List {
                 Section {
+                    SettingsRowCell(title: "Update Location", systemImage: "location.north.fill") {
+                        
+                    }
+                } header: {
+                    Text("General")
+                        .font(.system(size: 12))
+                } footer: {
+                    Text("Location updates automatically. If you’re experiencing issues, you can update it manually.")
+                        .font(.system(size: 10))
+                }
+                
+                Section {
                     SettingsRowCell(title: "Rate Us", systemImage: "heart.fill") {
                         leaveReview()
                     }
