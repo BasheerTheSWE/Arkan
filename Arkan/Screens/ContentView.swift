@@ -27,9 +27,8 @@ struct ContentView: View {
                 }
             }
             .padding()
-            .padding(.top, 32)
+            .padding(.bottom, 12)
             .foregroundStyle(.white)
-            .frame(height: 150)
             .frame(maxWidth: .infinity)
             .background(.black)
             .overlay(alignment: .bottom) {
@@ -41,7 +40,6 @@ struct ContentView: View {
             
             Spacer()
         }
-        .ignoresSafeArea()
         .background(Color(.secondarySystemGroupedBackground))
     }
 }

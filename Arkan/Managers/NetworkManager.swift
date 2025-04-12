@@ -25,8 +25,8 @@ final class NetworkManager {
         
         guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else { throw NetworkError.badServerResponse }
         
-        let prayerTimesCalendar = try JSONDecoder().decode(PrayerTimesCalendar.self, from: data)
-        return prayerTimesCalendar.data
+        let prayerTimesResponse = try JSONDecoder().decode(GregorianYearPrayerTimesAPIResponse.self, from: data)
+        return prayerTimesResponse.data
     }
     
 //    static func getPrayerTimes(forDate dateComponents: DateComponents) {
