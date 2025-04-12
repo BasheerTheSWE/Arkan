@@ -6,17 +6,26 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3A94BBED2DAA0C1F00EF3FCD /* ArkanApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BBE92DAA0C1F00EF3FCD /* ArkanApp.swift */; };
+		3A94BBEE2DAA0C1F00EF3FCD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BBEB2DAA0C1F00EF3FCD /* ContentView.swift */; };
+		3A94BBEF2DAA0C1F00EF3FCD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A94BBEA2DAA0C1F00EF3FCD /* Assets.xcassets */; };
+		3A94BBF32DAA0C3900EF3FCD /* PlainIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BBF22DAA0C3900EF3FCD /* PlainIconButton.swift */; };
+		3A94BBF92DAA0D5D00EF3FCD /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BBF82DAA0D5D00EF3FCD /* OnboardingView.swift */; };
+		3A94BBFB2DAA0DA800EF3FCD /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BBFA2DAA0DA800EF3FCD /* NetworkManager.swift */; };
+		3A94BBFE2DAA1EBA00EF3FCD /* PrayerTimesCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BBFD2DAA1EBA00EF3FCD /* PrayerTimesCalendar.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		3A94BBDB2DAA096600EF3FCD /* Arkan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arkan.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A94BBE92DAA0C1F00EF3FCD /* ArkanApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArkanApp.swift; sourceTree = "<group>"; };
+		3A94BBEA2DAA0C1F00EF3FCD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3A94BBEB2DAA0C1F00EF3FCD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		3A94BBF22DAA0C3900EF3FCD /* PlainIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainIconButton.swift; sourceTree = "<group>"; };
+		3A94BBF82DAA0D5D00EF3FCD /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		3A94BBFA2DAA0DA800EF3FCD /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		3A94BBFD2DAA1EBA00EF3FCD /* PrayerTimesCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesCalendar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		3A94BBDD2DAA096600EF3FCD /* Arkan */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Arkan;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		3A94BBD82DAA096600EF3FCD /* Frameworks */ = {
@@ -32,7 +41,7 @@
 		3A94BBD22DAA096600EF3FCD = {
 			isa = PBXGroup;
 			children = (
-				3A94BBDD2DAA096600EF3FCD /* Arkan */,
+				3A94BBEC2DAA0C1F00EF3FCD /* Arkan */,
 				3A94BBDC2DAA096600EF3FCD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +52,76 @@
 				3A94BBDB2DAA096600EF3FCD /* Arkan.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		3A94BBEC2DAA0C1F00EF3FCD /* Arkan */ = {
+			isa = PBXGroup;
+			children = (
+				3A94BBF72DAA0CF200EF3FCD /* App */,
+				3A94BBF62DAA0CED00EF3FCD /* Screens */,
+				3A94BBF02DAA0C2800EF3FCD /* Views */,
+				3A94BBFC2DAA1E9E00EF3FCD /* Mode */,
+				3A94BBF52DAA0CE000EF3FCD /* Managers */,
+				3A94BBF42DAA0CD800EF3FCD /* Media */,
+			);
+			path = Arkan;
+			sourceTree = "<group>";
+		};
+		3A94BBF02DAA0C2800EF3FCD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3A94BBF12DAA0C3100EF3FCD /* Buttons */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3A94BBF12DAA0C3100EF3FCD /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				3A94BBF22DAA0C3900EF3FCD /* PlainIconButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		3A94BBF42DAA0CD800EF3FCD /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				3A94BBEA2DAA0C1F00EF3FCD /* Assets.xcassets */,
+			);
+			path = Media;
+			sourceTree = "<group>";
+		};
+		3A94BBF52DAA0CE000EF3FCD /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				3A94BBFA2DAA0DA800EF3FCD /* NetworkManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		3A94BBF62DAA0CED00EF3FCD /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				3A94BBEB2DAA0C1F00EF3FCD /* ContentView.swift */,
+				3A94BBF82DAA0D5D00EF3FCD /* OnboardingView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		3A94BBF72DAA0CF200EF3FCD /* App */ = {
+			isa = PBXGroup;
+			children = (
+				3A94BBE92DAA0C1F00EF3FCD /* ArkanApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		3A94BBFC2DAA1E9E00EF3FCD /* Mode */ = {
+			isa = PBXGroup;
+			children = (
+				3A94BBFD2DAA1EBA00EF3FCD /* PrayerTimesCalendar.swift */,
+			);
+			path = Mode;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -59,9 +138,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				3A94BBDD2DAA096600EF3FCD /* Arkan */,
 			);
 			name = Arkan;
 			packageProductDependencies = (
@@ -109,6 +185,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A94BBEF2DAA0C1F00EF3FCD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +196,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A94BBED2DAA0C1F00EF3FCD /* ArkanApp.swift in Sources */,
+				3A94BBFE2DAA1EBA00EF3FCD /* PrayerTimesCalendar.swift in Sources */,
+				3A94BBF92DAA0D5D00EF3FCD /* OnboardingView.swift in Sources */,
+				3A94BBFB2DAA0DA800EF3FCD /* NetworkManager.swift in Sources */,
+				3A94BBF32DAA0C3900EF3FCD /* PlainIconButton.swift in Sources */,
+				3A94BBEE2DAA0C1F00EF3FCD /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
