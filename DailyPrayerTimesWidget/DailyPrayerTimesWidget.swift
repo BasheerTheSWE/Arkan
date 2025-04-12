@@ -22,13 +22,37 @@ struct Provider: AppIntentTimelineProvider {
         var entries: [SimpleEntry] = []
         
         // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            
-            /// Getting the prayerTimesInfo
-            guard let prayerTimesInfo = try? await PrayerTimesInfo.getInfoForToday() else { continue }
-            
+//        let currentDate = Date()
+//        for hourOffset in 0 ..< 5 {
+//            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
+//            
+//            /// Getting the prayerTimesInfo
+//            var prayerTimesInfo: PrayerTimesInfo?
+//            
+//            if let archivedPrayerTimesInfo = try? await PrayerTimesInfo.getInfoForTodayFromArchive() {
+//                prayerTimesInfo = archivedPrayerTimesInfo
+//            } else if let downloadedPrayerTimesInfo = try? await PrayerTimesInfo.downloadPrayerTimesInfoForToday() {
+//                prayerTimesInfo = downloadedPrayerTimesInfo
+//            }
+//            
+//            guard let prayerTimesInfo = prayerTimesInfo else { continue }
+//            
+//            let entry = SimpleEntry(date: entryDate, configuration: configuration, prayerTimesInfo: prayerTimesInfo)
+//            entries.append(entry)
+//        }
+        
+        let entryDate = Calendar.current.startOfDay(for: .now)
+        
+        /// Getting the prayerTimesInfo
+        var prayerTimesInfo: PrayerTimesInfo?
+        
+        if let archivedPrayerTimesInfo = try? await PrayerTimesInfo.getInfoForTodayFromArchive() {
+            prayerTimesInfo = archivedPrayerTimesInfo
+        } else if let downloadedPrayerTimesInfo = try? await PrayerTimesInfo.downloadPrayerTimesInfoForToday() {
+            prayerTimesInfo = downloadedPrayerTimesInfo
+        }
+        
+        if let prayerTimesInfo = prayerTimesInfo {
             let entry = SimpleEntry(date: entryDate, configuration: configuration, prayerTimesInfo: prayerTimesInfo)
             entries.append(entry)
         }
@@ -50,11 +74,7 @@ struct SimpleEntry: TimelineEntry {
 struct DailyPrayerTimesWidgetEntryView : View {
     
     @Environment(\.colorScheme) private var colorScheme
-    @Environment(\.modelContext) private var context
-    @Query private var archivedYearlyPrayerTimes: [GregorianYearPrayerTimes]
-    
-    @State private var prayerTimesInfoForToday: PrayerTimesInfo?
-    
+        
     var entry: Provider.Entry
     
     var body: some View {
@@ -80,10 +100,8 @@ struct DailyPrayerTimesWidgetEntryView : View {
 //                                .scaledToFit()
 //                                .minimumScaleFactor(0.2)
 //                        }
-                        if let prayerTimesInfoForToday = prayerTimesInfoForToday {
-                            PrayerTimeCell(index: index, prayerTimesInfo: prayerTimesInfoForToday, isCompact: true)
-                                .frame(maxWidth: .infinity)
-                        }
+                        PrayerTimeCell(index: index, prayerTimesInfo: entry.prayerTimesInfo, isCompact: true)
+                            .frame(maxWidth: .infinity)
                     }
                 }
                 
@@ -96,7 +114,7 @@ struct DailyPrayerTimesWidgetEntryView : View {
                     
                     Spacer()
                     
-                    Text("13, Shawaal 1446")
+                    Text(entry.prayerTimesInfo.getFormattedHijriDate())
                         .font(.system(size: 10, design: .monospaced))
                 }
                 .padding(.horizontal)
@@ -110,19 +128,7 @@ struct DailyPrayerTimesWidgetEntryView : View {
             .clipShape(RoundedCorner(radius: 16, corners: [.topLeft, .topRight]))
         }
         .background(Color(.secondarySystemBackground))
-        .task {
-            guard let context = try? ModelContext(.init(for: GregorianYearPrayerTimes.self)) else { return }
-            
-            print("R")
-            do {
-                let times = try context.fetch(FetchDescriptor<GregorianYearPrayerTimes>())
-                
-                prayerTimesInfoForToday = try await PrayerTimesManager.getPrayerTimesForToday(from: times)
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-        .modelContainer(for: GregorianYearPrayerTimes.self)
+        
         
         //        VStack {
         //            Text("Al Taif, SA")
