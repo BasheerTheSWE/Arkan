@@ -43,15 +43,6 @@ struct ContentView: View {
         }
         .ignoresSafeArea()
         .background(Color(.secondarySystemGroupedBackground))
-        .task {
-            do {
-                let times = try await NetworkManager.getPrayerTimes(forYear: 2025, city: "Taif", countryCode: "SA")
-                
-                print(times.count)
-            } catch {
-                print("Failed to get data")
-            }
-        }
     }
 }
 

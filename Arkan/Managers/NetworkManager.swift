@@ -11,6 +11,7 @@ final class NetworkManager {
     
     enum NetworkError: Error {
         case invalidURL
+        case badServerResponse
     }
     
     static func getPrayerTimes(forYear year: Int, city: String, countryCode: String) async throws -> [String: [PrayerDay]] {
@@ -21,6 +22,8 @@ final class NetworkManager {
         request.setValue("application/json", forHTTPHeaderField: "accept")
         
         let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else { throw NetworkError.badServerResponse }
         
         let prayerTimesCalendar = try JSONDecoder().decode(PrayerTimesCalendar.self, from: data)
         return prayerTimesCalendar.data
