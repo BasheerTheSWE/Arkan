@@ -23,36 +23,36 @@ struct PrayerTimeCell: View {
             /// Fajr prayer
             self.title = "Fajr"
             self.systemImage = "sunrise"
-            self.prayerTime = prayerDay.timings.Fajr
+            self.prayerTime = prayerDay.timings.getTime(for: .fajr)
             
         case 1:
             /// Dhuhr prayer
             self.title = "Dhuhr"
             self.systemImage = "sun.max"
-            self.prayerTime = prayerDay.timings.Dhuhr
+            self.prayerTime = prayerDay.timings.getTime(for: .dhuhr)
             
         case 2:
             /// Asr prayer
             self.title = "Asr"
             self.systemImage = "cloud.sun"
-            self.prayerTime = prayerDay.timings.Asr
+            self.prayerTime = prayerDay.timings.getTime(for: .asr)
             
         case 3:
             /// Maghrib prayer
             self.title = "Maghrib"
             self.systemImage = "sunset"
-            self.prayerTime = prayerDay.timings.Maghrib
+            self.prayerTime = prayerDay.timings.getTime(for: .maghrib)
             
         case 4:
             /// Isha prayer
             self.title = "Isha"
             self.systemImage = "moon"
-            self.prayerTime = prayerDay.timings.Isha
+            self.prayerTime = prayerDay.timings.getTime(for: .isha)
             
         default:
             self.title = ""
             self.systemImage = ""
-            self.prayerTime = prayerDay.timings.Fajr
+            self.prayerTime = prayerDay.timings.getTime(for: .fajr)
         }
     }
     
