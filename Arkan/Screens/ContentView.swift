@@ -44,37 +44,8 @@ struct ContentView: View {
                 Spacer()
                 
                 VStack {
-                    ForEach(0..<5) { _ in
-                        HStack {
-                            Image(systemName: "sunrise")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 18, height: 18)
-                            
-                            Text("Fajr")
-                                .font(.system(size: 16, weight: .medium, design: .rounded))
-                                .padding(.leading)
-                            
-                            Spacer()
-                            
-                            Text("4:43 AM")
-                                .font(.system(size: 14, weight: .medium, design: .monospaced))
-                                .foregroundStyle(.secondary)
-                            
-                            Button {
-                                
-                            } label: {
-                                Image(systemName: "speaker.wave.1.fill")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .foregroundStyle(Color(.label))
-                                    .frame(width: 16, height: 16)
-                            }
-                            .padding(.leading)
-                        }
-                        .padding()
-                        .background(Color(.secondarySystemGroupedBackground))
-                        .clipShape(.rect(cornerRadius: 8))
+                    ForEach(0..<5) { index in
+                        PrayerTimeCell(index: index)
                     }
                 }
                 

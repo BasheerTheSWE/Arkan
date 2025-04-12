@@ -22,6 +22,10 @@
 		3A94BC0C2DAA2C2200EF3FCD /* HijriWeekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC0B2DAA2C2200EF3FCD /* HijriWeekday.swift */; };
 		3A94BC0E2DAA2C3000EF3FCD /* HijriMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC0D2DAA2C3000EF3FCD /* HijriMonth.swift */; };
 		3A94BC112DAA2D2900EF3FCD /* MainHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC102DAA2D2900EF3FCD /* MainHeaderView.swift */; };
+		3A94BC142DAA3CA800EF3FCD /* PrayerTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC132DAA3CA800EF3FCD /* PrayerTimeCell.swift */; };
+		3A94BC162DAA3E8200EF3FCD /* MetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC152DAA3E8200EF3FCD /* MetaData.swift */; };
+		3A94BC182DAA3E9400EF3FCD /* MetaDataMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC172DAA3E9400EF3FCD /* MetaDataMethod.swift */; };
+		3A94BC1A2DAA3F2900EF3FCD /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC192DAA3F2900EF3FCD /* MenuButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +45,10 @@
 		3A94BC0B2DAA2C2200EF3FCD /* HijriWeekday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HijriWeekday.swift; sourceTree = "<group>"; };
 		3A94BC0D2DAA2C3000EF3FCD /* HijriMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HijriMonth.swift; sourceTree = "<group>"; };
 		3A94BC102DAA2D2900EF3FCD /* MainHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHeaderView.swift; sourceTree = "<group>"; };
+		3A94BC132DAA3CA800EF3FCD /* PrayerTimeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimeCell.swift; sourceTree = "<group>"; };
+		3A94BC152DAA3E8200EF3FCD /* MetaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaData.swift; sourceTree = "<group>"; };
+		3A94BC172DAA3E9400EF3FCD /* MetaDataMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaDataMethod.swift; sourceTree = "<group>"; };
+		3A94BC192DAA3F2900EF3FCD /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				3A94BC0F2DAA2D1B00EF3FCD /* Others */,
+				3A94BC122DAA3C9F00EF3FCD /* Cells */,
 				3A94BBF12DAA0C3100EF3FCD /* Buttons */,
 			);
 			path = Views;
@@ -96,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				3A94BBF22DAA0C3900EF3FCD /* PlainIconButton.swift */,
+				3A94BC192DAA3F2900EF3FCD /* MenuButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -160,6 +170,8 @@
 				3A94BC092DAA2C1600EF3FCD /* HijriDate.swift */,
 				3A94BC0B2DAA2C2200EF3FCD /* HijriWeekday.swift */,
 				3A94BC0D2DAA2C3000EF3FCD /* HijriMonth.swift */,
+				3A94BC152DAA3E8200EF3FCD /* MetaData.swift */,
+				3A94BC172DAA3E9400EF3FCD /* MetaDataMethod.swift */,
 			);
 			path = Decodables;
 			sourceTree = "<group>";
@@ -170,6 +182,14 @@
 				3A94BC102DAA2D2900EF3FCD /* MainHeaderView.swift */,
 			);
 			path = Others;
+			sourceTree = "<group>";
+		};
+		3A94BC122DAA3C9F00EF3FCD /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				3A94BC132DAA3CA800EF3FCD /* PrayerTimeCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -254,8 +274,12 @@
 				3A94BC062DAA2BFF00EF3FCD /* DateInfo.swift in Sources */,
 				3A94BBFB2DAA0DA800EF3FCD /* NetworkManager.swift in Sources */,
 				3A94BBF32DAA0C3900EF3FCD /* PlainIconButton.swift in Sources */,
+				3A94BC162DAA3E8200EF3FCD /* MetaData.swift in Sources */,
+				3A94BC142DAA3CA800EF3FCD /* PrayerTimeCell.swift in Sources */,
 				3A94BC0C2DAA2C2200EF3FCD /* HijriWeekday.swift in Sources */,
 				3A94BC022DAA2BD900EF3FCD /* PrayerDay.swift in Sources */,
+				3A94BC1A2DAA3F2900EF3FCD /* MenuButton.swift in Sources */,
+				3A94BC182DAA3E9400EF3FCD /* MetaDataMethod.swift in Sources */,
 				3A94BBEE2DAA0C1F00EF3FCD /* ContentView.swift in Sources */,
 				3A94BC0E2DAA2C3000EF3FCD /* HijriMonth.swift in Sources */,
 			);

@@ -26,9 +26,7 @@ struct MainHeaderView: View {
                 
                 Spacer()
                 
-                PlainIconButton(systemImage: "line.3.horizontal") {
-                    withAnimation { isShowingMenuItems.toggle() }
-                }
+                MenuButton(isToggled: $isShowingMenuItems)
             }
             
             if isShowingMenuItems {

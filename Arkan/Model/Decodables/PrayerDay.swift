@@ -10,4 +10,5 @@ import Foundation
 struct PrayerDay: Decodable {
     let timings: Timings
     let date: DateInfo
+    let meta: MetaData
 }
