@@ -9,8 +9,6 @@ import Foundation
 
 struct Timings: Decodable {
     
-    enum Timing { case fajr, dhuhr, asr, maghrib, isha }
-    
     let Fajr: String
     let Sunrise: String
     let Dhuhr: String
@@ -18,9 +16,9 @@ struct Timings: Decodable {
     let Maghrib: String
     let Isha: String
     
-    func getTime(for timing: Timing, use24HourFormat: Bool = false) -> String {
+    func getTime(for prayer: Prayer, use24HourFormat: Bool = false) -> String {
         let timeString = {
-            switch timing {
+            switch prayer {
             case .fajr:
                 return Fajr
             case .dhuhr:

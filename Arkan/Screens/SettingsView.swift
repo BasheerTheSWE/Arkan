@@ -30,6 +30,8 @@ struct SettingsView: View {
         NavigationStack {
             List {
                 Section {
+                    PrayerTimeFormatPicker()
+                    
                     SettingsRowCell(title: "Update Location", systemImage: "location.north.fill") {
                         
                     }
@@ -180,6 +182,47 @@ private struct SettingsRowCell: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 8, height: 8)
+            }
+        }
+    }
+}
+
+private struct PrayerTimeFormatPicker: View {
+    
+    @AppStorage(UDKey.prefers24HourTimeFormat.rawValue) private var prefers24HourTimeFormat = false
+    
+    @State private var prefers24HourTimeFormatState = UserDefaults.standard.bool(forKey: UDKey.prefers24HourTimeFormat.rawValue)
+    
+    var body: some View {
+        HStack {
+            Image(systemName: "clock")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 14, height: 14)
+                .padding(.trailing, 8)
+            
+            Text("Prayer Time Format")
+                .font(.system(size: 14, design: .rounded))
+                .foregroundStyle(Color(.label))
+            
+            Spacer()
+            
+            Button {
+                withAnimation {
+                    prefers24HourTimeFormatState.toggle()
+                }
+            } label: {
+                Text(prefers24HourTimeFormatState ? "24h" : "12h A/P")
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundStyle(.secondary)
+                    .frame(width: 75, height: 24)
+                    .background(Color(.secondarySystemFill))
+                    .clipShape(.rect(cornerRadius: 4))
+                    .contentTransition(.numericText())
+            }
+            .buttonStyle(.borderless)
+            .onChange(of: prefers24HourTimeFormatState) { _, _ in
+                prefers24HourTimeFormat = prefers24HourTimeFormatState
             }
         }
     }

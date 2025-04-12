@@ -9,51 +9,27 @@ import SwiftUI
 
 struct PrayerTimeCell: View {
     
-    private let index: Int
-    private let title: String
+    @AppStorage(UDKey.prefers24HourTimeFormat.rawValue) private var prefers24HourTimeFormat = false
+    
     private let systemImage: String
-    let prayerTime: String
+    
+    private let prayer: Prayer
+    private let prayerTimes: Timings
     
     // MARK: - INIT
     init(index: Int, prayerDay: PrayerDay) {
-        self.index = index
+        self.prayer = Prayer.allCases[index]
+        self.prayerTimes = prayerDay.timings
         
-        switch index {
-        case 0:
-            /// Fajr prayer
-            self.title = "Fajr"
-            self.systemImage = "sunrise"
-            self.prayerTime = prayerDay.timings.getTime(for: .fajr)
-            
-        case 1:
-            /// Dhuhr prayer
-            self.title = "Dhuhr"
-            self.systemImage = "sun.max"
-            self.prayerTime = prayerDay.timings.getTime(for: .dhuhr)
-            
-        case 2:
-            /// Asr prayer
-            self.title = "Asr"
-            self.systemImage = "cloud.sun"
-            self.prayerTime = prayerDay.timings.getTime(for: .asr)
-            
-        case 3:
-            /// Maghrib prayer
-            self.title = "Maghrib"
-            self.systemImage = "sunset"
-            self.prayerTime = prayerDay.timings.getTime(for: .maghrib)
-            
-        case 4:
-            /// Isha prayer
-            self.title = "Isha"
-            self.systemImage = "moon"
-            self.prayerTime = prayerDay.timings.getTime(for: .isha)
-            
-        default:
-            self.title = ""
-            self.systemImage = ""
-            self.prayerTime = prayerDay.timings.getTime(for: .fajr)
-        }
+        let images = [
+            "sunrise",
+            "sun.max",
+            "cloud.sun",
+            "sunset",
+            "moon"
+        ]
+        
+        self.systemImage = images[index]
     }
     
     // MARK: - VIEW
@@ -64,13 +40,13 @@ struct PrayerTimeCell: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 18, height: 18)
             
-            Text(title)
+            Text(prayer.rawValue)
                 .font(.system(size: 16, weight: .medium, design: .rounded))
                 .padding(.leading)
             
             Spacer()
             
-            Text(prayerTime)
+            Text(prayerTimes.getTime(for: prayer, use24HourFormat: prefers24HourTimeFormat))
                 .font(.system(size: 14, weight: .medium, design: .monospaced))
                 .foregroundStyle(.secondary)
             

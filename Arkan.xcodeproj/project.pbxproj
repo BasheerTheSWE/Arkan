@@ -29,6 +29,8 @@
 		3A94BC1C2DAA440E00EF3FCD /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC1B2DAA440E00EF3FCD /* SettingsView.swift */; };
 		3A94BC1F2DAA446D00EF3FCD /* MailComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC1E2DAA446D00EF3FCD /* MailComposeView.swift */; };
 		3A94BC212DAA677800EF3FCD /* GregorianYearPrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC202DAA677800EF3FCD /* GregorianYearPrayerTimes.swift */; };
+		3A94BC252DAA7F7200EF3FCD /* UDKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC242DAA7F7200EF3FCD /* UDKey.swift */; };
+		3A94BC272DAA831300EF3FCD /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC262DAA831300EF3FCD /* Prayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +57,8 @@
 		3A94BC1B2DAA440E00EF3FCD /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		3A94BC1E2DAA446D00EF3FCD /* MailComposeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailComposeView.swift; sourceTree = "<group>"; };
 		3A94BC202DAA677800EF3FCD /* GregorianYearPrayerTimes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GregorianYearPrayerTimes.swift; sourceTree = "<group>"; };
+		3A94BC242DAA7F7200EF3FCD /* UDKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDKey.swift; sourceTree = "<group>"; };
+		3A94BC262DAA831300EF3FCD /* Prayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +96,7 @@
 				3A94BBF02DAA0C2800EF3FCD /* Views */,
 				3A94BBFC2DAA1E9E00EF3FCD /* Model */,
 				3A94BBF52DAA0CE000EF3FCD /* Managers */,
+				3A94BC222DAA7F5F00EF3FCD /* Utils */,
 				3A94BBF42DAA0CD800EF3FCD /* Media */,
 			);
 			path = Arkan;
@@ -209,6 +214,23 @@
 			path = Representables;
 			sourceTree = "<group>";
 		};
+		3A94BC222DAA7F5F00EF3FCD /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				3A94BC232DAA7F6700EF3FCD /* Enums */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		3A94BC232DAA7F6700EF3FCD /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				3A94BC242DAA7F7200EF3FCD /* UDKey.swift */,
+				3A94BC262DAA831300EF3FCD /* Prayer.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -287,12 +309,14 @@
 				3A94BC112DAA2D2900EF3FCD /* MainHeaderView.swift in Sources */,
 				3A94BC212DAA677800EF3FCD /* GregorianYearPrayerTimes.swift in Sources */,
 				3A94BC1F2DAA446D00EF3FCD /* MailComposeView.swift in Sources */,
+				3A94BC252DAA7F7200EF3FCD /* UDKey.swift in Sources */,
 				3A94BC082DAA2C0A00EF3FCD /* GregorianDate.swift in Sources */,
 				3A94BBF92DAA0D5D00EF3FCD /* OnboardingView.swift in Sources */,
 				3A94BC042DAA2BF200EF3FCD /* Timings.swift in Sources */,
 				3A94BC062DAA2BFF00EF3FCD /* DateInfo.swift in Sources */,
 				3A94BBFB2DAA0DA800EF3FCD /* NetworkManager.swift in Sources */,
 				3A94BBF32DAA0C3900EF3FCD /* PlainIconButton.swift in Sources */,
+				3A94BC272DAA831300EF3FCD /* Prayer.swift in Sources */,
 				3A94BC162DAA3E8200EF3FCD /* MetaData.swift in Sources */,
 				3A94BC142DAA3CA800EF3FCD /* PrayerTimeCell.swift in Sources */,
 				3A94BC0C2DAA2C2200EF3FCD /* HijriWeekday.swift in Sources */,
