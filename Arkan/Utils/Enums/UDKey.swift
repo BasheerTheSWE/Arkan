@@ -9,4 +9,6 @@ import Foundation
 
 enum UDKey: String {
     case prefers24HourTimeFormat // Bool
+    case latitude // Double
+    case longitude // Double
 }

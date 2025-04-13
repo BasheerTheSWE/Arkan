@@ -88,18 +88,6 @@ struct DailyPrayerTimesWidgetEntryView : View {
                                 
                 HStack(spacing: 16) {
                     ForEach(0..<5) { index in
-//                        VStack {
-//                            Image(systemName: "sunset")
-//                                .resizable()
-//                                .aspectRatio(contentMode: .fit)
-//                                .frame(width: 24, height: 24)
-//                            
-//                            Text("4:43")
-//                                .font(.system(size: 18, weight: .bold))
-//                                .lineLimit(1)
-//                                .scaledToFit()
-//                                .minimumScaleFactor(0.2)
-//                        }
                         PrayerTimeCell(index: index, prayerTimesInfo: entry.prayerTimesInfo, isCompact: true)
                             .frame(maxWidth: .infinity)
                     }

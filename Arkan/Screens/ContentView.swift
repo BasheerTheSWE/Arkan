@@ -28,7 +28,7 @@ struct ContentView: View {
                         Text("Al Taif, SA")
                             .font(.system(size: 24, weight: .bold, design: .rounded))
                         
-                        Text("Umm al-Qura University, Makkah")
+                        Text(prayerTimesInfo.meta.method.name)
                             .font(.system(size: 12, design: .rounded))
                             .foregroundStyle(.secondary)
                     }

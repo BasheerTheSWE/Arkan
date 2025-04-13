@@ -19,6 +19,12 @@ class PrayerTimesManager {
         let currentMonth = todaysDateComponents.month ?? 0
         let currentDay = todaysDateComponents.day ?? 0
         
+        /// First we'll try to get today's updated prayer times
+        if let prayerTimesInfoForToday = try? await NetworkManager.getPrayerTimes(forDate: .now, city: "Taif", countryCode: "SA") {
+            print(prayerTimesInfoForToday)
+            return prayerTimesInfoForToday
+        }
+        
         /// Checking to see if the prayer times for today are archived
         if let currentYearPrayerTimesData = archivedYearlyPrayerTimes.first(where: { $0.year == currentYear }),
            let currentYearPrayerTimesByMonths = try? currentYearPrayerTimesData.getPrayerTimesByMonths(),
@@ -29,14 +35,10 @@ class PrayerTimesManager {
         
         /// This year's prayer times data is not downloaded
         /// We'll use the NetworkManager to download and store 'em
-        do {
-            let currentYearPrayerTimesByMonths = try await NetworkManager.getPrayerTimes(forYear: currentYear, city: "Taif", countryCode: "SA")
-            
-            if let currentMonthPrayerTimes = currentYearPrayerTimesByMonths[String(currentMonth)] {
-                return currentMonthPrayerTimes[currentDay]
-            }
-        } catch {
-            print(error.localizedDescription)
+        let currentYearPrayerTimesByMonths = try await NetworkManager.getPrayerTimes(forYear: currentYear, city: "Taif", countryCode: "SA")
+        
+        if let currentMonthPrayerTimes = currentYearPrayerTimesByMonths[String(currentMonth)] {
+            return currentMonthPrayerTimes[currentDay]
         }
         
         throw PrayerTimesError.prayerTimesNotFound
