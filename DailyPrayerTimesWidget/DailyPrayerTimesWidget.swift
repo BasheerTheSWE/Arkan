@@ -19,15 +19,15 @@ struct Provider: AppIntentTimelineProvider {
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        let entries: [SimpleEntry] = []
+        var entries: [SimpleEntry] = []
         
-//        let currentDate = Date()
-//        
-//        for offset in 0..<2 {
-////            let entryDate = Calendar.current.date(byAdding: .hour, value: offset * 6, to: currentDate)
-//            
-//            
-//        }
+        let currentDate = Date()
+        
+        for offset in 0..<2 {
+            let entryDate = Calendar.current.date(byAdding: .hour, value: offset * 6, to: currentDate)
+            
+            
+        }
         
         // Generate a timeline consisting of five entries an hour apart, starting from the current date.
 //        let currentDate = Date()
@@ -71,6 +71,52 @@ struct Provider: AppIntentTimelineProvider {
     //    func relevances() async -> WidgetRelevances<ConfigurationAppIntent> {
     //        // Generate a list containing the contexts this widget is relevant in.
     //    }
+    
+    private func getPrayerTimesForEntryDate(entryDate: Date) async -> PrayerTimesInfo? {
+        do {
+            let (latitude, longitude) = try await LocationFetcher().updateUserLocation()
+            
+            /// First we'll try to download Today's prayer times from the server
+            if let prayerTimesInfoForToday = try? await NetworkManager.getPrayerTimes(forDate: entryDate, latitude: latitude, longitude: longitude) {
+                /// Checking if there's a yearly backup or downloading if there wasn't
+                /// The reason why I've put it here and two lines after is that I want the priority to be for downloading the accurate prayer times of today then downloading the yearly backup in the background
+                try? await checkPrayerTimesBackupForThisYearOrDownloadIfNeeded(latitude: latitude, longitude: longitude)
+                
+                return prayerTimesInfoForToday
+            }
+            
+            /// If for any reason the download fail, we'll into the archives for today's prayer times
+            /// But first we need to make sure we have an archive for the current year
+            try await checkPrayerTimesBackupForThisYearOrDownloadIfNeeded(latitude: latitude, longitude: longitude)
+            
+            /// Reaching this line means we have an archive and "theoretically" it shouldn't fail
+            return try PrayerTimesArchiveManager.getPrayerTimesForDate(date: entryDate)
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        return nil
+    }
+    
+    private func checkPrayerTimesBackupForThisYearOrDownloadIfNeeded(latitude: Double, longitude: Double) async throws {
+        let currentYear = Calendar.current.component(.year, from: .now)
+        let city = UserDefaults.standard.string(forKey: UDKey.city.rawValue) ?? ""
+        let countryCode = UserDefaults.standard.string(forKey: UDKey.countryCode.rawValue) ?? ""
+        
+        let context = try ModelContext(.init(for: GregorianYearPrayerTimes.self))
+        let archivedYearlyPrayerTimes = try context.fetch(FetchDescriptor<GregorianYearPrayerTimes>())
+        
+        /// Return if the backup was found
+        guard !archivedYearlyPrayerTimes.contains(where: { $0.year == currentYear && $0.city == city && $0.countryCode == countryCode }) else { return }
+        
+        /// If not ...
+        /// Downloading a backup
+        let apiResponseData = try await NetworkManager.getPrayerTimesAPIResponseData(forYear: currentYear, latitude: latitude, longitude: longitude)
+        
+        let gregorianYearPrayerTimes = GregorianYearPrayerTimes(year: currentYear, city: city, countryCode: countryCode, apiResponseData: apiResponseData)
+        context.insert(gregorianYearPrayerTimes)
+        try? context.save()
+    }
 }
 
 struct SimpleEntry: TimelineEntry {

@@ -15,11 +15,11 @@ class PrayerTimesArchiveManager {
         case dataNotFound
     }
     
-    static func getPrayerTimesForToday() throws -> PrayerTimesInfo {
+    static func getPrayerTimesForDate(date: Date = .now) throws -> PrayerTimesInfo {
         let context = try ModelContext(.init(for: GregorianYearPrayerTimes.self))
         let archivedYearlyBackups = try context.fetch(FetchDescriptor<GregorianYearPrayerTimes>())
         
-        let todaysDateComponents = Calendar.current.dateComponents([.day, .month, .year], from: .now)
+        let todaysDateComponents = Calendar.current.dateComponents([.day, .month, .year], from: date)
         let currentYear = todaysDateComponents.year ?? 0
         let currentMonth = todaysDateComponents.month ?? 0
         let currentDay = todaysDateComponents.day ?? 0

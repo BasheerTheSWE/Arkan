@@ -81,29 +81,43 @@ struct ContentView: View {
             
             /// First we'll try to download Today's prayer times from the server
             if let prayerTimesInfoForToday = try? await NetworkManager.getPrayerTimes(forDate: .now, latitude: latitude, longitude: longitude) {
+                /// Updating the app to display the newly downloaded prayer times
                 withAnimation { self.prayerTimesInfoForToday = prayerTimesInfoForToday }
+                
+                /// Checking if there's a yearly backup and downloading if there wasn't
+                if !isThereAPrayerTimesBackupForThisYear() {
+                    /// This code is duplicated because I wanted the priority to be for downloading a fresh prayer times data from the api and leaving the yearly backup to be downloaded in the background after the user is able to see today's prayer times
+                    try? await downloadPrayerTimesBackupForThisYear(latitude: longitude, longitude: latitude)
+                }
+                
                 return
             }
             
-            /// If for any reason the download fail, we'll into the archives for today's prayer times
+            /// If for any reason the download of today's prayer times fail, we'll go into the archives to see if there's one stored previously
             /// But first we need to make sure we have an archive for the current year
-            try await makeSureThereIsAPrayerTimesBackupForThisYear(latitude: latitude, longitude: longitude)
-            
+            if !isThereAPrayerTimesBackupForThisYear() {
+                /// If there's no archive, we'll just download a new one
+                try await downloadPrayerTimesBackupForThisYear(latitude: longitude, longitude: latitude)
+            }
+                        
             /// Reaching this line means we have an archive and "theoretically" it shouldn't fail
-            prayerTimesInfoForToday = try PrayerTimesArchiveManager.getPrayerTimesForToday()
+            prayerTimesInfoForToday = try PrayerTimesArchiveManager.getPrayerTimesForDate()
         } catch {
             print(error.localizedDescription)
         }
     }
     
-    private func makeSureThereIsAPrayerTimesBackupForThisYear(latitude: Double, longitude: Double) async throws {
+    private func isThereAPrayerTimesBackupForThisYear() -> Bool {
         let currentYear = Calendar.current.component(.year, from: .now)
         
-        /// Return if the backup was found
-        guard !archivedYearlyPrayerTimes.contains(where: { $0.year == currentYear && $0.city == city && $0.countryCode == countryCode }) else { return }
+        guard archivedYearlyPrayerTimes.contains(where: { $0.year == currentYear && $0.city == city && $0.countryCode == countryCode }) else { return false }
         
-        /// If not ...
-        /// Downloading a backup
+        return true
+    }
+    
+    private func downloadPrayerTimesBackupForThisYear(latitude: Double, longitude: Double) async throws {
+        let currentYear = Calendar.current.component(.year, from: .now)
+        
         let apiResponseData = try await NetworkManager.getPrayerTimesAPIResponseData(forYear: currentYear, latitude: latitude, longitude: longitude)
         
         let gregorianYearPrayerTimes = GregorianYearPrayerTimes(year: currentYear, city: city, countryCode: countryCode, apiResponseData: apiResponseData)
