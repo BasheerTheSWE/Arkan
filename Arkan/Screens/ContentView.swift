@@ -85,20 +85,21 @@ struct ContentView: View {
     private func getPrayerTimesForToday() async {
         do {
             /// The location fetcher will get and store user's coordinates in UserDefaults
-            let (latitude, longitude) = try await locationFetcher.updateUserLocation()
+            try await locationFetcher.updateUserLocation()
             
             /// First we'll try to download Today's prayer times from the server
-            if let prayerTimesInfoForToday = try? await NetworkManager.getPrayerTimes(forDate: .now, latitude: latitude, longitude: longitude) {
-                /// Updating the app to display the newly downloaded prayer times
-                withAnimation { self.prayerTimesInfoForToday = prayerTimesInfoForToday }
-            }
+            let prayerTimesInfoForToday = try await NetworkManager.getPrayerTimes(forDate: .now, latitude: latitude, longitude: longitude)
+            
+            /// Updating the app to display the newly downloaded prayer times
+            withAnimation { self.prayerTimesInfoForToday = prayerTimesInfoForToday }
             
             /// Checking if there's a yearly backup and downloading if there wasn't
             if !isThereAPrayerTimesBackupForThisYear() {
                 /// This code is duplicated because I wanted the priority to be for downloading a fresh prayer times data from the api and leaving the yearly backup to be downloaded in the background after the user is able to see today's prayer times
-                try? await downloadPrayerTimesBackupForThisYear(latitude: latitude, longitude: longitude)
+                try? await downloadPrayerTimesBackupForThisYear()
             }
             
+            /// This function will exit when we download the prayerTimes info for today regardless of a successful yearly backup download
             return
         } catch {
             print(error.localizedDescription)
@@ -108,18 +109,16 @@ struct ContentView: View {
             /// If for any reason the download of today's prayer times fail, we'll go into the archives to see if there's one stored previously
             /// But first we need to make sure we have an archive for the current year
             if !isThereAPrayerTimesBackupForThisYear() {
-                let latitude = UserDefaults.standard.double(forKey: UDKey.latitude.rawValue)
-                let longitude = UserDefaults.standard.double(forKey: UDKey.longitude.rawValue)
-                
                 if latitude != 0 && longitude != 0 {
                     /// If there's no archive, we'll just download a new one
-                    try await downloadPrayerTimesBackupForThisYear(latitude: latitude, longitude: longitude)
+                    try await downloadPrayerTimesBackupForThisYear()
                 }
             }
             
             /// Reaching this line means we have an archive and "theoretically" it shouldn't fail
             prayerTimesInfoForToday = try PrayerTimesArchiveManager.getPrayerTimesForDate()
         } catch {
+            /// Backup not found and couldn't be downloaded
             print(error.localizedDescription)
         }
     }
@@ -132,7 +131,7 @@ struct ContentView: View {
         return true
     }
     
-    private func downloadPrayerTimesBackupForThisYear(latitude: Double, longitude: Double) async throws {
+    private func downloadPrayerTimesBackupForThisYear() async throws {
         let currentYear = Calendar.current.component(.year, from: .now)
         
         let apiResponseData = try await NetworkManager.getPrayerTimesAPIResponseData(forYear: currentYear, latitude: latitude, longitude: longitude)

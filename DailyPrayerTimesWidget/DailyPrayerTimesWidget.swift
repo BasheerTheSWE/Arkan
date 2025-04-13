@@ -10,41 +10,33 @@ import SwiftUI
 import SwiftData
 
 struct Provider: AppIntentTimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent(), prayerTimesInfo: .mock)
+    func placeholder(in context: Context) -> PrayerTimesEntry {
+        PrayerTimesEntry(date: Date(), configuration: ConfigurationAppIntent(), prayerTimesInfo: .mock)
     }
     
-    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        return SimpleEntry(date: Date(), configuration: configuration, prayerTimesInfo: .mock)
+    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> PrayerTimesEntry {
+        return PrayerTimesEntry(date: Date(), configuration: configuration, prayerTimesInfo: .mock)
     }
     
-    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        var entries: [SimpleEntry] = []
-        
-        let sharedDefaults = UserDefaults(suiteName: "group.BasheerTheSWE.Arkan.PrayerTime")
-        
-        print("Testing")
-        print(sharedDefaults?.string(forKey: "x"))
+    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<PrayerTimesEntry> {
+        var entries: [PrayerTimesEntry] = []
         
         let currentDate = Date()
         
         for offset in 0..<2 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: offset * 6, to: currentDate)!
             
-//            print("Getting it")
-//            if let prayerTimesInfo = await getPrayerTimesForEntryDate(entryDate: entryDate) {
-//                print("Got the entry")
-//                let city = UserDefaults.standard.string(forKey: UDKey.city.rawValue) ?? ""
-//                let countryCode = UserDefaults.standard.string(forKey: UDKey.countryCode.rawValue) ?? ""
-//                
-//                let entry = SimpleEntry(date: entryDate, configuration: configuration, prayerTimesInfo: prayerTimesInfo, city: city, countryCode: countryCode)
-//                
-//                entries.append(entry)
-//            } else { print("Failed to get the entry") }
-            
-            
-            let entry = SimpleEntry(date: entryDate, configuration: configuration, prayerTimesInfo: .mock, city: "city", countryCode: "countryCode")
-            
+            if let prayerTimesInfo = await getPrayerTimesInfo(forDate: entryDate) {
+                
+                let entry = PrayerTimesEntry(date: entryDate, configuration: configuration, prayerTimesInfo: prayerTimesInfo)
+                
+                entries.append(entry)
+            } else { print("Failed to get the entry") }
+        }
+        
+        if entries.isEmpty {
+            print("Failed to get prayerTimes info")
+            let entry = PrayerTimesEntry(date: .now, configuration: configuration, prayerTimesInfo: .mock)
             entries.append(entry)
         }
         
@@ -54,88 +46,87 @@ struct Provider: AppIntentTimelineProvider {
     //    func relevances() async -> WidgetRelevances<ConfigurationAppIntent> {
     //        // Generate a list containing the contexts this widget is relevant in.
     //    }
+
+    private func getPrayerTimesInfo(forDate date: Date) async -> PrayerTimesInfo? {
+        let latitude = UserDefaults.shared.double(forKey: UDKey.latitude.rawValue)
+        let longitude = UserDefaults.shared.double(forKey: UDKey.longitude.rawValue)
+        
+        do {
+            /// First we'll try to download Today's prayer times from the server
+            let prayerTimesInfoForToday = try await NetworkManager.getPrayerTimes(forDate: date, latitude: latitude, longitude: longitude)
+            
+            /// Checking if there's a yearly backup and downloading if there wasn't
+            if !isThereAPrayerTimesBackupForThisYear() {
+                /// This code is duplicated because I wanted the priority to be for downloading a fresh prayer times data from the api and leaving the yearly backup to be downloaded in the background after the user is able to see today's prayer times
+                try? await downloadPrayerTimesBackupForYear(ofDate: date)
+            }
+            
+            /// This function will exit when we download the prayerTimes info for today regardless of a successful yearly backup download
+            return prayerTimesInfoForToday
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        do {
+            /// If for any reason the download of today's prayer times fail, we'll go into the archives to see if there's one stored previously
+            /// But first we need to make sure we have an archive for the current year
+            if !isThereAPrayerTimesBackupForThisYear() {
+                if latitude != 0 && longitude != 0 {
+                    /// If there's no archive, we'll just download a new one
+                    try await downloadPrayerTimesBackupForYear(ofDate: date)
+                }
+            }
+            
+            /// Reaching this line means we have an archive and "theoretically" it shouldn't fail
+            return try PrayerTimesArchiveManager.getPrayerTimesForDate()
+        } catch {
+            /// Backup not found and couldn't be downloaded
+            print(error.localizedDescription)
+        }
+        
+        return nil
+    }
     
-//    private func getPrayerTimesForEntryDate(entryDate: Date) async -> PrayerTimesInfo? {
-//        do {
-//            /// The location fetcher will get and store user's coordinates in UserDefaults
-//            let (latitude, longitude) = try await LocationFetcher().updateUserLocation()
-//            
-//            /// First we'll try to download Today's prayer times from the server
-//            if let prayerTimesInfoForToday = try? await NetworkManager.getPrayerTimes(forDate: entryDate, latitude: latitude, longitude: longitude) {
-//                /// Checking if there's a yearly backup and downloading if there wasn't
-//                if !isThereAPrayerTimesBackupForYear(ofDate: entryDate) {
-//                    try? await downloadPrayerTimesBackupForYear(ofDate: entryDate, latitude: latitude, longitude: longitude)
-//                }
-//                
-//                return prayerTimesInfoForToday
-//            }
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-//        
-//        do {
-//            if !isThereAPrayerTimesBackupForYear(ofDate: entryDate) {
-//                let latitude = UserDefaults.standard.double(forKey: UDKey.latitude.rawValue)
-//                let longitude = UserDefaults.standard.double(forKey: UDKey.longitude.rawValue)
-//                
-//                if latitude != 0 && longitude != 0 {
-//                    /// If there's no archive, we'll just download a new one
-//                    try await downloadPrayerTimesBackupForYear(ofDate: entryDate, latitude: latitude, longitude: longitude)
-//                }
-//            }
-//            
-//            return try PrayerTimesArchiveManager.getPrayerTimesForDate(date: entryDate)
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-//        
-//        return nil
-//    }
-//    
-//    private func isThereAPrayerTimesBackupForYear(ofDate date: Date) -> Bool {
-//        let currentYear = Calendar.current.component(.year, from: date)
-//        let city = UserDefaults.standard.string(forKey: UDKey.city.rawValue)
-//        let countryCode = UserDefaults.standard.string(forKey: UDKey.countryCode.rawValue)
-//        
-//        guard let context = try? ModelContext(.init(for: GregorianYearPrayerTimes.self)) else { return false }
-//        guard let archivedYearlyPrayerTimes = try? context.fetch(FetchDescriptor<GregorianYearPrayerTimes>()) else { return false }
-//        
-//        guard archivedYearlyPrayerTimes.contains(where: { $0.year == currentYear && $0.city == city && $0.countryCode == countryCode }) else { return false }
-//        
-//        return true
-//    }
-//    
-//    private func downloadPrayerTimesBackupForYear(ofDate date: Date, latitude: Double, longitude: Double) async throws {
-//        let currentYear = Calendar.current.component(.year, from: date)
-//        let city = UserDefaults.standard.string(forKey: UDKey.city.rawValue) ?? ""
-//        let countryCode = UserDefaults.standard.string(forKey: UDKey.countryCode.rawValue) ?? ""
-//        
-//        let context = try ModelContext(.init(for: GregorianYearPrayerTimes.self))
-//        
-//        let apiResponseData = try await NetworkManager.getPrayerTimesAPIResponseData(forYear: currentYear, latitude: latitude, longitude: longitude)
-//        
-//        let gregorianYearPrayerTimes = GregorianYearPrayerTimes(year: currentYear, city: city, countryCode: countryCode, apiResponseData: apiResponseData)
-//        context.insert(gregorianYearPrayerTimes)
-//        try? context.save()
-//    }
+    private func isThereAPrayerTimesBackupForThisYear() -> Bool {
+        let currentYear = Calendar.current.component(.year, from: .now)
+        let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue)
+        let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue)
+        
+        guard let context = try? ModelContext(.init(for: GregorianYearPrayerTimes.self)) else { return false }
+        
+        guard let archivedYearlyPrayerTimes = try? context.fetch(FetchDescriptor<GregorianYearPrayerTimes>()) else { return false }
+        
+        guard archivedYearlyPrayerTimes.contains(where: { $0.year == currentYear && $0.city == city && $0.countryCode == countryCode }) else { return false }
+        
+        return true
+    }
+    
+    /// Downloads a yearly backup of prayer times for offline usage and stores it in SwiftData.
+    /// - Parameter date: Think about it bro! If it's Dec 31, the last day of the year and the timeline has an entry for tomorrow's prayer times --That's a new year and that's why we're passing the entry date and not just using`Date.now`. IQ+++
+    private func downloadPrayerTimesBackupForYear(ofDate date: Date) async throws {
+        let currentYear = Calendar.current.component(.year, from: date)
+        let latitude = UserDefaults.shared.double(forKey: UDKey.latitude.rawValue)
+        let longitude = UserDefaults.shared.double(forKey: UDKey.longitude.rawValue)
+        let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue) ?? ""
+        let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue) ?? ""
+        
+        let context = try ModelContext(.init(for: GregorianYearPrayerTimes.self))
+        
+        let apiResponseData = try await NetworkManager.getPrayerTimesAPIResponseData(forYear: currentYear, latitude: latitude, longitude: longitude)
+        
+        let gregorianYearPrayerTimes = GregorianYearPrayerTimes(year: currentYear, city: city, countryCode: countryCode, apiResponseData: apiResponseData)
+        context.insert(gregorianYearPrayerTimes)
+        try? context.save()
+    }
 }
 
-struct SimpleEntry: TimelineEntry {
+struct PrayerTimesEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
     let prayerTimesInfo: PrayerTimesInfo
-    let city: String
-    let countryCode: String
-    let age: Int
     
-    init(date: Date, configuration: ConfigurationAppIntent, prayerTimesInfo: PrayerTimesInfo, city: String = "", countryCode: String = "", age: Int = 0) {
-        self.date = date
-        self.configuration = configuration
-        self.prayerTimesInfo = prayerTimesInfo
-        self.city = city
-        self.countryCode = countryCode
-        self.age = age
-    }
+    let city: String = UserDefaults.shared.string(forKey: UDKey.city.rawValue) ?? ""
+    let countryCode: String = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue) ?? ""
 }
 
 struct DailyPrayerTimesWidgetEntryView : View {
@@ -260,6 +251,6 @@ extension ConfigurationAppIntent {
 #Preview(as: .systemSmall) {
     DailyPrayerTimesWidget()
 } timeline: {
-    SimpleEntry(date: .now, configuration: .smiley, prayerTimesInfo: .mock)
-    SimpleEntry(date: .now, configuration: .starEyes, prayerTimesInfo: .mock)
+    PrayerTimesEntry(date: .now, configuration: .smiley, prayerTimesInfo: .mock)
+    PrayerTimesEntry(date: .now, configuration: .starEyes, prayerTimesInfo: .mock)
 }
