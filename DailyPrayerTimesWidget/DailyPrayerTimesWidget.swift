@@ -21,6 +21,14 @@ struct Provider: AppIntentTimelineProvider {
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         var entries: [SimpleEntry] = []
         
+        let currentDate = Date()
+        
+        for offset in 0..<2 {
+//            let entryDate = Calendar.current.date(byAdding: .hour, value: offset * 6, to: currentDate)
+            
+            
+        }
+        
         // Generate a timeline consisting of five entries an hour apart, starting from the current date.
 //        let currentDate = Date()
 //        for hourOffset in 0 ..< 5 {
@@ -69,6 +77,8 @@ struct SimpleEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
     let prayerTimesInfo: PrayerTimesInfo
+    let city: String = ""
+    let countryCode: String = ""
 }
 
 struct DailyPrayerTimesWidgetEntryView : View {
@@ -79,9 +89,13 @@ struct DailyPrayerTimesWidgetEntryView : View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Text("Al Taif, SA")
+            Text(entry.city.isEmpty || entry.countryCode.isEmpty ? "Location Unavailable" : "Al Taif, SA")
                 .font(.system(size: 12, weight: .bold, design: .rounded))
+                .lineLimit(1)
+                .scaledToFit()
+                .minimumScaleFactor(0.5)
                 .padding(.vertical, 8)
+                .padding(.horizontal)
             
             VStack {
                 Spacer()

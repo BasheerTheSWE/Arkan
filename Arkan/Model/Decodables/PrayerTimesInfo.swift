@@ -33,7 +33,7 @@ struct PrayerTimesInfo: Decodable, Equatable {
         guard let context = try? ModelContext(.init(for: GregorianYearPrayerTimes.self)) else { throw PrayerTimesInfoError.modelContextNotFound }
         guard let archivedYearlyPrayerTimes = try? context.fetch(FetchDescriptor<GregorianYearPrayerTimes>()) else { throw PrayerTimesInfoError.failedToLoadArchivedData }
         
-        return try await PrayerTimesManager.getPrayerTimesForToday(from: archivedYearlyPrayerTimes)
+        return try await PrayerTimesArchiveManager.getPrayerTimesForToday(from: archivedYearlyPrayerTimes)
     }
     
     @MainActor

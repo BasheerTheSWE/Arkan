@@ -70,22 +70,21 @@ struct ContentView: View {
             .frame(maxHeight: .infinity)
         }
         .background(Color(.systemGroupedBackground))
-        .task { getPrayerTimesForToday() }
+        .task { await getPrayerTimesForToday() }
         .animation(.default, value: city)
         .animation(.default, value: countryCode)
     }
     
-    private func getPrayerTimesForToday() {
-        locationFetcher.updateUserLocation { error, latitude, longitude in
-            Task {
-                do {
-                    let prayerTimesInfoForToday = try await PrayerTimesManager.getPrayerTimesForToday(from: archivedYearlyPrayerTimes)
-                    
-                    withAnimation { self.prayerTimesInfoForToday = prayerTimesInfoForToday }
-                } catch {
-                    print(error.localizedDescription)
-                }
-            }
+    private func getPrayerTimesForToday() async {
+        do {
+            let (latitude, longitude) = try await locationFetcher.updateUserLocation()
+            
+            /// First we'll try to download Today's prayer times from the server
+            let prayerTimesInfoForToday = try await NetworkManager.getPrayerTimes(forDate: .now, latitude: latitude, longitude: longitude)
+            
+            withAnimation { self.prayerTimesInfoForToday = prayerTimesInfoForToday }
+        } catch {
+            print(error.localizedDescription)
         }
     }
 }

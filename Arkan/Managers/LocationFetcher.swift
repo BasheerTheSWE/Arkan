@@ -20,37 +20,38 @@ import CoreLocation
     private let manager = CLLocationManager()
     private var completion: ((_ error: LocationError?, _ latitude: CLLocationDegrees, _ longitude: CLLocationDegrees) -> ())?
     
-    func updateUserLocation(completion: ((_ error: LocationError?, _ latitude: CLLocationDegrees, _ longitude: CLLocationDegrees) -> ())?) {
-        self.manager.delegate = self
-        self.completion = completion
-        
-        /// Now we'll check the location authorization status
-        switch manager.authorizationStatus {
-        case .notDetermined:
-            /// This is the user's first time open and we haven't asked for location yet
-            manager.requestWhenInUseAuthorization()
-            break
-        
-        case .restricted:
-            completion?(.locationPermissionIsRestricted, 0, 0)
-            return
+    func updateUserLocation() async throws -> (latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        return try await withCheckedThrowingContinuation { continuation in
+            self.manager.delegate = self
             
-        case .denied:
-            completion?(.locationPermissionDenied, 0, 0)
-            return
+            self.completion = { error, latitude, longitude in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume(returning: (latitude, longitude))
+                }
+            }
             
-        case .authorizedAlways, .authorizedWhenInUse:
-            /// Everything is working well
-            manager.requestLocation()
-            break
-            
-        @unknown default:
-            break
+            switch manager.authorizationStatus {
+            case .notDetermined:
+                manager.requestWhenInUseAuthorization()
+                
+            case .restricted:
+                continuation.resume(throwing: LocationError.locationPermissionIsRestricted)
+                
+            case .denied:
+                continuation.resume(throwing: LocationError.locationPermissionDenied)
+                
+            case .authorizedAlways, .authorizedWhenInUse:
+                manager.requestLocation()
+                
+            @unknown default:
+                continuation.resume(throwing: LocationError.failedToGetLocation)
+            }
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("Fuch yea")
         guard let location = locations.first else {
             completion?(.failedToGetLocation, 0, 0)
             return
@@ -64,17 +65,15 @@ import CoreLocation
         UserDefaults.standard.set(longitude, forKey: UDKey.longitude.rawValue)
         
         /// Getting the city and country names of the user's location and storing them in UserDefaults
-        CLGeocoder().reverseGeocodeLocation(location) { placeMarks, error in
-            guard error == nil else { return }
-            
+        CLGeocoder().reverseGeocodeLocation(location) { [weak self] placeMarks, _ in
             if let placeMark = placeMarks?.first {
                 UserDefaults.standard.set(placeMark.locality, forKey: UDKey.city.rawValue)
                 UserDefaults.standard.set(placeMark.country, forKey: UDKey.country.rawValue)
-                UserDefaults.standard.set(placeMark.isoCountryCode, forKey: UDKey.countryCode.rawValue)                
+                UserDefaults.standard.set(placeMark.isoCountryCode, forKey: UDKey.countryCode.rawValue)
             }
+            
+            self?.completion?(nil, latitude, longitude)
         }
-        
-        completion?(nil, latitude, longitude)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {

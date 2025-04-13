@@ -59,9 +59,9 @@
 		3A94BC632DAAB59700EF3FCD /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC262DAA831300EF3FCD /* Prayer.swift */; };
 		3A94BC642DAAB59C00EF3FCD /* UDKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC242DAA7F7200EF3FCD /* UDKey.swift */; };
 		3A94BC652DAAB5D600EF3FCD /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC292DAA893E00EF3FCD /* Date+Ext.swift */; };
-		3A94BC672DAAB7E300EF3FCD /* PrayerTimesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC662DAAB7E300EF3FCD /* PrayerTimesManager.swift */; };
+		3A94BC672DAAB7E300EF3FCD /* PrayerTimesArchiveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC662DAAB7E300EF3FCD /* PrayerTimesArchiveManager.swift */; };
 		3A94BC682DAABCA000EF3FCD /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BBFA2DAA0DA800EF3FCD /* NetworkManager.swift */; };
-		3A94BC692DAABCA500EF3FCD /* PrayerTimesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC662DAAB7E300EF3FCD /* PrayerTimesManager.swift */; };
+		3A94BC692DAABCA500EF3FCD /* PrayerTimesArchiveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC662DAAB7E300EF3FCD /* PrayerTimesArchiveManager.swift */; };
 		3A94BC6A2DAABCB900EF3FCD /* PrayerTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC132DAA3CA800EF3FCD /* PrayerTimeCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -131,7 +131,7 @@
 		3A94BC4E2DAAA1EB00EF3FCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A94BC562DAAB22B00EF3FCD /* Arkan.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Arkan.entitlements; sourceTree = "<group>"; };
 		3A94BC572DAAB27C00EF3FCD /* DailyPrayerTimesWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DailyPrayerTimesWidgetExtension.entitlements; sourceTree = "<group>"; };
-		3A94BC662DAAB7E300EF3FCD /* PrayerTimesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesManager.swift; sourceTree = "<group>"; };
+		3A94BC662DAAB7E300EF3FCD /* PrayerTimesArchiveManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesArchiveManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -231,7 +231,7 @@
 			isa = PBXGroup;
 			children = (
 				3A94BBFA2DAA0DA800EF3FCD /* NetworkManager.swift */,
-				3A94BC662DAAB7E300EF3FCD /* PrayerTimesManager.swift */,
+				3A94BC662DAAB7E300EF3FCD /* PrayerTimesArchiveManager.swift */,
 				3A1BCF2A2DAB76DE00005FA5 /* LocationFetcher.swift */,
 			);
 			path = Managers;
@@ -484,7 +484,7 @@
 				3A94BBFB2DAA0DA800EF3FCD /* NetworkManager.swift in Sources */,
 				3A94BBF32DAA0C3900EF3FCD /* PlainIconButton.swift in Sources */,
 				3A94BC272DAA831300EF3FCD /* Prayer.swift in Sources */,
-				3A94BC672DAAB7E300EF3FCD /* PrayerTimesManager.swift in Sources */,
+				3A94BC672DAAB7E300EF3FCD /* PrayerTimesArchiveManager.swift in Sources */,
 				3A94BC162DAA3E8200EF3FCD /* MetaData.swift in Sources */,
 				3A94BC142DAA3CA800EF3FCD /* PrayerTimeCell.swift in Sources */,
 				3A94BC0C2DAA2C2200EF3FCD /* HijriWeekday.swift in Sources */,
@@ -519,7 +519,7 @@
 				3A70357D2DAB72E400F281F5 /* DayPrayerTimesAPIResponse.swift in Sources */,
 				3A94BC632DAAB59700EF3FCD /* Prayer.swift in Sources */,
 				3A94BC5F2DAAB57900EF3FCD /* HijriWeekday.swift in Sources */,
-				3A94BC692DAABCA500EF3FCD /* PrayerTimesManager.swift in Sources */,
+				3A94BC692DAABCA500EF3FCD /* PrayerTimesArchiveManager.swift in Sources */,
 				3A94BC622DAAB58800EF3FCD /* MetaDataMethod.swift in Sources */,
 				3A1BCF2B2DAB76DE00005FA5 /* LocationFetcher.swift in Sources */,
 				3A94BC532DAAA1EB00EF3FCD /* DailyPrayerTimesWidgetControl.swift in Sources */,

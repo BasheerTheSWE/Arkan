@@ -1,5 +1,5 @@
 //
-//  PrayerTimesManager.swift
+//  PrayerTimesArchiveManager.swift
 //  Arkan
 //
 //  Created by Basheer Abdulmalik on 12/04/2025.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class PrayerTimesManager {
+class PrayerTimesArchiveManager {
     
     enum PrayerTimesError: Error {
         case prayerTimesNotFound
@@ -18,17 +18,6 @@ class PrayerTimesManager {
         let currentYear = todaysDateComponents.year ?? 0
         let currentMonth = todaysDateComponents.month ?? 0
         let currentDay = todaysDateComponents.day ?? 0
-        
-        /// First we'll try to get today's updated prayer times
-//        if let prayerTimesInfoForToday = try? await NetworkManager.getPrayerTimes(forDate: .now, city: "Taif", countryCode: "SA") {
-//            print(prayerTimesInfoForToday)
-//            return prayerTimesInfoForToday
-//        }
-        
-        if let prayerTimesInfoForToday = try? await NetworkManager.getPrayerTimes(forDate: .now, latitude: UserDefaults.standard.double(forKey: UDKey.latitude.rawValue), longitude: UserDefaults.standard.double(forKey: UDKey.longitude.rawValue)) {
-            print(prayerTimesInfoForToday)
-            return prayerTimesInfoForToday
-        }
         
         /// Checking to see if the prayer times for today are archived
         if let currentYearPrayerTimesData = archivedYearlyPrayerTimes.first(where: { $0.year == currentYear }),
