@@ -14,6 +14,7 @@ struct ArkanApp: App {
         WindowGroup {
             ContentView()
                 .tint(Color(.label))
+                .defaultAppStorage(UserDefaults(suiteName: "group.BasheerTheSWE.Arkan.PrayerTime")!)
                 .modelContainer(for: GregorianYearPrayerTimes.self)
         }
     }

@@ -18,17 +18,17 @@ import CoreLocation
     }
     
     private let manager = CLLocationManager()
-    private var completion: ((_ error: LocationError?, _ latitude: CLLocationDegrees, _ longitude: CLLocationDegrees) -> ())?
+    private var completion: ((_ error: LocationError?) -> ())?
     
-    func updateUserLocation() async throws -> (latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+    func updateUserLocation() async throws {
         return try await withCheckedThrowingContinuation { continuation in
             self.manager.delegate = self
             
-            self.completion = { error, latitude, longitude in
+            self.completion = { error in
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else {
-                    continuation.resume(returning: (latitude, longitude))
+                    continuation.resume()
                 }
             }
             
@@ -53,7 +53,7 @@ import CoreLocation
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else {
-            completion?(.failedToGetLocation, 0, 0)
+            completion?(.failedToGetLocation)
             return
         }
         
@@ -61,23 +61,23 @@ import CoreLocation
         let longitude = location.coordinate.longitude
         
         /// Updating the stored coordinates
-        UserDefaults.standard.set(latitude, forKey: UDKey.latitude.rawValue)
-        UserDefaults.standard.set(longitude, forKey: UDKey.longitude.rawValue)
+        UserDefaults.shared.set(latitude, forKey: UDKey.latitude.rawValue)
+        UserDefaults.shared.set(longitude, forKey: UDKey.longitude.rawValue)
         
         /// Getting the city and country names of the user's location and storing them in UserDefaults
         CLGeocoder().reverseGeocodeLocation(location) { [weak self] placeMarks, _ in
             if let placeMark = placeMarks?.first {
-                UserDefaults.standard.set(placeMark.locality, forKey: UDKey.city.rawValue)
-                UserDefaults.standard.set(placeMark.country, forKey: UDKey.country.rawValue)
-                UserDefaults.standard.set(placeMark.isoCountryCode, forKey: UDKey.countryCode.rawValue)
+                UserDefaults.shared.set(placeMark.locality, forKey: UDKey.city.rawValue)
+                UserDefaults.shared.set(placeMark.country, forKey: UDKey.country.rawValue)
+                UserDefaults.shared.set(placeMark.isoCountryCode, forKey: UDKey.countryCode.rawValue)
             }
             
-            self?.completion?(nil, latitude, longitude)
+            self?.completion?(nil)
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
-        completion?(.failedToGetLocation, 0, 0)
+        completion?(.failedToGetLocation)
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
@@ -87,7 +87,7 @@ import CoreLocation
             /// Checking if the user has location services enabled
             DispatchQueue.global(qos: .userInteractive) .async { [weak self] in
                 if !CLLocationManager.locationServicesEnabled() {
-                    self?.completion?(.locationServicesDisabled, 0, 0)
+                    self?.completion?(.locationServicesDisabled)
                 }
             }
         }

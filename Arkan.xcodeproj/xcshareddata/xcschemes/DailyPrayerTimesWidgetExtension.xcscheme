@@ -57,8 +57,18 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "2">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.springboard">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "3A94BC2E2DAAA1DF00EF3FCD"
+            BuildableName = "DailyPrayerTimesWidgetExtension.appex"
+            BlueprintName = "DailyPrayerTimesWidgetExtension"
+            ReferencedContainer = "container:Arkan.xcodeproj">
+         </BuildableReference>
+      </RemoteRunnable>
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3A94BBDA2DAA096600EF3FCD"
@@ -66,7 +76,7 @@
             BlueprintName = "Arkan"
             ReferencedContainer = "container:Arkan.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "_XCWidgetKind"
@@ -81,6 +91,11 @@
          <EnvironmentVariable
             key = "_XCWidgetFamily"
             value = "systemMedium"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "_XCWidgetKind"
+            value = "DailyPrayerTimesWidget"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

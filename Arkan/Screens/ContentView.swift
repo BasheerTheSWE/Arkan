@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import WidgetKit
 
 struct ContentView: View {
     
@@ -15,6 +16,9 @@ struct ContentView: View {
     
     @AppStorage(UDKey.countryCode.rawValue) private var countryCode = ""
     @AppStorage(UDKey.city.rawValue) private var city = ""
+    
+    @AppStorage(UDKey.latitude.rawValue) private var latitude = 0.0
+    @AppStorage(UDKey.longitude.rawValue) private var longitude = 0.0
     
     @State private var prayerTimesInfoForToday: PrayerTimesInfo?
     @State private var locationFetcher = LocationFetcher()
@@ -70,36 +74,49 @@ struct ContentView: View {
             .frame(maxHeight: .infinity)
         }
         .background(Color(.systemGroupedBackground))
-        .task { await getPrayerTimesForToday() }
+        .task {
+            await getPrayerTimesForToday()
+            WidgetCenter.shared.reloadAllTimelines()
+        }
         .animation(.default, value: city)
         .animation(.default, value: countryCode)
     }
     
     private func getPrayerTimesForToday() async {
         do {
+            /// The location fetcher will get and store user's coordinates in UserDefaults
             let (latitude, longitude) = try await locationFetcher.updateUserLocation()
             
             /// First we'll try to download Today's prayer times from the server
             if let prayerTimesInfoForToday = try? await NetworkManager.getPrayerTimes(forDate: .now, latitude: latitude, longitude: longitude) {
                 /// Updating the app to display the newly downloaded prayer times
                 withAnimation { self.prayerTimesInfoForToday = prayerTimesInfoForToday }
-                
-                /// Checking if there's a yearly backup and downloading if there wasn't
-                if !isThereAPrayerTimesBackupForThisYear() {
-                    /// This code is duplicated because I wanted the priority to be for downloading a fresh prayer times data from the api and leaving the yearly backup to be downloaded in the background after the user is able to see today's prayer times
-                    try? await downloadPrayerTimesBackupForThisYear(latitude: longitude, longitude: latitude)
-                }
-                
-                return
             }
             
+            /// Checking if there's a yearly backup and downloading if there wasn't
+            if !isThereAPrayerTimesBackupForThisYear() {
+                /// This code is duplicated because I wanted the priority to be for downloading a fresh prayer times data from the api and leaving the yearly backup to be downloaded in the background after the user is able to see today's prayer times
+                try? await downloadPrayerTimesBackupForThisYear(latitude: latitude, longitude: longitude)
+            }
+            
+            return
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        do {
             /// If for any reason the download of today's prayer times fail, we'll go into the archives to see if there's one stored previously
             /// But first we need to make sure we have an archive for the current year
             if !isThereAPrayerTimesBackupForThisYear() {
-                /// If there's no archive, we'll just download a new one
-                try await downloadPrayerTimesBackupForThisYear(latitude: longitude, longitude: latitude)
+                let latitude = UserDefaults.standard.double(forKey: UDKey.latitude.rawValue)
+                let longitude = UserDefaults.standard.double(forKey: UDKey.longitude.rawValue)
+                
+                if latitude != 0 && longitude != 0 {
+                    /// If there's no archive, we'll just download a new one
+                    try await downloadPrayerTimesBackupForThisYear(latitude: latitude, longitude: longitude)
+                }
             }
-                        
+            
             /// Reaching this line means we have an archive and "theoretically" it shouldn't fail
             prayerTimesInfoForToday = try PrayerTimesArchiveManager.getPrayerTimesForDate()
         } catch {
