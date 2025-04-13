@@ -20,7 +20,12 @@ class PrayerTimesManager {
         let currentDay = todaysDateComponents.day ?? 0
         
         /// First we'll try to get today's updated prayer times
-        if let prayerTimesInfoForToday = try? await NetworkManager.getPrayerTimes(forDate: .now, city: "Taif", countryCode: "SA") {
+//        if let prayerTimesInfoForToday = try? await NetworkManager.getPrayerTimes(forDate: .now, city: "Taif", countryCode: "SA") {
+//            print(prayerTimesInfoForToday)
+//            return prayerTimesInfoForToday
+//        }
+        
+        if let prayerTimesInfoForToday = try? await NetworkManager.getPrayerTimes(forDate: .now, latitude: UserDefaults.standard.double(forKey: UDKey.latitude.rawValue), longitude: UserDefaults.standard.double(forKey: UDKey.longitude.rawValue)) {
             print(prayerTimesInfoForToday)
             return prayerTimesInfoForToday
         }

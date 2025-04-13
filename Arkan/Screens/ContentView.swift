@@ -14,6 +14,7 @@ struct ContentView: View {
     @Query private var archivedYearlyPrayerTimes: [GregorianYearPrayerTimes]
     
     @State private var prayerTimesInfoForToday: PrayerTimesInfo?
+    @State private var locationFetcher = LocationFetcher()
     
     var body: some View {
         VStack {
@@ -64,11 +65,18 @@ struct ContentView: View {
         }
         .background(Color(.systemGroupedBackground))
         .task {
-            do {
-                prayerTimesInfoForToday = try await PrayerTimesManager.getPrayerTimesForToday(from: archivedYearlyPrayerTimes)
-            } catch {
-                print(error.localizedDescription)
+            locationFetcher.updateUserLocation { error, latitude, longitude in
+                Task {
+                    do {
+                        prayerTimesInfoForToday = try await PrayerTimesManager.getPrayerTimesForToday(from: archivedYearlyPrayerTimes)
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
             }
+        }
+        .onAppear {
+            
         }
     }
 }
