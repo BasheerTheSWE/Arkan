@@ -9,10 +9,14 @@ import WidgetKit
 import AppIntents
 
 struct ConfigurationAppIntent: WidgetConfigurationIntent {
-    static var title: LocalizedStringResource { "Configuration" }
-    static var description: IntentDescription { "This is an example widget." }
-
+    static var title: LocalizedStringResource { "Time Format" }
+    static var description: IntentDescription { "Set your preferred time format." }
+    
     // An example configurable parameter.
-    @Parameter(title: "Favorite Emoji", default: "😃")
-    var favoriteEmoji: String
+    @Parameter(title: "24 Hour Time Format", default: true)
+    var prefers24HourTimeFormat: Bool
+    
+    func perform() async throws -> some IntentResult {
+        return .result()
+    }
 }

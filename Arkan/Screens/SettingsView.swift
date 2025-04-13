@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MessageUI
+import WidgetKit
 
 struct SettingsView: View {
     
@@ -223,6 +224,7 @@ private struct PrayerTimeFormatPicker: View {
             .buttonStyle(.borderless)
             .onChange(of: prefers24HourTimeFormatState) { _, _ in
                 prefers24HourTimeFormat = prefers24HourTimeFormatState
+                WidgetCenter.shared.reloadAllTimelines()
             }
         }
     }

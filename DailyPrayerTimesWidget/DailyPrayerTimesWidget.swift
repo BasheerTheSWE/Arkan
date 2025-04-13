@@ -11,10 +11,18 @@ import SwiftData
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> PrayerTimesEntry {
-        PrayerTimesEntry(date: Date(), configuration: ConfigurationAppIntent(), prayerTimesInfo: .mock)
+        if let prayerTimesInfo = try? PrayerTimesArchiveManager.getPrayerTimesForDate() {
+            return PrayerTimesEntry(date: Date(), configuration: ConfigurationAppIntent(), prayerTimesInfo: prayerTimesInfo)
+        }
+        
+        return PrayerTimesEntry(date: Date(), configuration: ConfigurationAppIntent(), prayerTimesInfo: .mock)
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> PrayerTimesEntry {
+        if let prayerTimesInfo = await getPrayerTimesInfo(forDate: .now) {
+            return PrayerTimesEntry(date: .now, configuration: configuration, prayerTimesInfo: prayerTimesInfo)
+        }
+        
         return PrayerTimesEntry(date: Date(), configuration: configuration, prayerTimesInfo: .mock)
     }
     
@@ -129,11 +137,34 @@ struct PrayerTimesEntry: TimelineEntry {
     let countryCode: String = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue) ?? ""
 }
 
+// MARK: - WIDGET VIEW
 struct DailyPrayerTimesWidgetEntryView : View {
     
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.widgetFamily) private var widgetFamily
         
     var entry: Provider.Entry
+    
+    var body: some View {
+        switch widgetFamily {
+        case .systemMedium:
+            PrayerTimesMediumSizeWidget(entry: entry)
+            
+        case .systemLarge:
+            PrayerTimesLargeSizeWidget(entry: entry)
+            
+        default:
+            Text("Unsupported Size")
+        }
+    }
+}
+
+struct PrayerTimesMediumSizeWidget: View {
+    
+    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.widgetFamily) private var widgetFamily
+    
+    let entry: Provider.Entry
     
     var body: some View {
         VStack(spacing: 0) {
@@ -147,10 +178,10 @@ struct DailyPrayerTimesWidgetEntryView : View {
             
             VStack {
                 Spacer()
-                                
+                
                 HStack(spacing: 16) {
                     ForEach(0..<5) { index in
-                        PrayerTimeCell(index: index, prayerTimesInfo: entry.prayerTimesInfo, isCompact: true)
+                        PrayerTimeWidgetCell(index: index, prayerTimesInfo: entry.prayerTimesInfo, isCompact: true, prefers24HourTimeFormat: entry.configuration.prefers24HourTimeFormat)
                             .frame(maxWidth: .infinity)
                     }
                 }
@@ -178,22 +209,54 @@ struct DailyPrayerTimesWidgetEntryView : View {
             .clipShape(RoundedCorner(radius: 16, corners: [.topLeft, .topRight]))
         }
         .background(Color(.secondarySystemBackground))
-        
-        
-        //        VStack {
-        //            Text("Al Taif, SA")
-        //                .font(.system(size: 12, weight: .medium, design: .rounded))
-        //
-        //            VStack {
-        //                Text("Time:")
-        //                Text(entry.date, style: .time)
-        //
-        //                Text("Favorite Emoji:")
-        //                Text(entry.configuration.favoriteEmoji)
-        //            }
-        //            .frame(maxWidth: .infinity, maxHeight: .infinity)
-        //            .background(Color.black)
-        //        }
+    }
+}
+
+struct PrayerTimesLargeSizeWidget: View {
+    
+    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.widgetFamily) private var widgetFamily
+    
+    let entry: Provider.Entry
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            Text(entry.city.isEmpty || entry.countryCode.isEmpty ? "Location Unavailable" : "\(entry.city), \(entry.countryCode)")
+                .font(.system(size: 12, weight: .bold, design: .rounded))
+                .lineLimit(1)
+                .scaledToFit()
+                .minimumScaleFactor(0.5)
+                .padding(.vertical, 8)
+                .padding(.horizontal)
+            
+            VStack {
+                HStack {
+                    Text(Date.getTodaysFormattedDate())
+                        .font(.system(size: 10, design: .monospaced))
+                    
+                    Spacer()
+                    
+                    Text(entry.prayerTimesInfo.getFormattedHijriDate())
+                        .font(.system(size: 10, design: .monospaced))
+                }
+                .padding(.horizontal)
+                .frame(height: 24)
+                .background(Color(.secondarySystemFill))
+                .clipShape(.rect(cornerRadius: 4))
+                .padding(.bottom, 8)
+                
+                VStack {
+                    ForEach(0..<5) { index in
+                        PrayerTimeWidgetCell(index: index, prayerTimesInfo: entry.prayerTimesInfo, prefers24HourTimeFormat: entry.configuration.prefers24HourTimeFormat)
+                    }
+                }
+            }
+            .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.systemGroupedBackground))
+            .clipShape(RoundedCorner(radius: 16, corners: [.topLeft, .topRight]))
+        }
+        .background(Color(.secondarySystemGroupedBackground))
     }
 }
 
@@ -205,7 +268,7 @@ struct DailyPrayerTimesWidget: Widget {
             DailyPrayerTimesWidgetEntryView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
-        .supportedFamilies([.systemMedium])
+        .supportedFamilies([.systemMedium, .systemLarge])
         .contentMarginsDisabled()
     }
 }
@@ -237,13 +300,13 @@ struct RoundedCorner: Shape {
 extension ConfigurationAppIntent {
     fileprivate static var smiley: ConfigurationAppIntent {
         let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "😀"
+        intent.prefers24HourTimeFormat = false
         return intent
     }
     
     fileprivate static var starEyes: ConfigurationAppIntent {
         let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "🤩"
+        intent.prefers24HourTimeFormat = true
         return intent
     }
 }

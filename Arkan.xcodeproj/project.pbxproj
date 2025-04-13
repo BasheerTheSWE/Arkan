@@ -65,6 +65,8 @@
 		3A94BC6A2DAABCB900EF3FCD /* PrayerTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC132DAA3CA800EF3FCD /* PrayerTimeCell.swift */; };
 		3AF6CD0D2DAC046D00A1045C /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD0C2DAC046D00A1045C /* UserDefaults+Ext.swift */; };
 		3AF6CD0E2DAC046D00A1045C /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD0C2DAC046D00A1045C /* UserDefaults+Ext.swift */; };
+		3AF6CD102DAC1B3E00A1045C /* PrayerTimeWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD0F2DAC1B3E00A1045C /* PrayerTimeWidgetCell.swift */; };
+		3AF6CD112DAC1B3E00A1045C /* PrayerTimeWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD0F2DAC1B3E00A1045C /* PrayerTimeWidgetCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -135,6 +137,7 @@
 		3A94BC572DAAB27C00EF3FCD /* DailyPrayerTimesWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DailyPrayerTimesWidgetExtension.entitlements; sourceTree = "<group>"; };
 		3A94BC662DAAB7E300EF3FCD /* PrayerTimesArchiveManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesArchiveManager.swift; sourceTree = "<group>"; };
 		3AF6CD0C2DAC046D00A1045C /* UserDefaults+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Ext.swift"; sourceTree = "<group>"; };
+		3AF6CD0F2DAC1B3E00A1045C /* PrayerTimeWidgetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimeWidgetCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -362,6 +365,7 @@
 				3A94BC4C2DAAA1EB00EF3FCD /* DailyPrayerTimesWidgetBundle.swift */,
 				3A94BC4D2DAAA1EB00EF3FCD /* DailyPrayerTimesWidgetControl.swift */,
 				3A94BC4E2DAAA1EB00EF3FCD /* Info.plist */,
+				3AF6CD0F2DAC1B3E00A1045C /* PrayerTimeWidgetCell.swift */,
 			);
 			path = DailyPrayerTimesWidget;
 			sourceTree = "<group>";
@@ -485,6 +489,7 @@
 				3A94BBF92DAA0D5D00EF3FCD /* OnboardingView.swift in Sources */,
 				3A94BC042DAA2BF200EF3FCD /* PrayerTimes.swift in Sources */,
 				3A94BC062DAA2BFF00EF3FCD /* DateInfo.swift in Sources */,
+				3AF6CD112DAC1B3E00A1045C /* PrayerTimeWidgetCell.swift in Sources */,
 				3A94BBFB2DAA0DA800EF3FCD /* NetworkManager.swift in Sources */,
 				3A94BBF32DAA0C3900EF3FCD /* PlainIconButton.swift in Sources */,
 				3A94BC272DAA831300EF3FCD /* Prayer.swift in Sources */,
@@ -531,6 +536,7 @@
 				3A94BC532DAAA1EB00EF3FCD /* DailyPrayerTimesWidgetControl.swift in Sources */,
 				3A94BC582DAAB54600EF3FCD /* GregorianYearPrayerTimes.swift in Sources */,
 				3A94BC602DAAB57E00EF3FCD /* HijriMonth.swift in Sources */,
+				3AF6CD102DAC1B3E00A1045C /* PrayerTimeWidgetCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
