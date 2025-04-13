@@ -19,15 +19,15 @@ struct Provider: AppIntentTimelineProvider {
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        var entries: [SimpleEntry] = []
+        let entries: [SimpleEntry] = []
         
-        let currentDate = Date()
-        
-        for offset in 0..<2 {
-//            let entryDate = Calendar.current.date(byAdding: .hour, value: offset * 6, to: currentDate)
-            
-            
-        }
+//        let currentDate = Date()
+//        
+//        for offset in 0..<2 {
+////            let entryDate = Calendar.current.date(byAdding: .hour, value: offset * 6, to: currentDate)
+//            
+//            
+//        }
         
         // Generate a timeline consisting of five entries an hour apart, starting from the current date.
 //        let currentDate = Date()
@@ -49,21 +49,21 @@ struct Provider: AppIntentTimelineProvider {
 //            entries.append(entry)
 //        }
         
-        let entryDate = Calendar.current.startOfDay(for: .now)
+//        let entryDate = Calendar.current.startOfDay(for: .now)
         
         /// Getting the prayerTimesInfo
-        var prayerTimesInfo: PrayerTimesInfo?
+//        var prayerTimesInfo: PrayerTimesInfo?
         
-        if let archivedPrayerTimesInfo = try? await PrayerTimesInfo.getInfoForTodayFromArchive() {
-            prayerTimesInfo = archivedPrayerTimesInfo
-        } else if let downloadedPrayerTimesInfo = try? await PrayerTimesInfo.downloadPrayerTimesInfoForToday() {
-            prayerTimesInfo = downloadedPrayerTimesInfo
-        }
+//        if let archivedPrayerTimesInfo = try? await PrayerTimesInfo.getInfoForTodayFromArchive() {
+//            prayerTimesInfo = archivedPrayerTimesInfo
+//        } else if let downloadedPrayerTimesInfo = try? await PrayerTimesInfo.downloadPrayerTimesInfoForToday() {
+//            prayerTimesInfo = downloadedPrayerTimesInfo
+//        }
         
-        if let prayerTimesInfo = prayerTimesInfo {
-            let entry = SimpleEntry(date: entryDate, configuration: configuration, prayerTimesInfo: prayerTimesInfo)
-            entries.append(entry)
-        }
+//        if let prayerTimesInfo = prayerTimesInfo {
+//            let entry = SimpleEntry(date: entryDate, configuration: configuration, prayerTimesInfo: prayerTimesInfo)
+//            entries.append(entry)
+//        }
         
         return Timeline(entries: entries, policy: .atEnd)
     }

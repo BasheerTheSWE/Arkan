@@ -80,12 +80,35 @@ struct ContentView: View {
             let (latitude, longitude) = try await locationFetcher.updateUserLocation()
             
             /// First we'll try to download Today's prayer times from the server
-            let prayerTimesInfoForToday = try await NetworkManager.getPrayerTimes(forDate: .now, latitude: latitude, longitude: longitude)
+            if let prayerTimesInfoForToday = try? await NetworkManager.getPrayerTimes(forDate: .now, latitude: latitude, longitude: longitude) {
+                withAnimation { self.prayerTimesInfoForToday = prayerTimesInfoForToday }
+                return
+            }
             
-            withAnimation { self.prayerTimesInfoForToday = prayerTimesInfoForToday }
+            /// If for any reason the download fail, we'll into the archives for today's prayer times
+            /// But first we need to make sure we have an archive for the current year
+            try await makeSureThereIsAPrayerTimesBackupForThisYear(latitude: latitude, longitude: longitude)
+            
+            /// Reaching this line means we have an archive and "theoretically" it shouldn't fail
+            prayerTimesInfoForToday = try PrayerTimesArchiveManager.getPrayerTimesForToday()
         } catch {
             print(error.localizedDescription)
         }
+    }
+    
+    private func makeSureThereIsAPrayerTimesBackupForThisYear(latitude: Double, longitude: Double) async throws {
+        let currentYear = Calendar.current.component(.year, from: .now)
+        
+        /// Return if the backup was found
+        guard !archivedYearlyPrayerTimes.contains(where: { $0.year == currentYear && $0.city == city && $0.countryCode == countryCode }) else { return }
+        
+        /// If not ...
+        /// Downloading a backup
+        let apiResponseData = try await NetworkManager.getPrayerTimesAPIResponseData(forYear: currentYear, latitude: latitude, longitude: longitude)
+        
+        let gregorianYearPrayerTimes = GregorianYearPrayerTimes(year: currentYear, city: city, countryCode: countryCode, apiResponseData: apiResponseData)
+        context.insert(gregorianYearPrayerTimes)
+        try? context.save()
     }
 }
 

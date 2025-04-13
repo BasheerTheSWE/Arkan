@@ -6,35 +6,32 @@
 //
 
 import Foundation
+import SwiftData
 
 class PrayerTimesArchiveManager {
     
-    enum PrayerTimesError: Error {
-        case prayerTimesNotFound
+    enum PrayerTimesArchiveError: Error {
+        case matchNotFound
+        case dataNotFound
     }
     
-    static func getPrayerTimesForToday(from archivedYearlyPrayerTimes: [GregorianYearPrayerTimes]) async throws -> PrayerTimesInfo {
+    static func getPrayerTimesForToday() throws -> PrayerTimesInfo {
+        let context = try ModelContext(.init(for: GregorianYearPrayerTimes.self))
+        let archivedYearlyBackups = try context.fetch(FetchDescriptor<GregorianYearPrayerTimes>())
+        
         let todaysDateComponents = Calendar.current.dateComponents([.day, .month, .year], from: .now)
         let currentYear = todaysDateComponents.year ?? 0
         let currentMonth = todaysDateComponents.month ?? 0
         let currentDay = todaysDateComponents.day ?? 0
         
-        /// Checking to see if the prayer times for today are archived
-        if let currentYearPrayerTimesData = archivedYearlyPrayerTimes.first(where: { $0.year == currentYear }),
-           let currentYearPrayerTimesByMonths = try? currentYearPrayerTimesData.getPrayerTimesByMonths(),
-           let currentMonthPrayerTimes = currentYearPrayerTimesByMonths[String(currentMonth)] {
-            
-            return currentMonthPrayerTimes[currentDay]
-        }
+        let city = UserDefaults.standard.string(forKey: UDKey.city.rawValue)
+        let countryCode = UserDefaults.standard.string(forKey: UDKey.countryCode.rawValue)
         
-        /// This year's prayer times data is not downloaded
-        /// We'll use the NetworkManager to download and store 'em
-        let currentYearPrayerTimesByMonths = try await NetworkManager.getPrayerTimes(forYear: currentYear, city: "Taif", countryCode: "SA")
+        guard let currentYearArchivedBackup = archivedYearlyBackups.first(where: { $0.year == currentYear && $0.city == city && $0.countryCode == countryCode }) else { throw PrayerTimesArchiveError.matchNotFound }
         
-        if let currentMonthPrayerTimes = currentYearPrayerTimesByMonths[String(currentMonth)] {
-            return currentMonthPrayerTimes[currentDay]
-        }
+        let currentYearPrayerTimesByMonths = try currentYearArchivedBackup.getPrayerTimesByMonths()
+        guard let prayerTimesInfosForCurrentMonth = currentYearPrayerTimesByMonths[String(currentMonth)] else { throw PrayerTimesArchiveError.dataNotFound }
         
-        throw PrayerTimesError.prayerTimesNotFound
+        return prayerTimesInfosForCurrentMonth[currentDay]
     }
 }
