@@ -11,4 +11,7 @@ enum UDKey: String {
     case prefers24HourTimeFormat // Bool
     case latitude // Double
     case longitude // Double
+    case city // String
+    case country // String
+    case countryCode // String
 }

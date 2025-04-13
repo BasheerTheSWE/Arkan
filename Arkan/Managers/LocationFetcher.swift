@@ -20,7 +20,7 @@ import CoreLocation
     private let manager = CLLocationManager()
     private var completion: ((_ error: LocationError?, _ latitude: CLLocationDegrees, _ longitude: CLLocationDegrees) -> ())?
     
-    func getUserLocation(completion: ((_ error: LocationError?, _ latitude: CLLocationDegrees, _ longitude: CLLocationDegrees) -> ())?) {
+    func updateUserLocation(completion: ((_ error: LocationError?, _ latitude: CLLocationDegrees, _ longitude: CLLocationDegrees) -> ())?) {
         self.completion = completion
         
         /// First thing is to if the user has Location Services enabled
@@ -47,9 +47,11 @@ import CoreLocation
             
         case .authorizedAlways, .authorizedWhenInUse:
             /// Everything is working well
+            manager.requestLocation()
+            break
             
         @unknown default:
-            fatalError()
+            break
         }
     }
     
@@ -59,7 +61,25 @@ import CoreLocation
             return
         }
         
-        completion?(nil, location.coordinate.latitude, location.coordinate.longitude)
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
+        
+        /// Updating the stored coordinates
+        UserDefaults.standard.set(latitude, forKey: UDKey.latitude.rawValue)
+        UserDefaults.standard.set(longitude, forKey: UDKey.longitude.rawValue)
+        
+        /// Getting the city and country names of the user's location and storing them in UserDefaults
+        CLGeocoder().reverseGeocodeLocation(location) { placeMarks, error in
+            guard error == nil else { return }
+            
+            if let placeMark = placeMarks?.first {
+                UserDefaults.standard.set(placeMark.locality, forKey: UDKey.city.rawValue)
+                UserDefaults.standard.set(placeMark.country, forKey: UDKey.country.rawValue)
+                UserDefaults.standard.set(placeMark.isoCountryCode, forKey: UDKey.countryCode.rawValue)
+            }
+        }
+        
+        completion?(nil, latitude, longitude)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
