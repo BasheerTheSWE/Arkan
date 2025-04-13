@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-struct PrayerTimesInfo: Decodable {
+struct PrayerTimesInfo: Decodable, Equatable {
     
     enum PrayerTimesInfoError: Error {
         case modelContextNotFound
@@ -19,6 +19,8 @@ struct PrayerTimesInfo: Decodable {
     let timings: PrayerTimes
     let date: DateInfo
     let meta: MetaData
+    
+    static func ==(lhs: PrayerTimesInfo, rhs: PrayerTimesInfo) -> Bool { lhs.date.gregorian.date == rhs.date.gregorian.date }
     
     func getFormattedHijriDate() -> String {
         return "\(date.hijri.day), \(date.hijri.month.en) \(date.hijri.year)"

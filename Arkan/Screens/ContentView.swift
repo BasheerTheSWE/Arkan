@@ -13,6 +13,9 @@ struct ContentView: View {
     @Environment(\.modelContext) private var context
     @Query private var archivedYearlyPrayerTimes: [GregorianYearPrayerTimes]
     
+    @AppStorage(UDKey.countryCode.rawValue) private var countryCode = ""
+    @AppStorage(UDKey.city.rawValue) private var city = ""
+    
     @State private var prayerTimesInfoForToday: PrayerTimesInfo?
     @State private var locationFetcher = LocationFetcher()
     
@@ -24,37 +27,43 @@ struct ContentView: View {
                 
                 Spacer()
                 
-                if let prayerTimesInfo = prayerTimesInfoForToday {
+                if !city.isEmpty && !countryCode.isEmpty {
                     VStack {
-                        Text("Al Taif, SA")
+                        Text("\(city), \(countryCode)")
                             .font(.system(size: 24, weight: .bold, design: .rounded))
+                            .contentTransition(.numericText())
+                            .animation(.default, value: city)
+                            .animation(.default, value: countryCode)
                         
-                        Text(prayerTimesInfo.meta.method.name)
+                        Text(prayerTimesInfoForToday?.meta.method.name ?? "Loading ...")
                             .font(.system(size: 12, design: .rounded))
                             .foregroundStyle(.secondary)
+                            .contentTransition(.numericText())
                     }
-                    
-                    Spacer()
-                    
-                    VStack {
-                        HStack {
-                            Text(Date.getTodaysFormattedDate())
-                            
-                            Spacer()
-                            
-                            Text(prayerTimesInfo.getFormattedHijriDate())
-                        }
-                        .font(.system(size: 12, weight: .medium, design: .monospaced))
-                        .padding(.vertical, 12)
-                        .padding(.horizontal, 16)
-                        .background(Color(.secondarySystemFill).secondary)
-                        .clipShape(.rect(cornerRadius: 8))
-                        .padding(.bottom, 8)
+                    .transition(.move(edge: .bottom).combined(with: .blurReplace))
+                }
+                
+                Spacer()
+                
+                VStack {
+                    HStack {
+                        Text(Date.getTodaysFormattedDate())
                         
+                        Spacer()
                         
-                        ForEach(0..<5) { index in
-                            PrayerTimeCell(index: index, prayerTimesInfo: prayerTimesInfo)
-                        }
+                        Text(prayerTimesInfoForToday?.getFormattedHijriDate() ?? "Loading ...")
+                    }
+                    .font(.system(size: 12, weight: .medium, design: .monospaced))
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 16)
+                    .background(Color(.secondarySystemFill).secondary)
+                    .clipShape(.rect(cornerRadius: 8))
+                    .padding(.bottom, 8)
+                    .contentTransition(.numericText())
+                    
+                    
+                    ForEach(0..<5) { index in
+                        PrayerTimeCell(index: index, prayerTimesInfo: prayerTimesInfoForToday)
                     }
                 }
                 
@@ -68,15 +77,14 @@ struct ContentView: View {
             locationFetcher.updateUserLocation { error, latitude, longitude in
                 Task {
                     do {
-                        prayerTimesInfoForToday = try await PrayerTimesManager.getPrayerTimesForToday(from: archivedYearlyPrayerTimes)
+                        let prayerTimesInfoForToday = try await PrayerTimesManager.getPrayerTimesForToday(from: archivedYearlyPrayerTimes)
+                        
+                        withAnimation { self.prayerTimesInfoForToday = prayerTimesInfoForToday }
                     } catch {
                         print(error.localizedDescription)
                     }
                 }
             }
-        }
-        .onAppear {
-            
         }
     }
 }
@@ -107,5 +115,5 @@ struct ContentView: View {
  
  Qibla Widget (future?)
  Adds value if Qibla direction is planned
-
+ 
  */

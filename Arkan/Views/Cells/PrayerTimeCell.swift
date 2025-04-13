@@ -14,14 +14,14 @@ struct PrayerTimeCell: View {
     private let systemImage: String
     
     private let prayer: Prayer
-    private let prayerTimes: PrayerTimes
+    private let prayerTimes: PrayerTimes?
     
     private let isCompact: Bool
     
     // MARK: - INIT
-    init(index: Int, prayerTimesInfo: PrayerTimesInfo, isCompact: Bool = false) {
+    init(index: Int, prayerTimesInfo: PrayerTimesInfo?, isCompact: Bool = false) {
         self.prayer = Prayer.allCases[index]
-        self.prayerTimes = prayerTimesInfo.timings
+        self.prayerTimes = prayerTimesInfo?.timings
         self.isCompact = isCompact
         
         let images = [
@@ -44,7 +44,7 @@ struct PrayerTimeCell: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 24, height: 24)
                 
-                Text(prayerTimes.getTime(for: prayer, use24HourFormat: true))
+                Text(prayerTimes?.getTime(for: prayer, use24HourFormat: true) ?? "N/A")
                     .font(.system(size: 18, weight: .bold))
                     .lineLimit(1)
                     .scaledToFit()
@@ -63,9 +63,16 @@ struct PrayerTimeCell: View {
                 
                 Spacer()
                 
-                Text(prayerTimes.getTime(for: prayer, use24HourFormat: prefers24HourTimeFormat))
-                    .font(.system(size: 14, weight: .medium, design: .monospaced))
-                    .foregroundStyle(.secondary)
+                if let prayerTimes = prayerTimes {
+                    Text(prayerTimes.getTime(for: prayer, use24HourFormat: prefers24HourTimeFormat))
+                        .font(.system(size: 14, weight: .medium, design: .monospaced))
+                        .foregroundStyle(.secondary)
+                        .contentTransition(.numericText())
+                        .transition(.move(edge: .leading).combined(with: .blurReplace))
+                } else {
+                    ProgressView()
+                        .controlSize(.small)
+                }
                 
                 Button {
                     
