@@ -68,7 +68,7 @@ struct PrayerTimeCell: View {
                         .font(.system(size: 14, weight: .medium, design: .monospaced))
                         .foregroundStyle(.secondary)
                         .contentTransition(.numericText())
-                        .transition(.move(edge: .leading).combined(with: .blurReplace))
+                        .transition(.blurReplace)
                 } else {
                     ProgressView()
                         .controlSize(.small)

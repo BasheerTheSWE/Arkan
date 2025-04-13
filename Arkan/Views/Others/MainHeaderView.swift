@@ -25,6 +25,7 @@ struct MainHeaderView: View {
                 Spacer()
                 
                 Text("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ")
+                    .font(.custom("ReemKufi", size: 18))
                     .foregroundStyle(.white)
                 
                 Spacer()

@@ -32,8 +32,6 @@ struct ContentView: View {
                         Text("\(city), \(countryCode)")
                             .font(.system(size: 24, weight: .bold, design: .rounded))
                             .contentTransition(.numericText())
-                            .animation(.default, value: city)
-                            .animation(.default, value: countryCode)
                         
                         Text(prayerTimesInfoForToday?.meta.method.name ?? "Loading ...")
                             .font(.system(size: 12, design: .rounded))
@@ -61,7 +59,6 @@ struct ContentView: View {
                     .padding(.bottom, 8)
                     .contentTransition(.numericText())
                     
-                    
                     ForEach(0..<5) { index in
                         PrayerTimeCell(index: index, prayerTimesInfo: prayerTimesInfoForToday)
                     }
@@ -73,16 +70,20 @@ struct ContentView: View {
             .frame(maxHeight: .infinity)
         }
         .background(Color(.systemGroupedBackground))
-        .task {
-            locationFetcher.updateUserLocation { error, latitude, longitude in
-                Task {
-                    do {
-                        let prayerTimesInfoForToday = try await PrayerTimesManager.getPrayerTimesForToday(from: archivedYearlyPrayerTimes)
-                        
-                        withAnimation { self.prayerTimesInfoForToday = prayerTimesInfoForToday }
-                    } catch {
-                        print(error.localizedDescription)
-                    }
+        .task { getPrayerTimesForToday() }
+        .animation(.default, value: city)
+        .animation(.default, value: countryCode)
+    }
+    
+    private func getPrayerTimesForToday() {
+        locationFetcher.updateUserLocation { error, latitude, longitude in
+            Task {
+                do {
+                    let prayerTimesInfoForToday = try await PrayerTimesManager.getPrayerTimesForToday(from: archivedYearlyPrayerTimes)
+                    
+                    withAnimation { self.prayerTimesInfoForToday = prayerTimesInfoForToday }
+                } catch {
+                    print(error.localizedDescription)
                 }
             }
         }

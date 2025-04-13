@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3A1BCF2B2DAB76DE00005FA5 /* LocationFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1BCF2A2DAB76DE00005FA5 /* LocationFetcher.swift */; };
 		3A1BCF2C2DAB76DE00005FA5 /* LocationFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1BCF2A2DAB76DE00005FA5 /* LocationFetcher.swift */; };
+		3A1BCF372DAB9E7700005FA5 /* ReemKufi.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A1BCF362DAB9E7700005FA5 /* ReemKufi.ttf */; };
 		3A70357C2DAB72E400F281F5 /* DayPrayerTimesAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A70357B2DAB72E400F281F5 /* DayPrayerTimesAPIResponse.swift */; };
 		3A70357D2DAB72E400F281F5 /* DayPrayerTimesAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A70357B2DAB72E400F281F5 /* DayPrayerTimesAPIResponse.swift */; };
 		3A94BBED2DAA0C1F00EF3FCD /* ArkanApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BBE92DAA0C1F00EF3FCD /* ArkanApp.swift */; };
@@ -91,6 +92,7 @@
 /* Begin PBXFileReference section */
 		3A1BCF2A2DAB76DE00005FA5 /* LocationFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationFetcher.swift; sourceTree = "<group>"; };
 		3A1BCF2D2DAB799800005FA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		3A1BCF362DAB9E7700005FA5 /* ReemKufi.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ReemKufi.ttf; sourceTree = "<group>"; };
 		3A70357B2DAB72E400F281F5 /* DayPrayerTimesAPIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPrayerTimesAPIResponse.swift; sourceTree = "<group>"; };
 		3A94BBDB2DAA096600EF3FCD /* Arkan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arkan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A94BBE92DAA0C1F00EF3FCD /* ArkanApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArkanApp.swift; sourceTree = "<group>"; };
@@ -152,6 +154,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A1BCF352DAB9E5C00005FA5 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				3A1BCF362DAB9E7700005FA5 /* ReemKufi.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		3A94BBD22DAA096600EF3FCD = {
 			isa = PBXGroup;
 			children = (
@@ -211,6 +221,7 @@
 		3A94BBF42DAA0CD800EF3FCD /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				3A1BCF352DAB9E5C00005FA5 /* Fonts */,
 				3A94BBEA2DAA0C1F00EF3FCD /* Assets.xcassets */,
 			);
 			path = Media;
@@ -437,6 +448,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A1BCF372DAB9E7700005FA5 /* ReemKufi.ttf in Resources */,
 				3A94BBEF2DAA0C1F00EF3FCD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
