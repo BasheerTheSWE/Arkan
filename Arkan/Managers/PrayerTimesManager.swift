@@ -14,26 +14,34 @@ class PrayerTimesManager {
         case dataNotFound
     }
     
-    static func getPrayerTimes(forDate date: Date = .now) async throws -> PrayerTimesInfo {
+    static let latitude = UserDefaults.shared.double(forKey: UDKey.latitude.rawValue)
+    static let longitude = UserDefaults.shared.double(forKey: UDKey.longitude.rawValue)
+    
+    static let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue) ?? ""
+    static let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue) ?? ""
+    
+    // MARK: - PUBLIC
+    static func getPrayerTimesFromArchive(forDate date: Date = .now) throws -> PrayerTimesInfo {
+        /// First we'll try the daily archiver because it's more accurate
+        do {
+            return try getPrayerTimesInfoFromDailyArchiver(forDate: date)
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        /// Next we'll try to get them from the yearly archiver
+        return try getPrayerTimesFromYearlyArchive(forDate: date)
+    }
+    
+    static func getOrDownloadPrayerTimesInfo(forDate date: Date = .now, updateLocation: Bool = true) async throws -> PrayerTimesInfo {
         let dailyPrayerTimesContext = try ModelContext(.init(for: SpecificDateArchivedPrayerTimes.self))
         
-        let latitude = UserDefaults.shared.double(forKey: UDKey.latitude.rawValue)
-        let longitude = UserDefaults.shared.double(forKey: UDKey.longitude.rawValue)
-        
-        let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue) ?? ""
-        let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue) ?? ""
-        
         /// The location fetcher will get and store user's coordinates in UserDefaults
-        try await LocationFetcher().updateUserLocation()
+        if updateLocation { try? await LocationFetcher().updateUserLocation() }
         
         /// First will check daily archiver to see if we have a stored prayer times info for this day
         do {
-            let dailyArchivedPrayerTimes = try dailyPrayerTimesContext.fetch(FetchDescriptor<SpecificDateArchivedPrayerTimes>())
-            
-            if let archivedPrayerTimesData = dailyArchivedPrayerTimes.first(where: { Calendar.current.isDate($0.date, inSameDayAs: date) && $0.city == city && $0.countryCode == countryCode }) {
-                /// BOOM! We have archived prayer times data for today
-                return try archivedPrayerTimesData.getPrayerTimesInfo()
-            }
+            return try getPrayerTimesInfoFromDailyArchiver(forDate: date)
         } catch {
             print(error.localizedDescription)
         }
@@ -55,7 +63,7 @@ class PrayerTimesManager {
                 /// We want it to fail silently
                 /// Note that this download will not be executed often, because it's a fucking yearly backup
                 /// Meaning one backup will be good for an entire year ...
-                try? await downloadPrayerTimesYearlyBackup(forDate: date)
+                try? await downloadAndSavePrayerTimesYearlyBackup(forDate: date)
             }
             
             /// Now we return the downloaded prayer times for the passed-in date :)
@@ -68,19 +76,24 @@ class PrayerTimesManager {
         
         /// If we failed to download the prayer times from the API,
         /// We'll now check to see if we have a yearly backup that we can use to get the prayer times of the passed-in date
-        if isThereAYearlyPrayerTimesBackup(containingPrayerTimesForDate: date) {
-            /// We have a stored backup and the user is probably offline
-            return try getPrayerTimesFromYearlyArchive(forDate: date)
+        return try getPrayerTimesFromYearlyArchive(forDate: date)
+    }
+    
+    // MARK: - PRIVATE
+    static private func getPrayerTimesInfoFromDailyArchiver(forDate date: Date) throws -> PrayerTimesInfo {
+        let context = try ModelContext(.init(for: SpecificDateArchivedPrayerTimes.self))
+        let dailyArchivedPrayerTimes = try context.fetch(FetchDescriptor<SpecificDateArchivedPrayerTimes>())
+        
+        if let archivedPrayerTimesData = dailyArchivedPrayerTimes.first(where: { Calendar.current.isDate($0.date, inSameDayAs: date) && $0.city == city && $0.countryCode == countryCode }) {
+            /// BOOM! We have archived prayer times data for the passed-in date
+            return try archivedPrayerTimesData.getPrayerTimesInfo()
         }
         
         throw PrayerTimesArchiveError.dataNotFound
     }
     
-    static func isThereAYearlyPrayerTimesBackup(containingPrayerTimesForDate date: Date) -> Bool {
+    static private func isThereAYearlyPrayerTimesBackup(containingPrayerTimesForDate date: Date) -> Bool {
         let year = Calendar.current.component(.year, from: date)
-        
-        let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue)
-        let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue)
         
         guard let context = try? ModelContext(.init(for: GregorianYearPrayerTimes.self)),
               let archivedYearlyPrayerTimes = try? context.fetch(FetchDescriptor<GregorianYearPrayerTimes>()),
@@ -89,14 +102,8 @@ class PrayerTimesManager {
         return true
     }
     
-    static func downloadPrayerTimesYearlyBackup(forDate date: Date) async throws {
+    static private func downloadAndSavePrayerTimesYearlyBackup(forDate date: Date) async throws {
         let year = Calendar.current.component(.year, from: date)
-        
-        let latitude = UserDefaults.shared.double(forKey: UDKey.latitude.rawValue)
-        let longitude = UserDefaults.shared.double(forKey: UDKey.longitude.rawValue)
-        
-        let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue) ?? ""
-        let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue) ?? ""
         
         let apiResponseData = try await NetworkManager.getPrayerTimesAPIResponseData(forYear: year, latitude: latitude, longitude: longitude)
         
@@ -107,7 +114,9 @@ class PrayerTimesManager {
         try? context.save()
     }
     
-    static func getPrayerTimesFromYearlyArchive(forDate date: Date = .now) throws -> PrayerTimesInfo {
+    static private func getPrayerTimesFromYearlyArchive(forDate date: Date = .now) throws -> PrayerTimesInfo {
+        guard isThereAYearlyPrayerTimesBackup(containingPrayerTimesForDate: date) else { throw PrayerTimesArchiveError.dataNotFound }
+        
         let context = try ModelContext(.init(for: GregorianYearPrayerTimes.self))
         let archivedYearlyBackups = try context.fetch(FetchDescriptor<GregorianYearPrayerTimes>())
         

@@ -11,7 +11,7 @@ import SwiftData
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> PrayerTimesEntry {
-        if let prayerTimesInfo = try? PrayerTimesArchiveManager.getPrayerTimesForDate() {
+        if let prayerTimesInfo = try? PrayerTimesManager.getPrayerTimesFromArchive() {
             return PrayerTimesEntry(date: Date(), configuration: ConfigurationAppIntent(), prayerTimesInfo: prayerTimesInfo)
         }
         
@@ -19,7 +19,7 @@ struct Provider: AppIntentTimelineProvider {
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> PrayerTimesEntry {
-        if let prayerTimesInfo = await getPrayerTimesInfo(forDate: .now) {
+        if let prayerTimesInfo = try? await PrayerTimesManager.getOrDownloadPrayerTimesInfo(updateLocation: false) {
             return PrayerTimesEntry(date: .now, configuration: configuration, prayerTimesInfo: prayerTimesInfo)
         }
         
@@ -34,7 +34,7 @@ struct Provider: AppIntentTimelineProvider {
         for offset in 0..<2 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: offset * 6, to: currentDate)!
             
-            if let prayerTimesInfo = await getPrayerTimesInfo(forDate: entryDate) {
+            if let prayerTimesInfo = try? await PrayerTimesManager.getOrDownloadPrayerTimesInfo(forDate: entryDate, updateLocation: false) {
                 
                 let entry = PrayerTimesEntry(date: entryDate, configuration: configuration, prayerTimesInfo: prayerTimesInfo)
                 
@@ -53,78 +53,6 @@ struct Provider: AppIntentTimelineProvider {
     //    func relevances() async -> WidgetRelevances<ConfigurationAppIntent> {
     //        // Generate a list containing the contexts this widget is relevant in.
     //    }
-
-    private func getPrayerTimesInfo(forDate date: Date) async -> PrayerTimesInfo? {
-        let latitude = UserDefaults.shared.double(forKey: UDKey.latitude.rawValue)
-        let longitude = UserDefaults.shared.double(forKey: UDKey.longitude.rawValue)
-        
-        do {
-            /// First we'll try to download Today's prayer times from the server
-            let prayerTimesInfoForToday = try await NetworkManager.getPrayerTimes(forDate: date, latitude: latitude, longitude: longitude)
-            
-            /// Checking if there's a yearly backup and downloading if there wasn't
-            if !isThereAPrayerTimesBackupForThisYear() {
-                /// This code is duplicated because I wanted the priority to be for downloading a fresh prayer times data from the api and leaving the yearly backup to be downloaded in the background after the user is able to see today's prayer times
-                try? await downloadPrayerTimesBackupForYear(ofDate: date)
-            }
-            
-            /// This function will exit when we download the prayerTimes info for today regardless of a successful yearly backup download
-            return prayerTimesInfoForToday
-        } catch {
-            print(error.localizedDescription)
-        }
-        
-        do {
-            /// If for any reason the download of today's prayer times fail, we'll go into the archives to see if there's one stored previously
-            /// But first we need to make sure we have an archive for the current year
-            if !isThereAPrayerTimesBackupForThisYear() {
-                if latitude != 0 && longitude != 0 {
-                    /// If there's no archive, we'll just download a new one
-                    try await downloadPrayerTimesBackupForYear(ofDate: date)
-                }
-            }
-            
-            /// Reaching this line means we have an archive and "theoretically" it shouldn't fail
-            return try PrayerTimesArchiveManager.getPrayerTimesForDate()
-        } catch {
-            /// Backup not found and couldn't be downloaded
-            print(error.localizedDescription)
-        }
-        
-        return nil
-    }
-    
-    private func isThereAPrayerTimesBackupForThisYear() -> Bool {
-        let currentYear = Calendar.current.component(.year, from: .now)
-        let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue)
-        let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue)
-        
-        guard let context = try? ModelContext(.init(for: GregorianYearPrayerTimes.self)) else { return false }
-        
-        guard let archivedYearlyPrayerTimes = try? context.fetch(FetchDescriptor<GregorianYearPrayerTimes>()) else { return false }
-        
-        guard archivedYearlyPrayerTimes.contains(where: { $0.year == currentYear && $0.city == city && $0.countryCode == countryCode }) else { return false }
-        
-        return true
-    }
-    
-    /// Downloads a yearly backup of prayer times for offline usage and stores it in SwiftData.
-    /// - Parameter date: Think about it bro! If it's Dec 31, the last day of the year and the timeline has an entry for tomorrow's prayer times --That's a new year and that's why we're passing the entry date and not just using`Date.now`. IQ+++
-    private func downloadPrayerTimesBackupForYear(ofDate date: Date) async throws {
-        let currentYear = Calendar.current.component(.year, from: date)
-        let latitude = UserDefaults.shared.double(forKey: UDKey.latitude.rawValue)
-        let longitude = UserDefaults.shared.double(forKey: UDKey.longitude.rawValue)
-        let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue) ?? ""
-        let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue) ?? ""
-        
-        let context = try ModelContext(.init(for: GregorianYearPrayerTimes.self))
-        
-        let apiResponseData = try await NetworkManager.getPrayerTimesAPIResponseData(forYear: currentYear, latitude: latitude, longitude: longitude)
-        
-        let gregorianYearPrayerTimes = GregorianYearPrayerTimes(year: currentYear, city: city, countryCode: countryCode, apiResponseData: apiResponseData)
-        context.insert(gregorianYearPrayerTimes)
-        try? context.save()
-    }
 }
 
 struct PrayerTimesEntry: TimelineEntry {
