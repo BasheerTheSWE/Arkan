@@ -8,40 +8,36 @@
 import WidgetKit
 import SwiftUI
 
-struct Provider: AppIntentTimelineProvider {
+struct Provider: TimelineProvider {
+    func getSnapshot(in context: Context, completion: @escaping @Sendable (NextPrayerTimeEntry) -> Void) {
+        MainActor.assumeIsolated {
+            if let entry = getTimelineEntriesFromArchive().first {
+                completion(entry)
+            } else {
+                completion(NextPrayerTimeEntry(date: Date(), prayer: .fajr, timeString: "03:50"))
+            }
+        }
+    }
+    
+    func getTimeline(in context: Context, completion: @escaping @Sendable (Timeline<NextPrayerTimeEntry>) -> Void) {
+        Task {
+            let entries = await getTimelineEntries()
+            completion(Timeline(entries: entries, policy: .atEnd))
+        }
+    }
+    
     func placeholder(in context: Context) -> NextPrayerTimeEntry {
         MainActor.assumeIsolated {
-            if let entry = getTimelineEntriesFromArchive(configuration: ConfigurationAppIntent()).first {
+            if let entry = getTimelineEntriesFromArchive().first {
                 return entry
             }
             
-            return NextPrayerTimeEntry(date: Date(), configuration: ConfigurationAppIntent(), prayer: .fajr, timeString: "03:50")
+            return NextPrayerTimeEntry(date: Date(), prayer: .fajr, timeString: "03:50")
         }
     }
-
-    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> NextPrayerTimeEntry {
-        if let entry = await getTimelineEntries(configuration: configuration).first {
-            return entry
-        }
-        
-        return NextPrayerTimeEntry(date: Date(), configuration: configuration, prayer: .fajr, timeString: "03:40")
-    }
     
-    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<NextPrayerTimeEntry> {
-        var entries: [NextPrayerTimeEntry] = []
-        
-        /// Getting the prayer times of Today
-        entries = await getTimelineEntries(configuration: configuration)
-
-        return Timeline(entries: entries, policy: .atEnd)
-    }
-
-//    func relevances() async -> WidgetRelevances<ConfigurationAppIntent> {
-//        // Generate a list containing the contexts this widget is relevant in.
-//    }
-    
-    private func getTimelineEntries(configuration: ConfigurationAppIntent) async -> [NextPrayerTimeEntry] {
-        let todayPrayerTimesEntries = await getTimelineEntriesForDate(date: .now, entryConfiguration: configuration)
+    private func getTimelineEntries() async -> [NextPrayerTimeEntry] {
+        let todayPrayerTimesEntries = await getTimelineEntriesForDate(date: .now)
         
         if !todayPrayerTimesEntries.isEmpty {
             return todayPrayerTimesEntries
@@ -50,13 +46,13 @@ struct Provider: AppIntentTimelineProvider {
         /// Reaching here means this is the end of Today after Isha, and there're no more prayers to schedule
         /// So we'll schedule tomorrow's prayers
         let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now
-        let tomorrowPrayerTimesEntries = await getTimelineEntriesForDate(date: tomorrow, entryConfiguration: configuration)
+        let tomorrowPrayerTimesEntries = await getTimelineEntriesForDate(date: tomorrow)
         
         return tomorrowPrayerTimesEntries
     }
     
-    @MainActor private func getTimelineEntriesFromArchive(configuration: ConfigurationAppIntent) -> [NextPrayerTimeEntry] {
-        let todayPrayerTimesEntries = getTimelineEntriesFromArchiveForDate(date: .now, entryConfiguration: configuration)
+    @MainActor private func getTimelineEntriesFromArchive() -> [NextPrayerTimeEntry] {
+        let todayPrayerTimesEntries = getTimelineEntriesFromArchiveForDate(date: .now)
         
         if !todayPrayerTimesEntries.isEmpty {
             return todayPrayerTimesEntries
@@ -65,12 +61,12 @@ struct Provider: AppIntentTimelineProvider {
         /// Reaching here means this is the end of Today after Isha, and there're no more prayers to schedule
         /// So we'll schedule tomorrow's prayers
         let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now
-        let tomorrowPrayerTimesEntries = getTimelineEntriesFromArchiveForDate(date: tomorrow, entryConfiguration: configuration)
+        let tomorrowPrayerTimesEntries = getTimelineEntriesFromArchiveForDate(date: tomorrow)
         
         return tomorrowPrayerTimesEntries
     }
     
-    private func getTimelineEntriesForDate(date: Date, entryConfiguration: ConfigurationAppIntent) async -> [NextPrayerTimeEntry] {
+    private func getTimelineEntriesForDate(date: Date) async -> [NextPrayerTimeEntry] {
         var result = [NextPrayerTimeEntry]()
         
         var prayerTimesInfo = PrayerTimesInfo.getMockDataForSpecificDate(date: date)
@@ -81,7 +77,7 @@ struct Provider: AppIntentTimelineProvider {
         
         for prayer in Prayer.allCases {
             if let entryDate = prayerTimesInfo.getDateObject(forPrayer: prayer), entryDate > Date() {
-                let entry = NextPrayerTimeEntry(date: entryDate, configuration: entryConfiguration, prayer: prayer, timeString: prayerTimesInfo.timings.getTime(for: prayer, use24HourFormat: true))
+                let entry = NextPrayerTimeEntry(date: entryDate, prayer: prayer, timeString: prayerTimesInfo.timings.getTime(for: prayer, use24HourFormat: true))
                 result.append(entry)
             }
         }
@@ -89,7 +85,7 @@ struct Provider: AppIntentTimelineProvider {
         return result
     }
     
-    @MainActor private func getTimelineEntriesFromArchiveForDate(date: Date, entryConfiguration: ConfigurationAppIntent) -> [NextPrayerTimeEntry] {
+    @MainActor private func getTimelineEntriesFromArchiveForDate(date: Date) -> [NextPrayerTimeEntry] {
         var result = [NextPrayerTimeEntry]()
         
         var prayerTimesInfo = PrayerTimesInfo.getMockDataForSpecificDate(date: date)
@@ -100,7 +96,7 @@ struct Provider: AppIntentTimelineProvider {
         
         for prayer in Prayer.allCases {
             if let entryDate = prayerTimesInfo.getDateObject(forPrayer: prayer), entryDate > Date() {
-                let entry = NextPrayerTimeEntry(date: entryDate, configuration: entryConfiguration, prayer: prayer, timeString: prayerTimesInfo.timings.getTime(for: prayer, use24HourFormat: true))
+                let entry = NextPrayerTimeEntry(date: entryDate, prayer: prayer, timeString: prayerTimesInfo.timings.getTime(for: prayer, use24HourFormat: true))
                 result.append(entry)
             }
         }
@@ -111,7 +107,6 @@ struct Provider: AppIntentTimelineProvider {
 
 struct NextPrayerTimeEntry: TimelineEntry {
     let date: Date
-    let configuration: ConfigurationAppIntent
     let prayer: Prayer
     let timeString: String
     
@@ -124,7 +119,7 @@ struct NextPrayerWidgetEntryView : View {
     @Environment(\.widgetFamily) private var widgetFamily
     
     var entry: Provider.Entry
-
+    
     var body: some View {
         switch widgetFamily {
         case .systemSmall:
@@ -139,10 +134,9 @@ struct NextPrayerWidgetEntryView : View {
     }
 }
 
-struct NextPrayerTimeCircularWidgetView: View {
+struct NextPrayerTimeSmallWidgetView: View {
     
     private let systemImage: String
-    private let progress: CGFloat
     
     private let entry: Provider.Entry
     
@@ -159,59 +153,53 @@ struct NextPrayerTimeCircularWidgetView: View {
         ]
         
         self.systemImage = images[Prayer.allCases.firstIndex(of: entry.prayer) ?? 0]
-        
-        switch entry.prayer {
-            
-        case .fajr:
-            self.progress = 1
-            break
-            
-        case .dhuhr:
-            self.progress = 0.75
-            break
-            
-        case .asr:
-            self.progress = 0.5
-            break
-            
-        case .maghrib:
-            self.progress = 0.25
-            break
-            
-        case .isha:
-            self.progress = 0
-            break
-        }
     }
     
     // MARK: - VIEW
     var body: some View {
-        Text(entry.timeString)
-            .font(.system(size: 24, weight: .bold))
-            .lineLimit(1)
-            .scaledToFit()
-            .minimumScaleFactor(0.2)
-            .padding(.horizontal, 12)
-            .padding(.bottom, 4)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background {
-                Circle()
-                    .trim(from: 0.0, to: 0.75)
-                    .stroke(.ultraThinMaterial, style: StrokeStyle(lineWidth: 6, lineCap: .round))
-                    .rotationEffect(.degrees(135))
-                    .overlay {
-                        Circle()
-                            .trim(from: 0.0, to: 0.0001)
-                            .stroke(Color(.label), style: StrokeStyle(lineWidth: 6, lineCap: .round))
-                            .rotationEffect(.degrees(45.0 - (270 * progress)))
-                    }
-            }
-            .overlay(alignment: .bottom) {
+        VStack(spacing: 0) {
+            Text(entry.city.isEmpty || entry.countryCode.isEmpty ? "Location Unavailable" : "\(entry.city), \(entry.countryCode)")
+                .font(.system(size: 10, weight: .bold, design: .rounded))
+                .lineLimit(1)
+                .scaledToFit()
+                .minimumScaleFactor(0.25)
+                .padding(.vertical, 8)
+                .padding(.horizontal)
+            
+            VStack(spacing: 8) {
                 Image(systemName: systemImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 16, height: 16)
+                    .frame(width: 18, height: 18)
+                
+                HStack(spacing: 4) {
+                    TimeComponentView(time: getHour())
+                    
+                    Text(":")
+                        .font(.custom("Impact", size: 28))
+                    
+                    TimeComponentView(time: getMinute())
+                }
+                .frame(maxHeight: .infinity)
+                
+                HStack {
+                    Text("Time Left: ")
+                        .font(.system(size: 8, weight: .medium, design: .monospaced))
+                        .fixedSize()
+                    
+                    Text(timerInterval: Date()...entry.date, countsDown: true)
+                        .font(.system(size: 8, weight: .bold, design: .monospaced))
+                        .multilineTextAlignment(.trailing)
+                        .frame(maxWidth: .infinity)
+                }
+                .padding(.horizontal, 4)
             }
+            .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.systemBackground))
+            .clipShape(.rect(topLeadingRadius: 16, topTrailingRadius: 16))
+        }
+        .background(Color(.secondarySystemBackground))
     }
     
     func getHour() -> String {
@@ -223,36 +211,45 @@ struct NextPrayerTimeCircularWidgetView: View {
     }
 }
 
-struct NextPrayerWidget: Widget {
-    let kind: String = "NextPrayerWidget"
-
-    var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
-            NextPrayerWidgetEntryView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
-        }
-        .contentMarginsDisabled()
-        .supportedFamilies([.systemSmall, .accessoryCircular])
+private struct TimeComponentView: View {
+    
+    let time: String
+    
+    var body: some View {
+        Text(time)
+            .font(.custom("Impact", size: 50))
+            .lineLimit(1)
+            .scaledToFit()
+            .minimumScaleFactor(0.1)
+            .padding(4)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.secondarySystemBackground))
+            .overlay {
+                Rectangle()
+                    .fill(Color(.systemBackground))
+                    .frame(height: 2)
+            }
     }
 }
 
-extension ConfigurationAppIntent {
-    fileprivate static var smiley: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "😀"
-        return intent
-    }
+struct NextPrayerWidget: Widget {
+    let kind: String = "NextPrayerWidget"
     
-    fileprivate static var starEyes: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "🤩"
-        return intent
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: Provider()) { entry in
+            NextPrayerWidgetEntryView(entry: entry)
+                .containerBackground(.fill.tertiary, for: .widget)
+        }
+        .configurationDisplayName("Next Prayer Time")
+        .description("Display the time for your next prayer")
+        .contentMarginsDisabled()
+        .supportedFamilies([.systemSmall, .accessoryCircular])
     }
 }
 
 #Preview(as: .systemSmall) {
     NextPrayerWidget()
 } timeline: {
-    NextPrayerTimeEntry(date: .now, configuration: .smiley, prayer: .asr, timeString: "03:50")
-    NextPrayerTimeEntry(date: .now, configuration: .starEyes, prayer: .asr, timeString: "3:50")
+    NextPrayerTimeEntry(date: .now, prayer: .asr, timeString: "03:50")
+    NextPrayerTimeEntry(date: .now, prayer: .asr, timeString: "3:50")
 }

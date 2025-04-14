@@ -81,7 +81,6 @@
 		3AF6CD292DAD6B1400A1045C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A94BC332DAAA1DF00EF3FCD /* SwiftUI.framework */; };
 		3AF6CD382DAD6B1500A1045C /* NextPrayerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3AF6CD272DAD6B1300A1045C /* NextPrayerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3AF6CD442DAD6B2800A1045C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AF6CD3E2DAD6B2800A1045C /* Assets.xcassets */; };
-		3AF6CD462DAD6B2800A1045C /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD3D2DAD6B2800A1045C /* AppIntent.swift */; };
 		3AF6CD472DAD6B2800A1045C /* NextPrayerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD402DAD6B2800A1045C /* NextPrayerWidget.swift */; };
 		3AF6CD482DAD6B2800A1045C /* NextPrayerWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD412DAD6B2800A1045C /* NextPrayerWidgetBundle.swift */; };
 		3AF6CD492DAD6B2800A1045C /* NextPrayerWidgetControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD422DAD6B2800A1045C /* NextPrayerWidgetControl.swift */; };
@@ -110,7 +109,6 @@
 		3AF6CD612DAD838000A1045C /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD0C2DAC046D00A1045C /* UserDefaults+Ext.swift */; };
 		3AF6CD632DAD871C00A1045C /* NextPrayerTimeSmallWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD622DAD871C00A1045C /* NextPrayerTimeSmallWidgetView.swift */; };
 		3AF6CD652DAD96FF00A1045C /* NextPrayerTimeCircularWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD642DAD96FF00A1045C /* NextPrayerTimeCircularWidgetView.swift */; };
-		3AF6CD672DAD971C00A1045C /* NextPrayerTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD662DAD971C00A1045C /* NextPrayerTimeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -197,7 +195,6 @@
 		3AF6CD1D2DAD419B00A1045C /* NotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
 		3AF6CD202DAD449100A1045C /* PrayerTimesForSpecificPeriodAPIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesForSpecificPeriodAPIResponse.swift; sourceTree = "<group>"; };
 		3AF6CD272DAD6B1300A1045C /* NextPrayerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NextPrayerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		3AF6CD3D2DAD6B2800A1045C /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
 		3AF6CD3E2DAD6B2800A1045C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AF6CD3F2DAD6B2800A1045C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3AF6CD402DAD6B2800A1045C /* NextPrayerWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextPrayerWidget.swift; sourceTree = "<group>"; };
@@ -206,7 +203,6 @@
 		3AF6CD4A2DAD6B3F00A1045C /* NextPrayerWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NextPrayerWidgetExtension.entitlements; sourceTree = "<group>"; };
 		3AF6CD622DAD871C00A1045C /* NextPrayerTimeSmallWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextPrayerTimeSmallWidgetView.swift; sourceTree = "<group>"; };
 		3AF6CD642DAD96FF00A1045C /* NextPrayerTimeCircularWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextPrayerTimeCircularWidgetView.swift; sourceTree = "<group>"; };
-		3AF6CD662DAD971C00A1045C /* NextPrayerTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextPrayerTimeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -460,7 +456,6 @@
 		3AF6CD432DAD6B2800A1045C /* NextPrayerWidget */ = {
 			isa = PBXGroup;
 			children = (
-				3AF6CD3D2DAD6B2800A1045C /* AppIntent.swift */,
 				3AF6CD3E2DAD6B2800A1045C /* Assets.xcassets */,
 				3AF6CD3F2DAD6B2800A1045C /* Info.plist */,
 				3AF6CD402DAD6B2800A1045C /* NextPrayerWidget.swift */,
@@ -468,7 +463,6 @@
 				3AF6CD422DAD6B2800A1045C /* NextPrayerWidgetControl.swift */,
 				3AF6CD622DAD871C00A1045C /* NextPrayerTimeSmallWidgetView.swift */,
 				3AF6CD642DAD96FF00A1045C /* NextPrayerTimeCircularWidgetView.swift */,
-				3AF6CD662DAD971C00A1045C /* NextPrayerTimeView.swift */,
 			);
 			path = NextPrayerWidget;
 			sourceTree = "<group>";
@@ -693,7 +687,6 @@
 				3AF6CD562DAD833900A1045C /* PrayerTimesInfo.swift in Sources */,
 				3AF6CD5F2DAD837400A1045C /* UDKey.swift in Sources */,
 				3AF6CD5A2DAD834C00A1045C /* HijriDate.swift in Sources */,
-				3AF6CD462DAD6B2800A1045C /* AppIntent.swift in Sources */,
 				3AF6CD4B2DAD823D00A1045C /* Prayer.swift in Sources */,
 				3AF6CD4E2DAD830700A1045C /* LocationFetcher.swift in Sources */,
 				3AF6CD652DAD96FF00A1045C /* NextPrayerTimeCircularWidgetView.swift in Sources */,
@@ -714,7 +707,6 @@
 				3AF6CD5E2DAD836000A1045C /* MetaDataMethod.swift in Sources */,
 				3AF6CD592DAD834700A1045C /* GregorianDate.swift in Sources */,
 				3AF6CD5C2DAD835600A1045C /* HijriMonth.swift in Sources */,
-				3AF6CD672DAD971C00A1045C /* NextPrayerTimeView.swift in Sources */,
 				3AF6CD552DAD833300A1045C /* PrayerTimesForSpecificPeriodAPIResponse.swift in Sources */,
 				3AF6CD502DAD831200A1045C /* NotificationsManager.swift in Sources */,
 				3AF6CD492DAD6B2800A1045C /* NextPrayerWidgetControl.swift in Sources */,
