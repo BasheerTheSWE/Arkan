@@ -46,12 +46,12 @@ struct NextPrayerTimeSmallWidgetView: View {
                     .frame(width: 34, height: 34)
                 
                 HStack(spacing: 4) {
-                    NextPrayerTimeView(time: getHour())
+                    NextPrayerTimeView(time: getHour(), maximumSize: 50)
                     
                     Text(":")
                         .font(.custom("Impact", size: 28))
                     
-                    NextPrayerTimeView(time: getMinute())
+                    NextPrayerTimeView(time: getMinute(), maximumSize: 50)
                 }
             }
             .padding()
@@ -68,26 +68,5 @@ struct NextPrayerTimeSmallWidgetView: View {
     
     func getMinute() -> String {
         return String(entry.timeString.split(separator: ":")[1])
-    }
-}
-
-private struct NextPrayerTimeView: View {
-    
-    let time: String
-    
-    var body: some View {
-        Text(time)
-            .font(.custom("Impact", size: 50))
-            .lineLimit(1)
-            .scaledToFit()
-            .minimumScaleFactor(0.1)
-            .padding(4)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.secondarySystemBackground))
-            .overlay {
-                Rectangle()
-                    .fill(Color(.systemBackground))
-                    .frame(height: 2)
-            }
     }
 }
