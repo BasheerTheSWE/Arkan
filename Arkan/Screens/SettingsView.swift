@@ -192,7 +192,7 @@ private struct PrayerTimeFormatPicker: View {
     
     @AppStorage(UDKey.prefers24HourTimeFormat.rawValue) private var prefers24HourTimeFormat = false
     
-    @State private var prefers24HourTimeFormatState = UserDefaults.standard.bool(forKey: UDKey.prefers24HourTimeFormat.rawValue)
+    @State private var prefers24HourTimeFormatState = UserDefaults.shared.bool(forKey: UDKey.prefers24HourTimeFormat.rawValue)
     
     var body: some View {
         HStack {
@@ -224,7 +224,6 @@ private struct PrayerTimeFormatPicker: View {
             .buttonStyle(.borderless)
             .onChange(of: prefers24HourTimeFormatState) { _, _ in
                 prefers24HourTimeFormat = prefers24HourTimeFormatState
-                WidgetCenter.shared.reloadAllTimelines()
             }
         }
     }

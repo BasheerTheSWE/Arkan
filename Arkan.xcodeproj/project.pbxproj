@@ -67,6 +67,8 @@
 		3AF6CD0E2DAC046D00A1045C /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD0C2DAC046D00A1045C /* UserDefaults+Ext.swift */; };
 		3AF6CD102DAC1B3E00A1045C /* PrayerTimeWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD0F2DAC1B3E00A1045C /* PrayerTimeWidgetCell.swift */; };
 		3AF6CD112DAC1B3E00A1045C /* PrayerTimeWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD0F2DAC1B3E00A1045C /* PrayerTimeWidgetCell.swift */; };
+		3AF6CD142DAC32BB00A1045C /* DedicationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD132DAC32BB00A1045C /* DedicationView.swift */; };
+		3AF6CD162DACD98500A1045C /* Amiri-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3AF6CD152DACD98500A1045C /* Amiri-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,6 +140,8 @@
 		3A94BC662DAAB7E300EF3FCD /* PrayerTimesArchiveManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesArchiveManager.swift; sourceTree = "<group>"; };
 		3AF6CD0C2DAC046D00A1045C /* UserDefaults+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Ext.swift"; sourceTree = "<group>"; };
 		3AF6CD0F2DAC1B3E00A1045C /* PrayerTimeWidgetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimeWidgetCell.swift; sourceTree = "<group>"; };
+		3AF6CD132DAC32BB00A1045C /* DedicationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DedicationView.swift; sourceTree = "<group>"; };
+		3AF6CD152DACD98500A1045C /* Amiri-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Amiri-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +167,7 @@
 		3A1BCF352DAB9E5C00005FA5 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				3AF6CD152DACD98500A1045C /* Amiri-Regular.ttf */,
 				3A1BCF362DAB9E7700005FA5 /* ReemKufi.ttf */,
 			);
 			path = Fonts;
@@ -249,6 +254,7 @@
 				3A94BBEB2DAA0C1F00EF3FCD /* ContentView.swift */,
 				3A94BBF82DAA0D5D00EF3FCD /* OnboardingView.swift */,
 				3A94BC1B2DAA440E00EF3FCD /* SettingsView.swift */,
+				3AF6CD132DAC32BB00A1045C /* DedicationView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -458,6 +464,7 @@
 			files = (
 				3A1BCF372DAB9E7700005FA5 /* ReemKufi.ttf in Resources */,
 				3A94BBEF2DAA0C1F00EF3FCD /* Assets.xcassets in Resources */,
+				3AF6CD162DACD98500A1045C /* Amiri-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -484,6 +491,7 @@
 				3A94BC212DAA677800EF3FCD /* GregorianYearPrayerTimes.swift in Sources */,
 				3A94BC1F2DAA446D00EF3FCD /* MailComposeView.swift in Sources */,
 				3A94BC252DAA7F7200EF3FCD /* UDKey.swift in Sources */,
+				3AF6CD142DAC32BB00A1045C /* DedicationView.swift in Sources */,
 				3A70357C2DAB72E400F281F5 /* DayPrayerTimesAPIResponse.swift in Sources */,
 				3A94BC082DAA2C0A00EF3FCD /* GregorianDate.swift in Sources */,
 				3A94BBF92DAA0D5D00EF3FCD /* OnboardingView.swift in Sources */,

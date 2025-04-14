@@ -42,6 +42,7 @@ struct PrayerTimes: Decodable {
         let timePart = timeString.components(separatedBy: " ").first ?? timeString
         
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "HH:mm"
         
         guard let date = formatter.date(from: timePart) else { return timePart }

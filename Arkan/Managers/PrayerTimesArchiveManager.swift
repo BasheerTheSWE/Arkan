@@ -24,8 +24,8 @@ class PrayerTimesArchiveManager {
         let currentMonth = todaysDateComponents.month ?? 0
         let currentDay = todaysDateComponents.day ?? 0
         
-        let city = UserDefaults.standard.string(forKey: UDKey.city.rawValue)
-        let countryCode = UserDefaults.standard.string(forKey: UDKey.countryCode.rawValue)
+        let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue)
+        let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue)
         
         guard let currentYearArchivedBackup = archivedYearlyBackups.first(where: { $0.year == currentYear && $0.city == city && $0.countryCode == countryCode }) else { throw PrayerTimesArchiveError.matchNotFound }
         

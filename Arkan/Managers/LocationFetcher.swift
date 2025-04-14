@@ -73,11 +73,13 @@ import CoreLocation
             }
             
             self?.completion?(nil)
+            self?.completion = nil
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
         completion?(.failedToGetLocation)
+        completion = nil
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {

@@ -39,11 +39,10 @@ struct Provider: AppIntentTimelineProvider {
                 let entry = PrayerTimesEntry(date: entryDate, configuration: configuration, prayerTimesInfo: prayerTimesInfo)
                 
                 entries.append(entry)
-            } else { print("Failed to get the entry") }
+            }
         }
         
         if entries.isEmpty {
-            print("Failed to get prayerTimes info")
             let entry = PrayerTimesEntry(date: .now, configuration: configuration, prayerTimesInfo: .mock)
             entries.append(entry)
         }
@@ -268,6 +267,8 @@ struct DailyPrayerTimesWidget: Widget {
             DailyPrayerTimesWidgetEntryView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
+        .configurationDisplayName("Daily Prayer Times")
+        .description("Get accurate prayer times everyday")
         .supportedFamilies([.systemMedium, .systemLarge])
         .contentMarginsDisabled()
     }

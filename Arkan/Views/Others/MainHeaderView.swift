@@ -13,6 +13,7 @@ struct MainHeaderView: View {
     
     @State private var isShowingMenuItems = false
     
+    @State private var isPresentingDedication = false
     @State private var isPresentingSettings = false
     
     var body: some View {
@@ -36,40 +37,19 @@ struct MainHeaderView: View {
             
             if isShowingMenuItems {
                 VStack {
-                    Button {
-                        
-                    } label: {
-                        Text("About Us")
-                            .font(.system(size: 14, weight: .bold, design: .rounded))
-                            .foregroundStyle(.white)
-                            .frame(height: 44)
-                            .frame(maxWidth: .infinity)
-                            .background(.white.opacity(0.07))
-                            .clipShape(.rect(cornerRadius: 8))
+                    MenuOptionButton(title: "In Loving Memory") {
+                        isPresentingDedication = true
+                    }
+                    .sheet(isPresented: $isPresentingDedication) {
+                        DedicationView()
                     }
                     
-                    Button {
+                    MenuOptionButton(title: "Contact Us") {
                         
-                    } label: {
-                        Text("Contact Us")
-                            .font(.system(size: 14, weight: .bold, design: .rounded))
-                            .foregroundStyle(.white)
-                            .frame(height: 44)
-                            .frame(maxWidth: .infinity)
-                            .background(.white.opacity(0.07))
-                            .clipShape(.rect(cornerRadius: 8))
                     }
                     
-                    Button {
+                    MenuOptionButton(title: "Settings") {
                         isPresentingSettings = true
-                    } label: {
-                        Text("Settings")
-                            .font(.system(size: 14, weight: .bold, design: .rounded))
-                            .foregroundStyle(.white)
-                            .frame(height: 44)
-                            .frame(maxWidth: .infinity)
-                            .background(.white.opacity(0.07))
-                            .clipShape(.rect(cornerRadius: 8))
                     }
                     .sheet(isPresented: $isPresentingSettings) {
                         SettingsView()
@@ -88,6 +68,26 @@ struct MainHeaderView: View {
                 .fill(Color(.systemGroupedBackground))
                 .frame(height: 16)
                 .offset(y: 8)
+        }
+    }
+}
+
+private struct MenuOptionButton: View {
+    
+    let title: String
+    let action: () -> ()
+    
+    var body: some View {
+        Button {
+            action()
+        } label: {
+            Text(title)
+                .font(.system(size: 14, weight: .bold, design: .rounded))
+                .foregroundStyle(.white)
+                .frame(height: 44)
+                .frame(maxWidth: .infinity)
+                .background(.white.opacity(0.07))
+                .clipShape(.rect(cornerRadius: 8))
         }
     }
 }
