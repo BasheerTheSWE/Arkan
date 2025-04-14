@@ -71,6 +71,8 @@
 		3AF6CD162DACD98500A1045C /* Amiri-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3AF6CD152DACD98500A1045C /* Amiri-Regular.ttf */; };
 		3AF6CD182DACDFB800A1045C /* SpecificDateArchivedPrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD172DACDFB800A1045C /* SpecificDateArchivedPrayerTimes.swift */; };
 		3AF6CD192DACDFB800A1045C /* SpecificDateArchivedPrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD172DACDFB800A1045C /* SpecificDateArchivedPrayerTimes.swift */; };
+		3AF6CD1B2DACFE2A00A1045C /* SwiftDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD1A2DACFE2A00A1045C /* SwiftDataManager.swift */; };
+		3AF6CD1C2DACFE2A00A1045C /* SwiftDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD1A2DACFE2A00A1045C /* SwiftDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -145,6 +147,7 @@
 		3AF6CD132DAC32BB00A1045C /* DedicationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DedicationView.swift; sourceTree = "<group>"; };
 		3AF6CD152DACD98500A1045C /* Amiri-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Amiri-Regular.ttf"; sourceTree = "<group>"; };
 		3AF6CD172DACDFB800A1045C /* SpecificDateArchivedPrayerTimes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificDateArchivedPrayerTimes.swift; sourceTree = "<group>"; };
+		3AF6CD1A2DACFE2A00A1045C /* SwiftDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,6 +250,7 @@
 				3A94BBFA2DAA0DA800EF3FCD /* NetworkManager.swift */,
 				3A94BC662DAAB7E300EF3FCD /* PrayerTimesManager.swift */,
 				3A1BCF2A2DAB76DE00005FA5 /* LocationFetcher.swift */,
+				3AF6CD1A2DACFE2A00A1045C /* SwiftDataManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -506,6 +510,7 @@
 				3A94BBFB2DAA0DA800EF3FCD /* NetworkManager.swift in Sources */,
 				3A94BBF32DAA0C3900EF3FCD /* PlainIconButton.swift in Sources */,
 				3A94BC272DAA831300EF3FCD /* Prayer.swift in Sources */,
+				3AF6CD1C2DACFE2A00A1045C /* SwiftDataManager.swift in Sources */,
 				3A94BC672DAAB7E300EF3FCD /* PrayerTimesManager.swift in Sources */,
 				3A94BC162DAA3E8200EF3FCD /* MetaData.swift in Sources */,
 				3A94BC142DAA3CA800EF3FCD /* PrayerTimeCell.swift in Sources */,
@@ -531,6 +536,7 @@
 				3AF6CD182DACDFB800A1045C /* SpecificDateArchivedPrayerTimes.swift in Sources */,
 				3A94BC502DAAA1EB00EF3FCD /* AppIntent.swift in Sources */,
 				3A94BC5B2DAAB56400EF3FCD /* PrayerTimes.swift in Sources */,
+				3AF6CD1B2DACFE2A00A1045C /* SwiftDataManager.swift in Sources */,
 				3A94BC5D2DAAB56E00EF3FCD /* GregorianDate.swift in Sources */,
 				3A94BC5A2DAAB55F00EF3FCD /* PrayerTimesInfo.swift in Sources */,
 				3A94BC642DAAB59C00EF3FCD /* UDKey.swift in Sources */,

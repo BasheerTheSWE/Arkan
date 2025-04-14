@@ -11,6 +11,9 @@ import WidgetKit
 
 struct ContentView: View {
     
+    @Query private var dailyArchive: [SpecificDateArchivedPrayerTimes]
+    @Query private var yearlyArchive: [GregorianYearPrayerTimes]
+    
     @AppStorage(UDKey.countryCode.rawValue) private var countryCode = ""
     @AppStorage(UDKey.city.rawValue) private var city = ""
     
@@ -74,6 +77,24 @@ struct ContentView: View {
         }
         .animation(.default, value: city)
         .animation(.default, value: countryCode)
+        .onAppear {
+            print("\n\n\n\n\n\n\n\nDaily: \(dailyArchive.count)")
+            print("\n\n\n\n\n\n\n\nYearly: \(yearlyArchive.count)")
+        }
+        .onChange(of: dailyArchive) { old, new in
+            print("\n\n\n\n\n\n\n\nDaily: \(dailyArchive.count)")
+            
+            if new.count < old.count {
+                print("Yooo")
+            }
+        }
+        .onChange(of: yearlyArchive) { old, new in
+            print("\n\n\n\n\n\n\n\nYearly: \(yearlyArchive.count)")
+            
+            if new.count < old.count {
+                print("Yo")
+            }
+        }
     }
     
     private func getPrayerTimesForToday() async {
@@ -82,7 +103,9 @@ struct ContentView: View {
             let prayerTimesInfoForToday = try PrayerTimesManager.getPrayerTimesFromArchive()
             
             withAnimation { self.prayerTimesInfoForToday = prayerTimesInfoForToday }
+            print("\n\n\n\n\n\n\n\nFound a copy on Archives")
         } catch {
+            print("\n\n\n\n\n\n\n\nNot Found a copy on Archives")
             print(error.localizedDescription)
         }
         
@@ -90,7 +113,7 @@ struct ContentView: View {
         /// By first updating the location
         /// Then checking the archives and downloading a new data if needed
         do {
-            let prayerTimesInfoForToday = try await PrayerTimesManager.getOrDownloadPrayerTimesInfo()
+            let prayerTimesInfoForToday = try await PrayerTimesManager.getOrDownloadPrayerTimesInfo(locationFetcher: locationFetcher)
             
             withAnimation { self.prayerTimesInfoForToday = prayerTimesInfoForToday }
         } catch {

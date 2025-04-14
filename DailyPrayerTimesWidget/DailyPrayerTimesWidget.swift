@@ -11,15 +11,17 @@ import SwiftData
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> PrayerTimesEntry {
-        if let prayerTimesInfo = try? PrayerTimesManager.getPrayerTimesFromArchive() {
-            return PrayerTimesEntry(date: Date(), configuration: ConfigurationAppIntent(), prayerTimesInfo: prayerTimesInfo)
+        MainActor.assumeIsolated {
+            if let prayerTimesInfo = try? PrayerTimesManager.getPrayerTimesFromArchive() {
+                return PrayerTimesEntry(date: Date(), configuration: ConfigurationAppIntent(), prayerTimesInfo: prayerTimesInfo)
+            }
+            
+            return PrayerTimesEntry(date: Date(), configuration: ConfigurationAppIntent(), prayerTimesInfo: .mock)
         }
-        
-        return PrayerTimesEntry(date: Date(), configuration: ConfigurationAppIntent(), prayerTimesInfo: .mock)
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> PrayerTimesEntry {
-        if let prayerTimesInfo = try? await PrayerTimesManager.getOrDownloadPrayerTimesInfo(updateLocation: false) {
+        if let prayerTimesInfo = try? await PrayerTimesManager.getOrDownloadPrayerTimesInfo() {
             return PrayerTimesEntry(date: .now, configuration: configuration, prayerTimesInfo: prayerTimesInfo)
         }
         
@@ -34,7 +36,7 @@ struct Provider: AppIntentTimelineProvider {
         for offset in 0..<2 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: offset * 6, to: currentDate)!
             
-            if let prayerTimesInfo = try? await PrayerTimesManager.getOrDownloadPrayerTimesInfo(forDate: entryDate, updateLocation: false) {
+            if let prayerTimesInfo = try? await PrayerTimesManager.getOrDownloadPrayerTimesInfo(forDate: entryDate) {
                 
                 let entry = PrayerTimesEntry(date: entryDate, configuration: configuration, prayerTimesInfo: prayerTimesInfo)
                 

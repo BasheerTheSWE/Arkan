@@ -8,11 +8,14 @@
 import Foundation
 import SwiftData
 
+@MainActor
 class PrayerTimesManager {
     
     enum PrayerTimesArchiveError: Error {
         case dataNotFound
     }
+    
+    static let context = SwiftDataManager.shared.context
     
     static let latitude = UserDefaults.shared.double(forKey: UDKey.latitude.rawValue)
     static let longitude = UserDefaults.shared.double(forKey: UDKey.longitude.rawValue)
@@ -33,12 +36,12 @@ class PrayerTimesManager {
         return try getPrayerTimesFromYearlyArchive(forDate: date)
     }
     
-    static func getOrDownloadPrayerTimesInfo(forDate date: Date = .now, updateLocation: Bool = true) async throws -> PrayerTimesInfo {
+    static func getOrDownloadPrayerTimesInfo(forDate date: Date = .now, locationFetcher: LocationFetcher? = nil) async throws -> PrayerTimesInfo {
         /// Before doing anything we'll clean the archives
         cleanUpArchives()
         
         /// The location fetcher will get and store user's coordinates in UserDefaults
-        if updateLocation { try? await LocationFetcher().updateUserLocation() }
+        if locationFetcher != nil { try? await locationFetcher?.updateUserLocation() }
         
         /// First will check daily archiver to see if we have a stored prayer times info for this day
         do {
@@ -54,7 +57,6 @@ class PrayerTimesManager {
             
             /// We have successfully downloaded the prayer times for the passed-in date from the API
             /// But before we return it, we should store in SwiftData
-            let context = try ModelContext(.init(for: SpecificDateArchivedPrayerTimes.self))
             let specificDateArchivedPrayerTimes = SpecificDateArchivedPrayerTimes(date: date, city: city, countryCode: countryCode, apiResponseData: prayerTimesAPIResponseData)
             context.insert(specificDateArchivedPrayerTimes)
             try? context.save()
@@ -86,33 +88,29 @@ class PrayerTimesManager {
     ///
     /// The user won't access prayer times of yesterday and it will just become clutter
     static private func cleanUpArchives() {
-        guard let dailyArchiveContext = try? ModelContext(.init(for: SpecificDateArchivedPrayerTimes.self)),
-              let yearlyArchiveContext = try? ModelContext(.init(for: GregorianYearPrayerTimes.self)),
-              let archivedDailyPrayerTimes = try? dailyArchiveContext.fetch(FetchDescriptor<SpecificDateArchivedPrayerTimes>()),
-              let archivedYearlyPrayerTimes = try? dailyArchiveContext.fetch(FetchDescriptor<GregorianYearPrayerTimes>()) else { return }
+        guard let archivedDailyPrayerTimes = try? context.fetch(FetchDescriptor<SpecificDateArchivedPrayerTimes>()),
+              let archivedYearlyPrayerTimes = try? context.fetch(FetchDescriptor<GregorianYearPrayerTimes>()) else { return }
         
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
         
         // Clean up daily archived prayer times (remove anything before today)
         for archived in archivedDailyPrayerTimes where calendar.compare(archived.date, to: today, toGranularity: .day) == .orderedAscending {
-            dailyArchiveContext.delete(archived)
+            context.delete(archived)
         }
         
         // Clean up yearly archived prayer times (remove any year before the current year)
         let currentYear = calendar.component(.year, from: today)
         
         for archived in archivedYearlyPrayerTimes where archived.year < currentYear {
-            yearlyArchiveContext.delete(archived)
+            context.delete(archived)
         }
         
         // Save changes
-        try? dailyArchiveContext.save()
-        try? yearlyArchiveContext.save()
+        try? context.save()
     }
     
     static private func getPrayerTimesInfoFromDailyArchiver(forDate date: Date) throws -> PrayerTimesInfo {
-        let context = try ModelContext(.init(for: SpecificDateArchivedPrayerTimes.self))
         let dailyArchivedPrayerTimes = try context.fetch(FetchDescriptor<SpecificDateArchivedPrayerTimes>())
         
         if let archivedPrayerTimesData = dailyArchivedPrayerTimes.first(where: { Calendar.current.isDate($0.date, inSameDayAs: date) && $0.city == city && $0.countryCode == countryCode }) {
@@ -126,8 +124,7 @@ class PrayerTimesManager {
     static private func isThereAYearlyPrayerTimesBackup(containingPrayerTimesForDate date: Date) -> Bool {
         let year = Calendar.current.component(.year, from: date)
         
-        guard let context = try? ModelContext(.init(for: GregorianYearPrayerTimes.self)),
-              let archivedYearlyPrayerTimes = try? context.fetch(FetchDescriptor<GregorianYearPrayerTimes>()),
+        guard let archivedYearlyPrayerTimes = try? context.fetch(FetchDescriptor<GregorianYearPrayerTimes>()),
               archivedYearlyPrayerTimes.contains(where: { $0.year == year && $0.city == city && $0.countryCode == countryCode }) else { return false }
         
         return true
@@ -137,9 +134,7 @@ class PrayerTimesManager {
         let year = Calendar.current.component(.year, from: date)
         
         let apiResponseData = try await NetworkManager.getPrayerTimesAPIResponseData(forYear: year, latitude: latitude, longitude: longitude)
-        
-        let context = try ModelContext(.init(for: GregorianYearPrayerTimes.self))
-        
+                
         let gregorianYearPrayerTimes = GregorianYearPrayerTimes(year: year, city: city, countryCode: countryCode, apiResponseData: apiResponseData)
         context.insert(gregorianYearPrayerTimes)
         try? context.save()
@@ -148,7 +143,6 @@ class PrayerTimesManager {
     static private func getPrayerTimesFromYearlyArchive(forDate date: Date = .now) throws -> PrayerTimesInfo {
         guard isThereAYearlyPrayerTimesBackup(containingPrayerTimesForDate: date) else { throw PrayerTimesArchiveError.dataNotFound }
         
-        let context = try ModelContext(.init(for: GregorianYearPrayerTimes.self))
         let archivedYearlyBackups = try context.fetch(FetchDescriptor<GregorianYearPrayerTimes>())
         
         let todaysDateComponents = Calendar.current.dateComponents([.day, .month, .year], from: date)
