@@ -85,6 +85,30 @@
 		3AF6CD472DAD6B2800A1045C /* NextPrayerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD402DAD6B2800A1045C /* NextPrayerWidget.swift */; };
 		3AF6CD482DAD6B2800A1045C /* NextPrayerWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD412DAD6B2800A1045C /* NextPrayerWidgetBundle.swift */; };
 		3AF6CD492DAD6B2800A1045C /* NextPrayerWidgetControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD422DAD6B2800A1045C /* NextPrayerWidgetControl.swift */; };
+		3AF6CD4B2DAD823D00A1045C /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC262DAA831300EF3FCD /* Prayer.swift */; };
+		3AF6CD4C2DAD82ED00A1045C /* PrayerTimesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC662DAAB7E300EF3FCD /* PrayerTimesManager.swift */; };
+		3AF6CD4D2DAD830200A1045C /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BBFA2DAA0DA800EF3FCD /* NetworkManager.swift */; };
+		3AF6CD4E2DAD830700A1045C /* LocationFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1BCF2A2DAB76DE00005FA5 /* LocationFetcher.swift */; };
+		3AF6CD4F2DAD830D00A1045C /* SwiftDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD1A2DACFE2A00A1045C /* SwiftDataManager.swift */; };
+		3AF6CD502DAD831200A1045C /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD1D2DAD419B00A1045C /* NotificationsManager.swift */; };
+		3AF6CD512DAD831E00A1045C /* ArchivedPrayerTimesForGregorianYear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC202DAA677800EF3FCD /* ArchivedPrayerTimesForGregorianYear.swift */; };
+		3AF6CD522DAD832200A1045C /* ArchivedPrayerTimesForSpecificDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD172DACDFB800A1045C /* ArchivedPrayerTimesForSpecificDate.swift */; };
+		3AF6CD532DAD832900A1045C /* PrayerTimesForGregorianYearAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BBFD2DAA1EBA00EF3FCD /* PrayerTimesForGregorianYearAPIResponse.swift */; };
+		3AF6CD542DAD832F00A1045C /* PrayerTimesForSpecificDateAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A70357B2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift */; };
+		3AF6CD552DAD833300A1045C /* PrayerTimesForSpecificPeriodAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD202DAD449100A1045C /* PrayerTimesForSpecificPeriodAPIResponse.swift */; };
+		3AF6CD562DAD833900A1045C /* PrayerTimesInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC012DAA2BD900EF3FCD /* PrayerTimesInfo.swift */; };
+		3AF6CD572DAD833E00A1045C /* PrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC032DAA2BF200EF3FCD /* PrayerTimes.swift */; };
+		3AF6CD582DAD834200A1045C /* DateInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC052DAA2BFF00EF3FCD /* DateInfo.swift */; };
+		3AF6CD592DAD834700A1045C /* GregorianDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC072DAA2C0A00EF3FCD /* GregorianDate.swift */; };
+		3AF6CD5A2DAD834C00A1045C /* HijriDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC092DAA2C1600EF3FCD /* HijriDate.swift */; };
+		3AF6CD5B2DAD835100A1045C /* HijriWeekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC0B2DAA2C2200EF3FCD /* HijriWeekday.swift */; };
+		3AF6CD5C2DAD835600A1045C /* HijriMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC0D2DAA2C3000EF3FCD /* HijriMonth.swift */; };
+		3AF6CD5D2DAD835C00A1045C /* MetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC152DAA3E8200EF3FCD /* MetaData.swift */; };
+		3AF6CD5E2DAD836000A1045C /* MetaDataMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC172DAA3E9400EF3FCD /* MetaDataMethod.swift */; };
+		3AF6CD5F2DAD837400A1045C /* UDKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC242DAA7F7200EF3FCD /* UDKey.swift */; };
+		3AF6CD602DAD837B00A1045C /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC292DAA893E00EF3FCD /* Date+Ext.swift */; };
+		3AF6CD612DAD838000A1045C /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD0C2DAC046D00A1045C /* UserDefaults+Ext.swift */; };
+		3AF6CD632DAD871C00A1045C /* NextPrayerTimeSmallWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD622DAD871C00A1045C /* NextPrayerTimeSmallWidgetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -178,6 +202,7 @@
 		3AF6CD412DAD6B2800A1045C /* NextPrayerWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextPrayerWidgetBundle.swift; sourceTree = "<group>"; };
 		3AF6CD422DAD6B2800A1045C /* NextPrayerWidgetControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextPrayerWidgetControl.swift; sourceTree = "<group>"; };
 		3AF6CD4A2DAD6B3F00A1045C /* NextPrayerWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NextPrayerWidgetExtension.entitlements; sourceTree = "<group>"; };
+		3AF6CD622DAD871C00A1045C /* NextPrayerTimeSmallWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextPrayerTimeSmallWidgetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -437,6 +462,7 @@
 				3AF6CD402DAD6B2800A1045C /* NextPrayerWidget.swift */,
 				3AF6CD412DAD6B2800A1045C /* NextPrayerWidgetBundle.swift */,
 				3AF6CD422DAD6B2800A1045C /* NextPrayerWidgetControl.swift */,
+				3AF6CD622DAD871C00A1045C /* NextPrayerTimeSmallWidgetView.swift */,
 			);
 			path = NextPrayerWidget;
 			sourceTree = "<group>";
@@ -657,10 +683,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AF6CD532DAD832900A1045C /* PrayerTimesForGregorianYearAPIResponse.swift in Sources */,
+				3AF6CD562DAD833900A1045C /* PrayerTimesInfo.swift in Sources */,
+				3AF6CD5F2DAD837400A1045C /* UDKey.swift in Sources */,
+				3AF6CD5A2DAD834C00A1045C /* HijriDate.swift in Sources */,
 				3AF6CD462DAD6B2800A1045C /* AppIntent.swift in Sources */,
+				3AF6CD4B2DAD823D00A1045C /* Prayer.swift in Sources */,
+				3AF6CD4E2DAD830700A1045C /* LocationFetcher.swift in Sources */,
 				3AF6CD472DAD6B2800A1045C /* NextPrayerWidget.swift in Sources */,
+				3AF6CD512DAD831E00A1045C /* ArchivedPrayerTimesForGregorianYear.swift in Sources */,
+				3AF6CD632DAD871C00A1045C /* NextPrayerTimeSmallWidgetView.swift in Sources */,
+				3AF6CD522DAD832200A1045C /* ArchivedPrayerTimesForSpecificDate.swift in Sources */,
+				3AF6CD4D2DAD830200A1045C /* NetworkManager.swift in Sources */,
+				3AF6CD572DAD833E00A1045C /* PrayerTimes.swift in Sources */,
+				3AF6CD4C2DAD82ED00A1045C /* PrayerTimesManager.swift in Sources */,
+				3AF6CD4F2DAD830D00A1045C /* SwiftDataManager.swift in Sources */,
+				3AF6CD612DAD838000A1045C /* UserDefaults+Ext.swift in Sources */,
 				3AF6CD482DAD6B2800A1045C /* NextPrayerWidgetBundle.swift in Sources */,
+				3AF6CD602DAD837B00A1045C /* Date+Ext.swift in Sources */,
+				3AF6CD582DAD834200A1045C /* DateInfo.swift in Sources */,
+				3AF6CD5B2DAD835100A1045C /* HijriWeekday.swift in Sources */,
+				3AF6CD5D2DAD835C00A1045C /* MetaData.swift in Sources */,
+				3AF6CD5E2DAD836000A1045C /* MetaDataMethod.swift in Sources */,
+				3AF6CD592DAD834700A1045C /* GregorianDate.swift in Sources */,
+				3AF6CD5C2DAD835600A1045C /* HijriMonth.swift in Sources */,
+				3AF6CD552DAD833300A1045C /* PrayerTimesForSpecificPeriodAPIResponse.swift in Sources */,
+				3AF6CD502DAD831200A1045C /* NotificationsManager.swift in Sources */,
 				3AF6CD492DAD6B2800A1045C /* NextPrayerWidgetControl.swift in Sources */,
+				3AF6CD542DAD832F00A1045C /* PrayerTimesForSpecificDateAPIResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

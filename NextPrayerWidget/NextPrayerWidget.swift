@@ -9,24 +9,29 @@ import WidgetKit
 import SwiftUI
 
 struct Provider: AppIntentTimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent())
+    func placeholder(in context: Context) -> NextPrayerTimeEntry {
+        MainActor.assumeIsolated {
+            if let entry = getTimelineEntriesFromArchive(configuration: ConfigurationAppIntent()).first {
+                return entry
+            }
+            
+            return NextPrayerTimeEntry(date: Date(), configuration: ConfigurationAppIntent(), prayer: .fajr, timeString: "03:50")
+        }
     }
 
-    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: configuration)
+    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> NextPrayerTimeEntry {
+        if let entry = await getTimelineEntries(configuration: configuration).first {
+            return entry
+        }
+        
+        return NextPrayerTimeEntry(date: Date(), configuration: configuration, prayer: .fajr, timeString: "03:40")
     }
     
-    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        var entries: [SimpleEntry] = []
-
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration)
-            entries.append(entry)
-        }
+    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<NextPrayerTimeEntry> {
+        var entries: [NextPrayerTimeEntry] = []
+        
+        /// Getting the prayer times of Today
+        entries = await getTimelineEntries(configuration: configuration)
 
         return Timeline(entries: entries, policy: .atEnd)
     }
@@ -34,74 +39,91 @@ struct Provider: AppIntentTimelineProvider {
 //    func relevances() async -> WidgetRelevances<ConfigurationAppIntent> {
 //        // Generate a list containing the contexts this widget is relevant in.
 //    }
+    
+    private func getTimelineEntries(configuration: ConfigurationAppIntent) async -> [NextPrayerTimeEntry] {
+        let todayPrayerTimesEntries = await getTimelineEntriesForDate(date: .now, entryConfiguration: configuration)
+        
+        if !todayPrayerTimesEntries.isEmpty {
+            return todayPrayerTimesEntries
+        }
+        
+        /// Reaching here means this is the end of Today after Isha, and there're no more prayers to schedule
+        /// So we'll schedule tomorrow's prayers
+        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now
+        let tomorrowPrayerTimesEntries = await getTimelineEntriesForDate(date: tomorrow, entryConfiguration: configuration)
+        
+        return tomorrowPrayerTimesEntries
+    }
+    
+    @MainActor private func getTimelineEntriesFromArchive(configuration: ConfigurationAppIntent) -> [NextPrayerTimeEntry] {
+        let todayPrayerTimesEntries = getTimelineEntriesFromArchiveForDate(date: .now, entryConfiguration: configuration)
+        
+        if !todayPrayerTimesEntries.isEmpty {
+            return todayPrayerTimesEntries
+        }
+        
+        /// Reaching here means this is the end of Today after Isha, and there're no more prayers to schedule
+        /// So we'll schedule tomorrow's prayers
+        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now
+        let tomorrowPrayerTimesEntries = getTimelineEntriesFromArchiveForDate(date: tomorrow, entryConfiguration: configuration)
+        
+        return tomorrowPrayerTimesEntries
+    }
+    
+    private func getTimelineEntriesForDate(date: Date, entryConfiguration: ConfigurationAppIntent) async -> [NextPrayerTimeEntry] {
+        var result = [NextPrayerTimeEntry]()
+        
+        var prayerTimesInfo = PrayerTimesInfo.getMockDataForSpecificDate(date: date)
+        
+        if let downloadedPrayerTimesInfo = try? await PrayerTimesManager.getOrDownloadPrayerTimesInfo(forDate: date) {
+            prayerTimesInfo = downloadedPrayerTimesInfo
+        }
+        
+        for prayer in Prayer.allCases {
+            if let entryDate = prayerTimesInfo.getDateObject(forPrayer: prayer), entryDate > Date() {
+                let entry = NextPrayerTimeEntry(date: entryDate, configuration: entryConfiguration, prayer: prayer, timeString: prayerTimesInfo.timings.getTime(for: prayer, use24HourFormat: true))
+                result.append(entry)
+            }
+        }
+        
+        return result
+    }
+    
+    @MainActor private func getTimelineEntriesFromArchiveForDate(date: Date, entryConfiguration: ConfigurationAppIntent) -> [NextPrayerTimeEntry] {
+        var result = [NextPrayerTimeEntry]()
+        
+        var prayerTimesInfo = PrayerTimesInfo.getMockDataForSpecificDate(date: date)
+        
+        if let downloadedPrayerTimesInfo = try? PrayerTimesManager.getPrayerTimesFromArchive(forDate: date) {
+            prayerTimesInfo = downloadedPrayerTimesInfo
+        }
+        
+        for prayer in Prayer.allCases {
+            if let entryDate = prayerTimesInfo.getDateObject(forPrayer: prayer), entryDate > Date() {
+                let entry = NextPrayerTimeEntry(date: entryDate, configuration: entryConfiguration, prayer: prayer, timeString: prayerTimesInfo.timings.getTime(for: prayer, use24HourFormat: true))
+                result.append(entry)
+            }
+        }
+        
+        return result
+    }
 }
 
-struct SimpleEntry: TimelineEntry {
+struct NextPrayerTimeEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
+    let prayer: Prayer
+    let timeString: String
+    
+    let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue) ?? ""
+    let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue) ?? ""
 }
 
 struct NextPrayerWidgetEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        VStack(spacing: 0) {
-            Text("Taif, SA")
-                .font(.system(size: 10, weight: .bold, design: .rounded))
-                .lineLimit(1)
-                .scaledToFit()
-                .minimumScaleFactor(0.25)
-                .padding(.vertical, 8)
-                .padding(.horizontal)
-            
-            VStack(alignment: .center) {
-                Image(systemName: "sunrise")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 34, height: 34)
-                
-                HStack(spacing: 4) {
-                    Text("04")
-                        .font(.custom("Impact", size: 50))
-                        .lineLimit(1)
-                        .scaledToFit()
-                        .minimumScaleFactor(0.1)
-                        .padding(4)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(Color(.secondarySystemBackground))
-                        .overlay {
-                            Rectangle()
-                                .fill(Color(.systemBackground))
-                                .frame(height: 2)
-                        }
-                    
-                    Text(":")
-                        .font(.custom("Impact", size: 28))
-                        .lineLimit(1)
-                        .scaledToFit()
-                        .minimumScaleFactor(0.1)
-                    
-                    Text("45")
-                        .font(.custom("Impact", size: 50))
-                        .lineLimit(1)
-                        .scaledToFit()
-                        .minimumScaleFactor(0.1)
-                        .padding(4)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(Color(.secondarySystemBackground))
-                        .overlay {
-                            Rectangle()
-                                .fill(Color(.systemBackground))
-                                .frame(height: 2)
-                        }
-                }
-            }
-            .padding()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.systemBackground))
-            .clipShape(.rect(topLeadingRadius: 16, topTrailingRadius: 16))
-        }
-        .background(Color(.secondarySystemBackground))
+        NextPrayerTimeSmallWidgetView(entry: entry)
     }
 }
 
@@ -134,6 +156,6 @@ extension ConfigurationAppIntent {
 #Preview(as: .systemSmall) {
     NextPrayerWidget()
 } timeline: {
-    SimpleEntry(date: .now, configuration: .smiley)
-    SimpleEntry(date: .now, configuration: .starEyes)
+    NextPrayerTimeEntry(date: .now, configuration: .smiley, prayer: .fajr, timeString: "3:50")
+    NextPrayerTimeEntry(date: .now, configuration: .starEyes, prayer: .fajr, timeString: "3:50")
 }
