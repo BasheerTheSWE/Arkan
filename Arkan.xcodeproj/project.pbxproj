@@ -77,6 +77,14 @@
 		3AF6CD1F2DAD419B00A1045C /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD1D2DAD419B00A1045C /* NotificationsManager.swift */; };
 		3AF6CD212DAD449100A1045C /* PrayerTimesForSpecificPeriodAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD202DAD449100A1045C /* PrayerTimesForSpecificPeriodAPIResponse.swift */; };
 		3AF6CD222DAD449100A1045C /* PrayerTimesForSpecificPeriodAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD202DAD449100A1045C /* PrayerTimesForSpecificPeriodAPIResponse.swift */; };
+		3AF6CD282DAD6B1400A1045C /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A94BC312DAAA1DF00EF3FCD /* WidgetKit.framework */; };
+		3AF6CD292DAD6B1400A1045C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A94BC332DAAA1DF00EF3FCD /* SwiftUI.framework */; };
+		3AF6CD382DAD6B1500A1045C /* NextPrayerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3AF6CD272DAD6B1300A1045C /* NextPrayerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3AF6CD442DAD6B2800A1045C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AF6CD3E2DAD6B2800A1045C /* Assets.xcassets */; };
+		3AF6CD462DAD6B2800A1045C /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD3D2DAD6B2800A1045C /* AppIntent.swift */; };
+		3AF6CD472DAD6B2800A1045C /* NextPrayerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD402DAD6B2800A1045C /* NextPrayerWidget.swift */; };
+		3AF6CD482DAD6B2800A1045C /* NextPrayerWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD412DAD6B2800A1045C /* NextPrayerWidgetBundle.swift */; };
+		3AF6CD492DAD6B2800A1045C /* NextPrayerWidgetControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD422DAD6B2800A1045C /* NextPrayerWidgetControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +95,13 @@
 			remoteGlobalIDString = 3A94BC2E2DAAA1DF00EF3FCD;
 			remoteInfo = DailyPrayerTimesWidgetExtension;
 		};
+		3AF6CD362DAD6B1500A1045C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A94BBD32DAA096600EF3FCD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3AF6CD262DAD6B1300A1045C;
+			remoteInfo = NextPrayerWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -96,6 +111,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				3AF6CD382DAD6B1500A1045C /* NextPrayerWidgetExtension.appex in Embed Foundation Extensions */,
 				3A94BC432DAAA1E100EF3FCD /* DailyPrayerTimesWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
@@ -154,6 +170,14 @@
 		3AF6CD1A2DACFE2A00A1045C /* SwiftDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataManager.swift; sourceTree = "<group>"; };
 		3AF6CD1D2DAD419B00A1045C /* NotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
 		3AF6CD202DAD449100A1045C /* PrayerTimesForSpecificPeriodAPIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesForSpecificPeriodAPIResponse.swift; sourceTree = "<group>"; };
+		3AF6CD272DAD6B1300A1045C /* NextPrayerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NextPrayerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AF6CD3D2DAD6B2800A1045C /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
+		3AF6CD3E2DAD6B2800A1045C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3AF6CD3F2DAD6B2800A1045C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3AF6CD402DAD6B2800A1045C /* NextPrayerWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextPrayerWidget.swift; sourceTree = "<group>"; };
+		3AF6CD412DAD6B2800A1045C /* NextPrayerWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextPrayerWidgetBundle.swift; sourceTree = "<group>"; };
+		3AF6CD422DAD6B2800A1045C /* NextPrayerWidgetControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextPrayerWidgetControl.swift; sourceTree = "<group>"; };
+		3AF6CD4A2DAD6B3F00A1045C /* NextPrayerWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NextPrayerWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,6 +197,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3AF6CD242DAD6B1300A1045C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3AF6CD292DAD6B1400A1045C /* SwiftUI.framework in Frameworks */,
+				3AF6CD282DAD6B1400A1045C /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -188,9 +221,11 @@
 		3A94BBD22DAA096600EF3FCD = {
 			isa = PBXGroup;
 			children = (
+				3AF6CD4A2DAD6B3F00A1045C /* NextPrayerWidgetExtension.entitlements */,
 				3A94BC572DAAB27C00EF3FCD /* DailyPrayerTimesWidgetExtension.entitlements */,
 				3A94BBEC2DAA0C1F00EF3FCD /* Arkan */,
 				3A94BC4F2DAAA1EB00EF3FCD /* DailyPrayerTimesWidget */,
+				3AF6CD432DAD6B2800A1045C /* NextPrayerWidget */,
 				3A94BC302DAAA1DF00EF3FCD /* Frameworks */,
 				3A94BBDC2DAA096600EF3FCD /* Products */,
 			);
@@ -201,6 +236,7 @@
 			children = (
 				3A94BBDB2DAA096600EF3FCD /* Arkan.app */,
 				3A94BC2F2DAAA1DF00EF3FCD /* DailyPrayerTimesWidgetExtension.appex */,
+				3AF6CD272DAD6B1300A1045C /* NextPrayerWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -392,6 +428,19 @@
 			path = DailyPrayerTimesWidget;
 			sourceTree = "<group>";
 		};
+		3AF6CD432DAD6B2800A1045C /* NextPrayerWidget */ = {
+			isa = PBXGroup;
+			children = (
+				3AF6CD3D2DAD6B2800A1045C /* AppIntent.swift */,
+				3AF6CD3E2DAD6B2800A1045C /* Assets.xcassets */,
+				3AF6CD3F2DAD6B2800A1045C /* Info.plist */,
+				3AF6CD402DAD6B2800A1045C /* NextPrayerWidget.swift */,
+				3AF6CD412DAD6B2800A1045C /* NextPrayerWidgetBundle.swift */,
+				3AF6CD422DAD6B2800A1045C /* NextPrayerWidgetControl.swift */,
+			);
+			path = NextPrayerWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -408,6 +457,7 @@
 			);
 			dependencies = (
 				3A94BC422DAAA1E100EF3FCD /* PBXTargetDependency */,
+				3AF6CD372DAD6B1500A1045C /* PBXTargetDependency */,
 			);
 			name = Arkan;
 			packageProductDependencies = (
@@ -435,6 +485,25 @@
 			productReference = 3A94BC2F2DAAA1DF00EF3FCD /* DailyPrayerTimesWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		3AF6CD262DAD6B1300A1045C /* NextPrayerWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3AF6CD3A2DAD6B1500A1045C /* Build configuration list for PBXNativeTarget "NextPrayerWidgetExtension" */;
+			buildPhases = (
+				3AF6CD232DAD6B1300A1045C /* Sources */,
+				3AF6CD242DAD6B1300A1045C /* Frameworks */,
+				3AF6CD252DAD6B1300A1045C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NextPrayerWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = NextPrayerWidgetExtension;
+			productReference = 3AF6CD272DAD6B1300A1045C /* NextPrayerWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -449,6 +518,9 @@
 						CreatedOnToolsVersion = 16.3;
 					};
 					3A94BC2E2DAAA1DF00EF3FCD = {
+						CreatedOnToolsVersion = 16.3;
+					};
+					3AF6CD262DAD6B1300A1045C = {
 						CreatedOnToolsVersion = 16.3;
 					};
 				};
@@ -469,6 +541,7 @@
 			targets = (
 				3A94BBDA2DAA096600EF3FCD /* Arkan */,
 				3A94BC2E2DAAA1DF00EF3FCD /* DailyPrayerTimesWidgetExtension */,
+				3AF6CD262DAD6B1300A1045C /* NextPrayerWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -489,6 +562,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A94BC542DAAA1EB00EF3FCD /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3AF6CD252DAD6B1300A1045C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3AF6CD442DAD6B2800A1045C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -572,6 +653,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3AF6CD232DAD6B1300A1045C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3AF6CD462DAD6B2800A1045C /* AppIntent.swift in Sources */,
+				3AF6CD472DAD6B2800A1045C /* NextPrayerWidget.swift in Sources */,
+				3AF6CD482DAD6B2800A1045C /* NextPrayerWidgetBundle.swift in Sources */,
+				3AF6CD492DAD6B2800A1045C /* NextPrayerWidgetControl.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -579,6 +671,11 @@
 			isa = PBXTargetDependency;
 			target = 3A94BC2E2DAAA1DF00EF3FCD /* DailyPrayerTimesWidgetExtension */;
 			targetProxy = 3A94BC412DAAA1E100EF3FCD /* PBXContainerItemProxy */;
+		};
+		3AF6CD372DAD6B1500A1045C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3AF6CD262DAD6B1300A1045C /* NextPrayerWidgetExtension */;
+			targetProxy = 3AF6CD362DAD6B1500A1045C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -840,6 +937,62 @@
 			};
 			name = Release;
 		};
+		3AF6CD3B2DAD6B1500A1045C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = NextPrayerWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6TNKUF97WJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NextPrayerWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NextPrayerWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.BasheerTheSWE.Arkan.NextPrayerWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3AF6CD3C2DAD6B1500A1045C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = NextPrayerWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6TNKUF97WJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NextPrayerWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NextPrayerWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.BasheerTheSWE.Arkan.NextPrayerWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -866,6 +1019,15 @@
 			buildConfigurations = (
 				3A94BC462DAAA1E100EF3FCD /* Debug */,
 				3A94BC472DAAA1E100EF3FCD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3AF6CD3A2DAD6B1500A1045C /* Build configuration list for PBXNativeTarget "NextPrayerWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3AF6CD3B2DAD6B1500A1045C /* Debug */,
+				3AF6CD3C2DAD6B1500A1045C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
