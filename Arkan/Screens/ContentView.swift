@@ -14,6 +14,9 @@ struct ContentView: View {
     @AppStorage(UDKey.countryCode.rawValue) private var countryCode = ""
     @AppStorage(UDKey.city.rawValue) private var city = ""
     
+    @AppStorage(UDKey.latitude.rawValue) private var latitude = 0.0
+    @AppStorage(UDKey.longitude.rawValue) private var longitude = 0.0
+    
     @State private var prayerTimesInfoForToday: PrayerTimesInfo?
     @State private var locationFetcher = LocationFetcher()
     
@@ -71,6 +74,8 @@ struct ContentView: View {
         .task {
             await getPrayerTimesForToday()
             WidgetCenter.shared.reloadAllTimelines()
+            
+            try? await schedulePrayerTimesNotificationsForTheNext30Days()
         }
         .animation(.default, value: city)
         .animation(.default, value: countryCode)
@@ -82,9 +87,7 @@ struct ContentView: View {
             let prayerTimesInfoForToday = try PrayerTimesManager.getPrayerTimesFromArchive()
             
             withAnimation { self.prayerTimesInfoForToday = prayerTimesInfoForToday }
-            print("\n\n\n\n\n\n\n\nFound a copy on Archives")
         } catch {
-            print("\n\n\n\n\n\n\n\nNot Found a copy on Archives")
             print(error.localizedDescription)
         }
         
@@ -99,6 +102,15 @@ struct ContentView: View {
             // TODO: HANDLE THIS ERROR
             print(error.localizedDescription)
         }
+    }
+    
+    private func schedulePrayerTimesNotificationsForTheNext30Days() async throws {
+        /// Updating the user's location if needed
+        if latitude == .zero && longitude == .zero {
+            try await locationFetcher.updateUserLocation()
+        }
+        
+        try await NotificationsManager.schedulePrayerTimesNotificationsForTheNext30Days()
     }
 }
 

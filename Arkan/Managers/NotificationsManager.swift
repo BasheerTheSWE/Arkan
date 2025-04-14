@@ -10,6 +10,10 @@ import UserNotifications
 
 class NotificationsManager {
     
+    enum NotificationError: Error {
+        case notAuthorized
+    }
+    
     static let prayerTimeNotificationBodies = [
         "Take a moment to connect with Allah ﷻ.",
         "Time to pause and remember Allah.",
@@ -38,9 +42,20 @@ class NotificationsManager {
         return try await UNUserNotificationCenter.current().requestAuthorization(options: options)
     }
     
+    /// Schedules prayer times notifications for the next 30 days
+    ///
+    /// > Important: Make sure to update the user's location before calling this method
     static func schedulePrayerTimesNotificationsForTheNext30Days() async throws {
+        guard try await requestAuthorization() else { throw NotificationError.notAuthorized }
+        
         let latitude = UserDefaults.shared.double(forKey: UDKey.latitude.rawValue)
         let longitude = UserDefaults.shared.double(forKey: UDKey.longitude.rawValue)
+        
+        let isFajrNotificationDisabled = UserDefaults.shared.bool(forKey: UDKey.isFajrNotificationDisabled.rawValue)
+        let isDhuhrNotificationDisabled = UserDefaults.shared.bool(forKey: UDKey.isDhuhrNotificationDisabled.rawValue)
+        let isAsrNotificationDisabled = UserDefaults.shared.bool(forKey: UDKey.isAsrNotificationDisabled.rawValue)
+        let isMaghribNotificationDisabled = UserDefaults.shared.bool(forKey: UDKey.isMaghribNotificationDisabled.rawValue)
+        let isIshaNotificationDisabled = UserDefaults.shared.bool(forKey: UDKey.isIshaNotificationDisabled.rawValue)
         
         /// First thing to do is to download the prayer times for the next 30 days
         /// Getting the starting and end dates
@@ -54,16 +69,39 @@ class NotificationsManager {
         let decodedAPIResponse = try JSONDecoder().decode(PrayerTimesForSpecificPeriodAPIResponse.self, from: apiResponseData)
         let prayerTimesInfosForTheNext30Days = decodedAPIResponse.data
         
+        /// We'll clear previous or to be more precise 'upcoming' notifications before we schedule the new ones
+        clearScheduledNotifications()
+        
         /// Now we loop through the downloaded data and schedule a notification for every prayer
         for prayerTimesInfo in prayerTimesInfosForTheNext30Days {
             for index in 0..<5 {
                 let prayer = Prayer.allCases[index]
+                
+                /// Before scheduling the prayer time's notification we'll check if the user has enabled the notification for it.
+                switch prayer {
+                case .fajr:
+                    if isFajrNotificationDisabled { continue }
+                    
+                case .dhuhr:
+                    if isDhuhrNotificationDisabled { continue }
+                    
+                case .asr:
+                    if isAsrNotificationDisabled { continue }
+                    
+                case .maghrib:
+                    if isMaghribNotificationDisabled { continue }
+                    
+                case .isha:
+                    if isIshaNotificationDisabled { continue }
+                }
+                
                 let notificationBody = prayer == .fajr ? "Prayer is better than sleep 🕊️" : (prayerTimeNotificationBodies.randomElement() ?? "Prayer is better than sleep 🕊️")
                 
                 let timeString = prayerTimesInfo.timings.getTime(for: prayer, use24HourFormat: true) // format: hh:mm
                 let dateString = prayerTimesInfo.date.gregorian.date // In the format of dd-MM-yyyy
                 
                 if let prayerDateComponents = getDateComponents(timeString: timeString, dateString: dateString) {
+                    print("Notification was scheduled for \(prayer.rawValue)")
                     scheduleNotification(title: "Time for \(prayer.rawValue)", body: notificationBody, dateMatching: prayerDateComponents)
                 }
             }
@@ -80,6 +118,14 @@ class NotificationsManager {
         
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request)
+    }
+    
+    static func clearScheduledNotifications() {
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    }
+    
+    static func clearDeliveredNotifications() {
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
     
     // MARK: - PRIVATE

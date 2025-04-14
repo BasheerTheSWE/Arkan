@@ -69,7 +69,7 @@ struct DedicationView: View {
             .padding(.top, -8)
             
             VStack(spacing: 8) {
-                Text("أُدْعُ لَهَمْ بِالرَّحْمَةِ وَ المَغْفِرَةِ")
+                Text("الرَّجَاءُ الدَّعْوَةُ لَهُمْ بِالرَّحْمَةِ و المَغْفِرَةِ")
                     .font(.custom("ReemKufi", size: 14))
             }
             .foregroundStyle(.white)

@@ -11,6 +11,12 @@ struct PrayerTimeCell: View {
     
     @AppStorage(UDKey.prefers24HourTimeFormat.rawValue) private var prefers24HourTimeFormat = false
     
+    @AppStorage(UDKey.isFajrNotificationDisabled.rawValue) private var isFajrNotificationDisabled = false
+    @AppStorage(UDKey.isDhuhrNotificationDisabled.rawValue) private var isDhuhrNotificationDisabled = false
+    @AppStorage(UDKey.isAsrNotificationDisabled.rawValue) private var isAsrNotificationDisabled = false
+    @AppStorage(UDKey.isMaghribNotificationDisabled.rawValue) private var isMaghribNotificationDisabled = false
+    @AppStorage(UDKey.isIshaNotificationDisabled.rawValue) private var isIshaNotificationDisabled = false
+    
     private let systemImage: String
     
     private let prayer: Prayer
@@ -58,19 +64,65 @@ struct PrayerTimeCell: View {
             }
             
             Button {
-                
+                togglePrayerTimeNotification()
             } label: {
-                Image(systemName: "speaker.wave.1.fill")
+                Image(systemName: isPrayerNotificationDisabled() ? "speaker.slash.fill" : "speaker.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .foregroundStyle(Color(.label))
+                    .foregroundStyle(isPrayerNotificationDisabled() ? .secondary : Color(.label))
                     .frame(width: 16, height: 16)
             }
+            .contentTransition(.symbolEffect)
             .padding(.leading)
         }
         .padding()
         .background(Color(.secondarySystemGroupedBackground))
         .clipShape(.rect(cornerRadius: 8))
+    }
+    
+    private func togglePrayerTimeNotification() {
+        switch prayer {
+        case .fajr:
+            withAnimation { isFajrNotificationDisabled.toggle() }
+            break
+            
+        case .dhuhr:
+            withAnimation { isDhuhrNotificationDisabled.toggle() }
+            break
+            
+        case .asr:
+            withAnimation { isAsrNotificationDisabled.toggle() }
+            break
+            
+        case .maghrib:
+            withAnimation { isMaghribNotificationDisabled.toggle() }
+            break
+            
+        case .isha:
+            withAnimation { isIshaNotificationDisabled.toggle() }
+            break
+        }
+        
+        Task { try? await NotificationsManager.schedulePrayerTimesNotificationsForTheNext30Days() }
+    }
+    
+    private func isPrayerNotificationDisabled() -> Bool {
+        switch prayer {
+        case .fajr:
+            return isFajrNotificationDisabled
+            
+        case .dhuhr:
+            return isDhuhrNotificationDisabled
+            
+        case .asr:
+            return isAsrNotificationDisabled
+            
+        case .maghrib:
+            return isMaghribNotificationDisabled
+            
+        case .isha:
+            return isIshaNotificationDisabled
+        }
     }
 }
 

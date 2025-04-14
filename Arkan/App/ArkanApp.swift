@@ -16,7 +16,8 @@ struct ArkanApp: App {
             ContentView()
                 .tint(Color(.label))
                 .defaultAppStorage(UserDefaults(suiteName: "group.BasheerTheSWE.Arkan.PrayerTime")!)
-                .modelContainer(SwiftDataManager.shared.container)
+                .onAppear { NotificationsManager.clearDeliveredNotifications() }
         }
+        .modelContainer(SwiftDataManager.shared.container)
     }
 }

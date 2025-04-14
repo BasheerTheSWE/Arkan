@@ -14,4 +14,10 @@ enum UDKey: String {
     case city // String
     case country // String
     case countryCode // String
+    
+    case isFajrNotificationDisabled // Bool
+    case isDhuhrNotificationDisabled // Bool
+    case isAsrNotificationDisabled // Bool
+    case isMaghribNotificationDisabled // Bool
+    case isIshaNotificationDisabled // Bool
 }

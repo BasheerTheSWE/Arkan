@@ -57,7 +57,7 @@ final class NetworkManager {
         
         guard let url = URL(string: "https://api.aladhan.com/v1/calendar/from/\(formattedStartingDate)/to/\(formattedEndingDate)?latitude=\(latitude)&longitude=\(longitude)&shafaq=general&calendarMethod=UAQ") else { throw NetworkError.invalidURL }
         
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad)
         request.httpMethod = "GET"
         request.setValue("application/json", forHTTPHeaderField: "accept")
         
