@@ -134,27 +134,6 @@ struct NextPrayerWidgetEntryView : View {
     }
 }
 
-private struct TimeComponentView: View {
-    
-    let time: String
-    
-    var body: some View {
-        Text(time)
-            .font(.custom("Impact", size: 50))
-            .lineLimit(1)
-            .scaledToFit()
-            .minimumScaleFactor(0.1)
-            .padding(4)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.secondarySystemBackground))
-            .overlay {
-                Rectangle()
-                    .fill(Color(.systemBackground))
-                    .frame(height: 2)
-            }
-    }
-}
-
 struct NextPrayerWidget: Widget {
     let kind: String = "NextPrayerWidget"
     

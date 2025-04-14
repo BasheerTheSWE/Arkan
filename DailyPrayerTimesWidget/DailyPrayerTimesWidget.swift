@@ -34,10 +34,9 @@ struct Provider: AppIntentTimelineProvider {
         let currentDate = Date()
         
         for offset in 0..<2 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: offset * 6, to: currentDate)!
+            let entryDate = Calendar.current.date(byAdding: .day, value: offset, to: currentDate)!
             
             if let prayerTimesInfo = try? await PrayerTimesManager.getOrDownloadPrayerTimesInfo(forDate: entryDate) {
-                
                 let entry = PrayerTimesEntry(date: entryDate, configuration: configuration, prayerTimesInfo: prayerTimesInfo)
                 
                 entries.append(entry)

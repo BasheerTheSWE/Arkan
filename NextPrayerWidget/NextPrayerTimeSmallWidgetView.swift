@@ -31,7 +31,8 @@ struct NextPrayerTimeSmallWidgetView: View {
     // MARK: - VIEW
     var body: some View {
         VStack(spacing: 0) {
-            Text(entry.city.isEmpty || entry.countryCode.isEmpty ? "Location Unavailable" : "\(entry.city), \(entry.countryCode)")
+//            Text(entry.city.isEmpty || entry.countryCode.isEmpty ? "Location Unavailable" : "\(entry.city), \(entry.countryCode)")
+            Text(entry.prayer.rawValue + " Time")
                 .font(.system(size: 10, weight: .bold, design: .rounded))
                 .lineLimit(1)
                 .scaledToFit()
@@ -82,5 +83,26 @@ struct NextPrayerTimeSmallWidgetView: View {
     
     func getMinute() -> String {
         return String(entry.timeString.split(separator: ":")[1])
+    }
+}
+
+private struct TimeComponentView: View {
+    
+    let time: String
+    
+    var body: some View {
+        Text(time)
+            .font(.custom("Impact", size: 50))
+            .lineLimit(1)
+            .scaledToFit()
+            .minimumScaleFactor(0.1)
+            .padding(4)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.secondarySystemBackground))
+            .overlay {
+                Rectangle()
+                    .fill(Color(.systemBackground))
+                    .frame(height: 2)
+            }
     }
 }
