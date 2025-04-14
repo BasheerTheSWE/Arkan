@@ -11,9 +11,6 @@ import WidgetKit
 
 struct ContentView: View {
     
-    @Query private var dailyArchive: [SpecificDateArchivedPrayerTimes]
-    @Query private var yearlyArchive: [GregorianYearPrayerTimes]
-    
     @AppStorage(UDKey.countryCode.rawValue) private var countryCode = ""
     @AppStorage(UDKey.city.rawValue) private var city = ""
     
@@ -77,24 +74,6 @@ struct ContentView: View {
         }
         .animation(.default, value: city)
         .animation(.default, value: countryCode)
-        .onAppear {
-            print("\n\n\n\n\n\n\n\nDaily: \(dailyArchive.count)")
-            print("\n\n\n\n\n\n\n\nYearly: \(yearlyArchive.count)")
-        }
-        .onChange(of: dailyArchive) { old, new in
-            print("\n\n\n\n\n\n\n\nDaily: \(dailyArchive.count)")
-            
-            if new.count < old.count {
-                print("Yooo")
-            }
-        }
-        .onChange(of: yearlyArchive) { old, new in
-            print("\n\n\n\n\n\n\n\nYearly: \(yearlyArchive.count)")
-            
-            if new.count < old.count {
-                print("Yo")
-            }
-        }
     }
     
     private func getPrayerTimesForToday() async {
