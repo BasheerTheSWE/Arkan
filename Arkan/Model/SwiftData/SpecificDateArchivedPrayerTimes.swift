@@ -16,7 +16,7 @@ class SpecificDateArchivedPrayerTimes {
     var apiResponseData: Data
     
     init(date: Date, city: String, countryCode: String, apiResponseData: Data) {
-        self.date = date
+        self.date = Calendar.current.startOfDay(for: date)
         self.city = city
         self.countryCode = countryCode
         self.apiResponseData = apiResponseData

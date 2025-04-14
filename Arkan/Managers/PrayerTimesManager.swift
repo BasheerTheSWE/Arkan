@@ -34,7 +34,8 @@ class PrayerTimesManager {
     }
     
     static func getOrDownloadPrayerTimesInfo(forDate date: Date = .now, updateLocation: Bool = true) async throws -> PrayerTimesInfo {
-        let dailyPrayerTimesContext = try ModelContext(.init(for: SpecificDateArchivedPrayerTimes.self))
+        /// Before doing anything we'll clean the archives
+        cleanUpArchives()
         
         /// The location fetcher will get and store user's coordinates in UserDefaults
         if updateLocation { try? await LocationFetcher().updateUserLocation() }
@@ -53,9 +54,10 @@ class PrayerTimesManager {
             
             /// We have successfully downloaded the prayer times for the passed-in date from the API
             /// But before we return it, we should store in SwiftData
+            let context = try ModelContext(.init(for: SpecificDateArchivedPrayerTimes.self))
             let specificDateArchivedPrayerTimes = SpecificDateArchivedPrayerTimes(date: date, city: city, countryCode: countryCode, apiResponseData: prayerTimesAPIResponseData)
-            dailyPrayerTimesContext.insert(specificDateArchivedPrayerTimes)
-            try? dailyPrayerTimesContext.save()
+            context.insert(specificDateArchivedPrayerTimes)
+            try? context.save()
             
             /// Since the download was successful, it means the user has stable internet connection
             /// So why don't we try to download a yearly backup if non exists
@@ -80,6 +82,35 @@ class PrayerTimesManager {
     }
     
     // MARK: - PRIVATE
+    /// Cleans up the daily and yearly archives by removing stored prayer times for past years and days
+    ///
+    /// The user won't access prayer times of yesterday and it will just become clutter
+    static private func cleanUpArchives() {
+        guard let dailyArchiveContext = try? ModelContext(.init(for: SpecificDateArchivedPrayerTimes.self)),
+              let yearlyArchiveContext = try? ModelContext(.init(for: GregorianYearPrayerTimes.self)),
+              let archivedDailyPrayerTimes = try? dailyArchiveContext.fetch(FetchDescriptor<SpecificDateArchivedPrayerTimes>()),
+              let archivedYearlyPrayerTimes = try? dailyArchiveContext.fetch(FetchDescriptor<GregorianYearPrayerTimes>()) else { return }
+        
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        
+        // Clean up daily archived prayer times (remove anything before today)
+        for archived in archivedDailyPrayerTimes where calendar.compare(archived.date, to: today, toGranularity: .day) == .orderedAscending {
+            dailyArchiveContext.delete(archived)
+        }
+        
+        // Clean up yearly archived prayer times (remove any year before the current year)
+        let currentYear = calendar.component(.year, from: today)
+        
+        for archived in archivedYearlyPrayerTimes where archived.year < currentYear {
+            yearlyArchiveContext.delete(archived)
+        }
+        
+        // Save changes
+        try? dailyArchiveContext.save()
+        try? yearlyArchiveContext.save()
+    }
+    
     static private func getPrayerTimesInfoFromDailyArchiver(forDate date: Date) throws -> PrayerTimesInfo {
         let context = try ModelContext(.init(for: SpecificDateArchivedPrayerTimes.self))
         let dailyArchivedPrayerTimes = try context.fetch(FetchDescriptor<SpecificDateArchivedPrayerTimes>())

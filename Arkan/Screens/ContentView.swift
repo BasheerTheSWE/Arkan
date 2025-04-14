@@ -11,14 +11,8 @@ import WidgetKit
 
 struct ContentView: View {
     
-    @Environment(\.modelContext) private var context
-    @Query private var archivedYearlyPrayerTimes: [GregorianYearPrayerTimes]
-    
     @AppStorage(UDKey.countryCode.rawValue) private var countryCode = ""
     @AppStorage(UDKey.city.rawValue) private var city = ""
-    
-    @AppStorage(UDKey.latitude.rawValue) private var latitude = 0.0
-    @AppStorage(UDKey.longitude.rawValue) private var longitude = 0.0
     
     @State private var prayerTimesInfoForToday: PrayerTimesInfo?
     @State private var locationFetcher = LocationFetcher()
