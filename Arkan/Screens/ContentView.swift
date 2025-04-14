@@ -116,7 +116,7 @@ struct ContentView: View {
             }
             
             /// Reaching this line means we have an archive and "theoretically" it shouldn't fail
-            prayerTimesInfoForToday = try PrayerTimesArchiveManager.getPrayerTimesForDate()
+            prayerTimesInfoForToday = try PrayerTimesManager.getPrayerTimesForDate()
         } catch {
             /// Backup not found and couldn't be downloaded
             print(error.localizedDescription)
