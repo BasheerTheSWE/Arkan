@@ -42,14 +42,22 @@ final class NetworkManager {
     }
     
     @MainActor
-    static func getPrayerTimes(forDate date: Date, latitude: Double, longitude: Double) async throws -> PrayerTimesInfo {
+    static func getPrayerTimesAPIResponseData(forDate date: Date, latitude: Double, longitude: Double) async throws -> Data {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy"
         let formattedDate = formatter.string(from: date)
         
         guard let url = URL(string: "https://api.aladhan.com/v1/timings/\(formattedDate)?latitude=\(latitude)&longitude=\(longitude)&shafaq=general&calendarMethod=UAQ") else { throw NetworkError.invalidURL }
         
-        return try await getPrayerTimesInfoFromURL(url: url)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "accept")
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else { throw NetworkError.badServerResponse }
+        
+        return data
     }
     
     // MARK: - REUSABLES
