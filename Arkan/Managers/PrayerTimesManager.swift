@@ -17,6 +17,9 @@ class PrayerTimesManager {
     
     static let context = SwiftDataManager.shared.context
     
+    static let archivedPrayerTimesForGregorianYears = try? context.fetch(FetchDescriptor<ArchivedPrayerTimesForGregorianYear>())
+    static let archivedPrayerTimesForSpecificDates = try? context.fetch(FetchDescriptor<ArchivedPrayerTimesForSpecificDate>())
+    
     static let latitude = UserDefaults.shared.double(forKey: UDKey.latitude.rawValue)
     static let longitude = UserDefaults.shared.double(forKey: UDKey.longitude.rawValue)
     
@@ -57,7 +60,7 @@ class PrayerTimesManager {
             
             /// We have successfully downloaded the prayer times for the passed-in date from the API
             /// But before we return it, we should store in SwiftData
-            let specificDateArchivedPrayerTimes = SpecificDateArchivedPrayerTimes(date: date, city: city, countryCode: countryCode, apiResponseData: prayerTimesAPIResponseData)
+            let specificDateArchivedPrayerTimes = ArchivedPrayerTimesForSpecificDate(date: date, city: city, countryCode: countryCode, apiResponseData: prayerTimesAPIResponseData)
             context.insert(specificDateArchivedPrayerTimes)
             try? context.save()
             
@@ -88,21 +91,21 @@ class PrayerTimesManager {
     ///
     /// The user won't access prayer times of yesterday and it will just become clutter
     static private func cleanUpArchives() {
-        guard let archivedDailyPrayerTimes = try? context.fetch(FetchDescriptor<SpecificDateArchivedPrayerTimes>()),
-              let archivedYearlyPrayerTimes = try? context.fetch(FetchDescriptor<GregorianYearPrayerTimes>()) else { return }
+        guard let archivedPrayerTimesForGregorianYears = archivedPrayerTimesForGregorianYears,
+              let archivedPrayerTimesForSpecificDates = archivedPrayerTimesForSpecificDates else { return }
         
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
         
         // Clean up daily archived prayer times (remove anything before today)
-        for archived in archivedDailyPrayerTimes where calendar.compare(archived.date, to: today, toGranularity: .day) == .orderedAscending {
+        for archived in archivedPrayerTimesForSpecificDates where calendar.compare(archived.date, to: today, toGranularity: .day) == .orderedAscending {
             context.delete(archived)
         }
         
         // Clean up yearly archived prayer times (remove any year before the current year)
         let currentYear = calendar.component(.year, from: today)
         
-        for archived in archivedYearlyPrayerTimes where archived.year < currentYear {
+        for archived in archivedPrayerTimesForGregorianYears where archived.year < currentYear {
             context.delete(archived)
         }
         
@@ -111,9 +114,9 @@ class PrayerTimesManager {
     }
     
     static private func getPrayerTimesInfoFromDailyArchiver(forDate date: Date) throws -> PrayerTimesInfo {
-        let dailyArchivedPrayerTimes = try context.fetch(FetchDescriptor<SpecificDateArchivedPrayerTimes>())
+        guard let archivedPrayerTimesForSpecificDates = archivedPrayerTimesForSpecificDates else { throw PrayerTimesArchiveError.dataNotFound }
         
-        if let archivedPrayerTimesData = dailyArchivedPrayerTimes.first(where: { Calendar.current.isDate($0.date, inSameDayAs: date) && $0.city == city && $0.countryCode == countryCode }) {
+        if let archivedPrayerTimesData = archivedPrayerTimesForSpecificDates.first(where: { Calendar.current.isDate($0.date, inSameDayAs: date) && $0.city == city && $0.countryCode == countryCode }) {
             /// BOOM! We have archived prayer times data for the passed-in date
             return try archivedPrayerTimesData.getPrayerTimesInfo()
         }
@@ -124,8 +127,8 @@ class PrayerTimesManager {
     static private func isThereAYearlyPrayerTimesBackup(containingPrayerTimesForDate date: Date) -> Bool {
         let year = Calendar.current.component(.year, from: date)
         
-        guard let archivedYearlyPrayerTimes = try? context.fetch(FetchDescriptor<GregorianYearPrayerTimes>()),
-              archivedYearlyPrayerTimes.contains(where: { $0.year == year && $0.city == city && $0.countryCode == countryCode }) else { return false }
+        guard let archivedPrayerTimesForGregorianYears = archivedPrayerTimesForGregorianYears,
+              archivedPrayerTimesForGregorianYears.contains(where: { $0.year == year && $0.city == city && $0.countryCode == countryCode }) else { return false }
         
         return true
     }
@@ -135,7 +138,7 @@ class PrayerTimesManager {
         
         let apiResponseData = try await NetworkManager.getPrayerTimesAPIResponseData(forYear: year, latitude: latitude, longitude: longitude)
                 
-        let gregorianYearPrayerTimes = GregorianYearPrayerTimes(year: year, city: city, countryCode: countryCode, apiResponseData: apiResponseData)
+        let gregorianYearPrayerTimes = ArchivedPrayerTimesForGregorianYear(year: year, city: city, countryCode: countryCode, apiResponseData: apiResponseData)
         context.insert(gregorianYearPrayerTimes)
         try? context.save()
     }
@@ -143,7 +146,7 @@ class PrayerTimesManager {
     static private func getPrayerTimesFromYearlyArchive(forDate date: Date = .now) throws -> PrayerTimesInfo {
         guard isThereAYearlyPrayerTimesBackup(containingPrayerTimesForDate: date) else { throw PrayerTimesArchiveError.dataNotFound }
         
-        let archivedYearlyBackups = try context.fetch(FetchDescriptor<GregorianYearPrayerTimes>())
+        guard let archivedPrayerTimesForGregorianYears = archivedPrayerTimesForGregorianYears else { throw PrayerTimesArchiveError.dataNotFound }
         
         let todaysDateComponents = Calendar.current.dateComponents([.day, .month, .year], from: date)
         let currentYear = todaysDateComponents.year ?? 0
@@ -153,7 +156,7 @@ class PrayerTimesManager {
         let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue)
         let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue)
         
-        guard let currentYearArchivedBackup = archivedYearlyBackups.first(where: { $0.year == currentYear && $0.city == city && $0.countryCode == countryCode }) else { throw PrayerTimesArchiveError.dataNotFound }
+        guard let currentYearArchivedBackup = archivedPrayerTimesForGregorianYears.first(where: { $0.year == currentYear && $0.city == city && $0.countryCode == countryCode }) else { throw PrayerTimesArchiveError.dataNotFound }
         
         let currentYearPrayerTimesByMonths = try currentYearArchivedBackup.getPrayerTimesByMonths()
         guard let prayerTimesInfosForCurrentMonth = currentYearPrayerTimesByMonths[String(currentMonth)] else { throw PrayerTimesArchiveError.dataNotFound }

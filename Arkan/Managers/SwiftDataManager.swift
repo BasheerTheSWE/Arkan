@@ -19,24 +19,9 @@ class SwiftDataManager {
     }
     
     init() {
-        let schema = Schema([GregorianYearPrayerTimes.self, SpecificDateArchivedPrayerTimes.self])
+        let schema = Schema([ArchivedPrayerTimesForGregorianYear.self, ArchivedPrayerTimesForSpecificDate.self])
         let config = ModelConfiguration(groupContainer: .identifier("group.BasheerTheSWE.Arkan.PrayerTime"))
         
         self.container = try! ModelContainer(for: schema, configurations: config)
     }
-//    static let shared = SwiftDataManager()
-//    
-//    let container: ModelContainer
-//    
-//    private init() {
-//        let config = ModelConfiguration(
-//            groupContainer: .identifier("group.BasheerTheSWE.Arkan.PrayerTime")
-//        )
-//        
-//        self.container = try! ModelContainer(for: GregorianYearPrayerTimes.self, SpecificDateArchivedPrayerTimes.self, configurations: config)
-//    }
-//    
-//    var context: ModelContext {
-//        ModelContext(container)
-//    }
 }

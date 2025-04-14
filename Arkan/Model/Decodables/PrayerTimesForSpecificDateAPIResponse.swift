@@ -1,5 +1,5 @@
 //
-//  DayPrayerTimesAPIResponse.swift
+//  PrayerTimesForSpecificDateAPIResponse.swift
 //  Arkan
 //
 //  Created by Basheer Abdulmalik on 13/04/2025.
@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct DayPrayerTimesAPIResponse: Decodable {
+struct PrayerTimesForSpecificDateAPIResponse: Decodable {
     let data: PrayerTimesInfo
 }

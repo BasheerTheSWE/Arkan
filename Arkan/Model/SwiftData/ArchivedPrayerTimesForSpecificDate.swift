@@ -1,5 +1,5 @@
 //
-//  SpecificDateArchivedPrayerTimes.swift
+//  ArchivedPrayerTimesForSpecificDate.swift
 //  Arkan
 //
 //  Created by Basheer Abdulmalik on 14/04/2025.
@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class SpecificDateArchivedPrayerTimes {
+class ArchivedPrayerTimesForSpecificDate {
     var date: Date
     var city: String
     var countryCode: String
@@ -23,7 +23,7 @@ class SpecificDateArchivedPrayerTimes {
     }
     
     func getPrayerTimesInfo() throws -> PrayerTimesInfo {
-        let decodedResponse = try JSONDecoder().decode(DayPrayerTimesAPIResponse.self, from: apiResponseData)
+        let decodedResponse = try JSONDecoder().decode(PrayerTimesForSpecificDateAPIResponse.self, from: apiResponseData)
         return decodedResponse.data
     }
 }

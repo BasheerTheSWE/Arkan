@@ -17,6 +17,7 @@ class NotificationsManager {
     }
     
     static func schedulePrayerTimesNotificationsForTheNext30Days() {
+        /// First thing to do is to download the prayer times for the next 30 days
         
     }
     
