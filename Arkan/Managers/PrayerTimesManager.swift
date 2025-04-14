@@ -16,15 +16,8 @@ class PrayerTimesManager {
     }
     
     static let context = SwiftDataManager.shared.context
-    
     static let archivedPrayerTimesForGregorianYears = try? context.fetch(FetchDescriptor<ArchivedPrayerTimesForGregorianYear>())
     static let archivedPrayerTimesForSpecificDates = try? context.fetch(FetchDescriptor<ArchivedPrayerTimesForSpecificDate>())
-    
-    static let latitude = UserDefaults.shared.double(forKey: UDKey.latitude.rawValue)
-    static let longitude = UserDefaults.shared.double(forKey: UDKey.longitude.rawValue)
-    
-    static let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue) ?? ""
-    static let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue) ?? ""
     
     // MARK: - PUBLIC
     static func getPrayerTimesFromArchive(forDate date: Date = .now) throws -> PrayerTimesInfo {
@@ -40,6 +33,12 @@ class PrayerTimesManager {
     }
     
     static func getOrDownloadPrayerTimesInfo(forDate date: Date = .now, locationFetcher: LocationFetcher? = nil) async throws -> PrayerTimesInfo {
+        let latitude = UserDefaults.shared.double(forKey: UDKey.latitude.rawValue)
+        let longitude = UserDefaults.shared.double(forKey: UDKey.longitude.rawValue)
+        
+        let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue) ?? ""
+        let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue) ?? ""
+        
         /// Before doing anything we'll clean the archives
         cleanUpArchives()
         
@@ -114,6 +113,9 @@ class PrayerTimesManager {
     }
     
     static private func getPrayerTimesInfoFromDailyArchiver(forDate date: Date) throws -> PrayerTimesInfo {
+        let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue) ?? ""
+        let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue) ?? ""
+        
         guard let archivedPrayerTimesForSpecificDates = archivedPrayerTimesForSpecificDates else { throw PrayerTimesArchiveError.dataNotFound }
         
         if let archivedPrayerTimesData = archivedPrayerTimesForSpecificDates.first(where: { Calendar.current.isDate($0.date, inSameDayAs: date) && $0.city == city && $0.countryCode == countryCode }) {
@@ -125,6 +127,9 @@ class PrayerTimesManager {
     }
     
     static private func isThereAYearlyPrayerTimesBackup(containingPrayerTimesForDate date: Date) -> Bool {
+        let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue) ?? ""
+        let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue) ?? ""
+        
         let year = Calendar.current.component(.year, from: date)
         
         guard let archivedPrayerTimesForGregorianYears = archivedPrayerTimesForGregorianYears,
@@ -135,6 +140,12 @@ class PrayerTimesManager {
     
     static private func downloadAndSavePrayerTimesYearlyBackup(forDate date: Date) async throws {
         let year = Calendar.current.component(.year, from: date)
+        
+        let latitude = UserDefaults.shared.double(forKey: UDKey.latitude.rawValue)
+        let longitude = UserDefaults.shared.double(forKey: UDKey.longitude.rawValue)
+        
+        let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue) ?? ""
+        let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue) ?? ""
         
         let apiResponseData = try await NetworkManager.getPrayerTimesAPIResponseData(forYear: year, latitude: latitude, longitude: longitude)
                 
