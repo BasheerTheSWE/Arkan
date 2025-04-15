@@ -12,6 +12,7 @@
 		3A1BCF372DAB9E7700005FA5 /* ReemKufi.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A1BCF362DAB9E7700005FA5 /* ReemKufi.ttf */; };
 		3A70357C2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A70357B2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift */; };
 		3A70357D2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A70357B2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift */; };
+		3A77B9612DAEC87100D8A502 /* TimeComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77B9602DAEC87100D8A502 /* TimeComponentView.swift */; };
 		3A94BBED2DAA0C1F00EF3FCD /* ArkanApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BBE92DAA0C1F00EF3FCD /* ArkanApp.swift */; };
 		3A94BBEE2DAA0C1F00EF3FCD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BBEB2DAA0C1F00EF3FCD /* ContentView.swift */; };
 		3A94BBEF2DAA0C1F00EF3FCD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A94BBEA2DAA0C1F00EF3FCD /* Assets.xcassets */; };
@@ -148,6 +149,7 @@
 		3A1BCF2D2DAB799800005FA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3A1BCF362DAB9E7700005FA5 /* ReemKufi.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ReemKufi.ttf; sourceTree = "<group>"; };
 		3A70357B2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesForSpecificDateAPIResponse.swift; sourceTree = "<group>"; };
+		3A77B9602DAEC87100D8A502 /* TimeComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeComponentView.swift; sourceTree = "<group>"; };
 		3A94BBDB2DAA096600EF3FCD /* Arkan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arkan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A94BBE92DAA0C1F00EF3FCD /* ArkanApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArkanApp.swift; sourceTree = "<group>"; };
 		3A94BBEA2DAA0C1F00EF3FCD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -456,6 +458,7 @@
 		3AF6CD432DAD6B2800A1045C /* NextPrayerWidget */ = {
 			isa = PBXGroup;
 			children = (
+				3A77B9602DAEC87100D8A502 /* TimeComponentView.swift */,
 				3AF6CD3E2DAD6B2800A1045C /* Assets.xcassets */,
 				3AF6CD3F2DAD6B2800A1045C /* Info.plist */,
 				3AF6CD402DAD6B2800A1045C /* NextPrayerWidget.swift */,
@@ -684,6 +687,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3AF6CD532DAD832900A1045C /* PrayerTimesForGregorianYearAPIResponse.swift in Sources */,
+				3A77B9612DAEC87100D8A502 /* TimeComponentView.swift in Sources */,
 				3AF6CD562DAD833900A1045C /* PrayerTimesInfo.swift in Sources */,
 				3AF6CD5F2DAD837400A1045C /* UDKey.swift in Sources */,
 				3AF6CD5A2DAD834C00A1045C /* HijriDate.swift in Sources */,

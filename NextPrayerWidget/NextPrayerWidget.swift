@@ -168,12 +168,94 @@ struct NextPrayerWidgetEntryView : View {
         case .systemSmall:
             NextPrayerTimeSmallWidgetView(entry: entry)
             
+        case .systemMedium:
+            NextPrayerTimeMediumWidgetView(entry: entry)
+            
         case .accessoryCircular:
             NextPrayerTimeCircularWidgetView(entry: entry)
             
         default:
             Text("Unsupported Size")
         }
+    }
+}
+
+struct NextPrayerTimeMediumWidgetView: View {
+    
+    private let systemImage: String
+    
+    private let entry: Provider.Entry
+    
+    // MARK: - INIT
+    init(entry: Provider.Entry) {
+        self.entry = entry
+        
+        let images = [
+            "sunrise",
+            "sun.max",
+            "cloud.sun",
+            "sunset",
+            "moon"
+        ]
+        
+        self.systemImage = images[Prayer.allCases.firstIndex(of: entry.nextPrayer) ?? 0]
+    }
+    
+    // MARK: - VIEW
+    var body: some View {
+        VStack(spacing: 0) {
+            Text(entry.city.isEmpty || entry.countryCode.isEmpty ? "Location Unavailable" : "\(entry.city), \(entry.countryCode)")
+                .font(.system(size: 12, weight: .bold, design: .rounded))
+                .lineLimit(1)
+                .scaledToFit()
+                .minimumScaleFactor(0.25)
+                .padding(.vertical, 8)
+                .padding(.horizontal)
+            
+            HStack(spacing: 8) {
+                HStack {
+                    TimeComponentView(time: "04")
+                    
+                    Text(":")
+                        .font(.custom("Impact", size: 28))
+                        .offset(y: -4)
+                    
+                    TimeComponentView(time: "45")
+                    
+//                    Image(systemName: "sunrise")
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fit)
+////                        .frame(width: 24, height: 24)
+//                    
+//                    Text(entry.nextPrayer.rawValue)
+//                        .font(.system(size: 14, weight: .bold))
+                }
+                
+                Divider()
+                
+                VStack {
+                    
+                    Spacer()
+                    
+                    HStack {
+                        Text("Time Left: ")
+                            .font(.system(size: 8, weight: .bold, design: .monospaced))
+                            .fixedSize()
+                        
+                        Text(timerInterval: Date()...entry.nextPrayerDate, countsDown: true)
+                            .font(.system(size: 8, weight: .bold, design: .monospaced))
+                            .multilineTextAlignment(.trailing)
+                            .frame(maxWidth: .infinity)
+                    }
+                    .padding(4)
+                }
+            }
+            .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.systemBackground))
+            .clipShape(.rect(topLeadingRadius: 16, topTrailingRadius: 16))
+        }
+        .background(Color(.secondarySystemBackground))
     }
 }
 
@@ -188,11 +270,11 @@ struct NextPrayerWidget: Widget {
         .configurationDisplayName("Next Prayer Time")
         .description("Display the time for your next prayer")
         .contentMarginsDisabled()
-        .supportedFamilies([.systemSmall, .accessoryCircular])
+        .supportedFamilies([.systemSmall, .systemMedium, .accessoryCircular])
     }
 }
 
-#Preview(as: .systemSmall) {
+#Preview(as: .systemMedium) {
     NextPrayerWidget()
 } timeline: {
     NextPrayerTimeEntry(date: .now, nextPrayerDate: Calendar.current.date(byAdding: .hour, value: 3, to: .now) ?? .now, prayer: .fajr)
