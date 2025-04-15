@@ -26,30 +26,8 @@ struct NextPrayerTimeCircularWidgetView: View {
             "moon"
         ]
         
-        self.systemImage = images[Prayer.allCases.firstIndex(of: entry.prayer) ?? 0]
-        
-        switch entry.prayer {
-            
-        case .fajr:
-            self.progress = 1
-            break
-            
-        case .dhuhr:
-            self.progress = 0.75
-            break
-            
-        case .asr:
-            self.progress = 0.5
-            break
-            
-        case .maghrib:
-            self.progress = 0.25
-            break
-            
-        case .isha:
-            self.progress = 0
-            break
-        }
+        self.systemImage = images[Prayer.allCases.firstIndex(of: entry.nextPrayer) ?? 0]
+        self.progress = 1 - (CGFloat(Prayer.allCases.firstIndex(of: entry.nextPrayer) ?? 0) / 4.0)
     }
     
     // MARK: - VIEW

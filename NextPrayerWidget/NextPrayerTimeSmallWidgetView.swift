@@ -68,7 +68,7 @@ struct NextPrayerTimeSmallWidgetView: View {
                         .multilineTextAlignment(.trailing)
                         .frame(maxWidth: .infinity)
                 }
-                .padding(.horizontal, 4)
+                .padding(.horizontal, 2)
             }
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
