@@ -212,7 +212,7 @@ struct NextPrayerTimeMediumWidgetView: View {
                 .padding(.vertical, 8)
                 .padding(.horizontal)
             
-            HStack(spacing: 8) {
+            HStack(spacing: 16) {
                 HStack {
                     TimeComponentView(time: "04")
                     
@@ -221,33 +221,44 @@ struct NextPrayerTimeMediumWidgetView: View {
                         .offset(y: -4)
                     
                     TimeComponentView(time: "45")
-                    
-//                    Image(systemName: "sunrise")
-//                        .resizable()
-//                        .aspectRatio(contentMode: .fit)
-////                        .frame(width: 24, height: 24)
-//                    
-//                    Text(entry.nextPrayer.rawValue)
-//                        .font(.system(size: 14, weight: .bold))
                 }
                 
-                Divider()
-                
-                VStack {
+                HStack(spacing: 0) {
+                    Rectangle()
+                        .fill(Color(.label))
+                        .frame(width: 4)
                     
-                    Spacer()
-                    
-                    HStack {
-                        Text("Time Left: ")
-                            .font(.system(size: 8, weight: .bold, design: .monospaced))
-                            .fixedSize()
+                    VStack(spacing: 0) {
+                        VStack(alignment: .leading, spacing: -4) {
+                            Text("Next Prayer")
+                                .font(.system(size: 10, weight: .bold))
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                                .scaledToFit()
+                                .minimumScaleFactor(0.1)
+                            
+                            Text(entry.nextPrayer.rawValue)
+                                .font(.system(size: 75, weight: .heavy))
+                                .lineLimit(1)
+                                .scaledToFit()
+                                .minimumScaleFactor(0.1)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                         
-                        Text(timerInterval: Date()...entry.nextPrayerDate, countsDown: true)
-                            .font(.system(size: 8, weight: .bold, design: .monospaced))
-                            .multilineTextAlignment(.trailing)
-                            .frame(maxWidth: .infinity)
+                        HStack {
+                            Text("Time Left: ")
+                                .font(.system(size: 8, weight: .bold, design: .monospaced))
+                                .fixedSize()
+                            
+                            Text(timerInterval: Date()...entry.nextPrayerDate, countsDown: true)
+                                .font(.system(size: 8, weight: .bold, design: .monospaced))
+                                .multilineTextAlignment(.trailing)
+                                .frame(maxWidth: .infinity)
+                        }
+                        .padding([.leading, .top, .trailing], 2)
                     }
-                    .padding(4)
+                    .padding(8)
+                    .background(Color(.secondarySystemBackground))
                 }
             }
             .padding()
@@ -277,6 +288,6 @@ struct NextPrayerWidget: Widget {
 #Preview(as: .systemMedium) {
     NextPrayerWidget()
 } timeline: {
-    NextPrayerTimeEntry(date: .now, nextPrayerDate: Calendar.current.date(byAdding: .hour, value: 3, to: .now) ?? .now, prayer: .fajr)
+    NextPrayerTimeEntry(date: .now, nextPrayerDate: Calendar.current.date(byAdding: .hour, value: 3, to: .now) ?? .now, prayer: .isha)
     NextPrayerTimeEntry(date: Calendar.current.date(byAdding: .hour, value: 3, to: .now) ?? .now, nextPrayerDate: Calendar.current.date(byAdding: .hour, value: 4, to: .now) ?? .now, prayer: .dhuhr)
 }
