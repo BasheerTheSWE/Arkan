@@ -54,7 +54,7 @@ struct NextPrayerTimeCircularWidgetView: View {
     
     // MARK: - VIEW
     var body: some View {
-        Text(entry.timeString)
+        Text(getTimeString())
             .font(.system(size: 24, weight: .bold))
             .lineLimit(1)
             .scaledToFit()
@@ -80,5 +80,12 @@ struct NextPrayerTimeCircularWidgetView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 16, height: 16)
             }
+    }
+    
+    private func getTimeString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        formatter.timeZone = .current
+        return formatter.string(from: entry.nextPrayerDate)
     }
 }

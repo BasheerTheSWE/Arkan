@@ -12,35 +12,25 @@ struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> NextPrayerTimeEntry {
         MainActor.assumeIsolated {
             if let entry = getTimelineEntriesFromArchive().first {
-                let placeholderEntry = NextPrayerTimeEntry(date: .now, nextPrayerTime: entry.date, prayer: entry.prayer, timeString: entry.timeString)
+                let placeholderEntry = NextPrayerTimeEntry(date: .now, nextPrayerDate: entry.date, prayer: entry.prayer)
                 return placeholderEntry
             }
             
-            print("2")
             let nextPrayerTime = Calendar.current.date(byAdding: .hour, value: 3, to: Date()) ?? Date()
             
-            let formatter = DateFormatter()
-            formatter.dateFormat = "HH:mm"
-            let timeString = formatter.string(from: nextPrayerTime)
-            
-            return NextPrayerTimeEntry(date: Date(), nextPrayerTime: nextPrayerTime, prayer: .fajr, timeString: timeString)
+            return NextPrayerTimeEntry(date: .now, nextPrayerDate: nextPrayerTime, prayer: .fajr)
         }
     }
     
     func getSnapshot(in context: Context, completion: @escaping @Sendable (NextPrayerTimeEntry) -> Void) {
-        print("Snapshot")
         Task {
             if let entry = await getTimelineEntries().first {
-                let snapShotEntry = NextPrayerTimeEntry(date: .now, nextPrayerTime: entry.date, prayer: entry.prayer, timeString: entry.timeString)
+                let snapShotEntry = NextPrayerTimeEntry(date: .now, nextPrayerDate: entry.date, prayer: entry.prayer)
                 completion(snapShotEntry)
             } else {
                 let nextPrayerTime = Calendar.current.date(byAdding: .hour, value: 3, to: Date()) ?? Date()
                 
-                let formatter = DateFormatter()
-                formatter.dateFormat = "HH:mm"
-                let timeString = formatter.string(from: nextPrayerTime)
-                
-                completion(NextPrayerTimeEntry(date: Date(), nextPrayerTime: nextPrayerTime, prayer: .fajr, timeString: timeString))
+                completion(NextPrayerTimeEntry(date: .now, nextPrayerDate: nextPrayerTime, prayer: .fajr))
             }
         }
     }
@@ -55,53 +45,48 @@ struct Provider: TimelineProvider {
     
     // MARK: Helper functions
     private func getTimelineEntries() async -> [NextPrayerTimeEntry] {
+        let currentDate = Date()
         var entries = [NextPrayerTimeEntry]()
         
         let todayPrayerTimeObjects = await getPrayerTimeObjects(forDate: .now)
         let tomorrowPrayerTimeObjects = await getPrayerTimeObjects(forDate: Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now)
         
-        let prayerTimeObjects = todayPrayerTimeObjects + tomorrowPrayerTimeObjects
+        var prayerTimeObjects = todayPrayerTimeObjects + tomorrowPrayerTimeObjects
         
-        let currentDate = Date()
+        guard !prayerTimeObjects.isEmpty else { return [] }
+        
+        prayerTimeObjects = prayerTimeObjects.filter { $0.date > currentDate }
+        prayerTimeObjects.insert(PrayerTimeObject(prayer: prayerTimeObjects[0].previousPrayer, date: .now), at: 0)
         
         for (index, prayerTimeObject) in prayerTimeObjects.enumerated() {
-            /// Checking to see if the prayer has passed or not
-            /// We don't want to schedule a future update for previous data!! Obviously!
-            if prayerTimeObject.date > currentDate {
-                /// Creating a timeline entry
-                let entryDate = entries.isEmpty ? Date() : prayerTimeObject.date
-                let nextPrayerDate = index < prayerTimeObjects.count - 1 && !entries.isEmpty ? prayerTimeObjects[index + 1].date : prayerTimeObject.date
-                
-                let entry = NextPrayerTimeEntry(date: entryDate, nextPrayerTime: nextPrayerDate, prayer: prayerTimeObject.prayer, timeString: prayerTimeObject.timeString)
-                
-                entries.append(entry)
-            }
+            let nextPrayerDate = index < prayerTimeObjects.count - 1 ? prayerTimeObjects[index + 1].date : prayerTimeObject.date
+            let entry = NextPrayerTimeEntry(date: prayerTimeObject.date, nextPrayerDate: nextPrayerDate, prayer: prayerTimeObject.prayer)
+            
+            entries.append(entry)
         }
         
         return entries
     }
     
     @MainActor private func getTimelineEntriesFromArchive() -> [NextPrayerTimeEntry] {
+        let currentDate = Date()
         var entries = [NextPrayerTimeEntry]()
         
         let todayPrayerTimeObjects = getPrayerTimeObjectsFromArchive(forDate: .now)
         let tomorrowPrayerTimeObjects = getPrayerTimeObjectsFromArchive(forDate: Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now)
         
-        let prayerTimeObjects = todayPrayerTimeObjects + tomorrowPrayerTimeObjects
+        var prayerTimeObjects = todayPrayerTimeObjects + tomorrowPrayerTimeObjects
         
-        let currentDate = Date()
+        guard !prayerTimeObjects.isEmpty else { return [] }
+        
+        prayerTimeObjects = prayerTimeObjects.filter { $0.date > currentDate }
+        prayerTimeObjects.insert(PrayerTimeObject(prayer: prayerTimeObjects[0].previousPrayer, date: .now), at: 0)
         
         for (index, prayerTimeObject) in prayerTimeObjects.enumerated() {
-            /// Checking to see if the prayer has passed or not
-            /// We don't want to schedule a future update for previous data!! Obviously!
-            if prayerTimeObject.date > currentDate {
-                /// Creating a timeline entry
-                let nextPrayerTime = index < prayerTimeObjects.count - 1 ? prayerTimeObjects[index + 1].date : prayerTimeObject.date
-                
-                let entry = NextPrayerTimeEntry(date: prayerTimeObject.date, nextPrayerTime: nextPrayerTime, prayer: prayerTimeObject.prayer, timeString: prayerTimeObject.timeString)
-                
-                entries.append(entry)
-            }
+            let nextPrayerDate = index < prayerTimeObjects.count - 1 ? prayerTimeObjects[index + 1].date : prayerTimeObject.date
+            let entry = NextPrayerTimeEntry(date: prayerTimeObject.date, nextPrayerDate: nextPrayerDate, prayer: prayerTimeObject.prayer)
+            
+            entries.append(entry)
         }
         
         return entries
@@ -120,7 +105,7 @@ struct Provider: TimelineProvider {
         /// Getting the date of every prayer
         for prayer in Prayer.allCases {
             if let prayerDate = prayerTimesInfo.getDateObject(forPrayer: prayer) {
-                prayerTimes.append(PrayerTimeObject(prayer: prayer, date: prayerDate, timeString: prayerTimesInfo.timings.getTime(for: prayer, use24HourFormat: true)))
+                prayerTimes.append(PrayerTimeObject(prayer: prayer, date: prayerDate))
             }
         }
         
@@ -140,7 +125,7 @@ struct Provider: TimelineProvider {
         /// Getting the date of every prayer
         for prayer in Prayer.allCases {
             if let prayerDate = prayerTimesInfo.getDateObject(forPrayer: prayer) {
-                prayerTimes.append(PrayerTimeObject(prayer: prayer, date: prayerDate, timeString: prayerTimesInfo.timings.getTime(for: prayer, use24HourFormat: true)))
+                prayerTimes.append(PrayerTimeObject(prayer: prayer, date: prayerDate))
             }
         }
         
@@ -150,15 +135,23 @@ struct Provider: TimelineProvider {
     private struct PrayerTimeObject {
         let prayer: Prayer
         let date: Date
-        let timeString: String
+        
+        var previousPrayer: Prayer {
+            let index = Prayer.allCases.firstIndex(of: prayer) ?? 0
+            return index == 0 ? .isha : Prayer.allCases[index - 1]
+        }
     }
 }
 
 struct NextPrayerTimeEntry: TimelineEntry {
     let date: Date
-    let nextPrayerTime: Date
+    let nextPrayerDate: Date
+    
     let prayer: Prayer
-    let timeString: String
+    var nextPrayer: Prayer {
+        let index = Prayer.allCases.firstIndex(of: prayer) ?? 0
+        return index == 4 ? .fajr : Prayer.allCases[index + 1]
+    }
     
     let city = UserDefaults.shared.string(forKey: UDKey.city.rawValue) ?? ""
     let countryCode = UserDefaults.shared.string(forKey: UDKey.countryCode.rawValue) ?? ""
@@ -202,6 +195,6 @@ struct NextPrayerWidget: Widget {
 #Preview(as: .systemSmall) {
     NextPrayerWidget()
 } timeline: {
-    NextPrayerTimeEntry(date: .now, nextPrayerTime: Calendar.current.date(byAdding: .hour, value: 3, to: .now) ?? .now, prayer: .fajr, timeString: "03:50")
-    NextPrayerTimeEntry(date: Calendar.current.date(byAdding: .hour, value: 3, to: .now) ?? .now, nextPrayerTime: Calendar.current.date(byAdding: .hour, value: 4, to: .now) ?? .now, prayer: .dhuhr, timeString: "12:19")
+    NextPrayerTimeEntry(date: .now, nextPrayerDate: Calendar.current.date(byAdding: .hour, value: 3, to: .now) ?? .now, prayer: .fajr)
+    NextPrayerTimeEntry(date: Calendar.current.date(byAdding: .hour, value: 3, to: .now) ?? .now, nextPrayerDate: Calendar.current.date(byAdding: .hour, value: 4, to: .now) ?? .now, prayer: .dhuhr)
 }
