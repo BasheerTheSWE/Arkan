@@ -9,10 +9,13 @@ import SwiftUI
 
 struct TimeComponentView: View {
     
-    let time: String
+    enum TimeComponent { case hour, minute }
+    
+    let date: Date
+    let component: TimeComponent
     
     var body: some View {
-        Text(time)
+        Text(component == .hour ? getHour() : getMinute())
             .font(.custom("Impact", size: 50))
             .lineLimit(1)
             .scaledToFit()
@@ -26,5 +29,19 @@ struct TimeComponentView: View {
                     .fill(Color(.systemBackground))
                     .frame(height: 2)
             }
+    }
+    
+    func getHour() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH"
+        formatter.timeZone = .current
+        return formatter.string(from: date)
+    }
+    
+    func getMinute() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "mm"
+        formatter.timeZone = .current
+        return formatter.string(from: date)
     }
 }

@@ -458,7 +458,6 @@
 		3AF6CD432DAD6B2800A1045C /* NextPrayerWidget */ = {
 			isa = PBXGroup;
 			children = (
-				3A77B9602DAEC87100D8A502 /* TimeComponentView.swift */,
 				3AF6CD3E2DAD6B2800A1045C /* Assets.xcassets */,
 				3AF6CD3F2DAD6B2800A1045C /* Info.plist */,
 				3AF6CD402DAD6B2800A1045C /* NextPrayerWidget.swift */,
@@ -466,6 +465,7 @@
 				3AF6CD422DAD6B2800A1045C /* NextPrayerWidgetControl.swift */,
 				3AF6CD622DAD871C00A1045C /* NextPrayerTimeSmallWidgetView.swift */,
 				3AF6CD642DAD96FF00A1045C /* NextPrayerTimeCircularWidgetView.swift */,
+				3A77B9602DAEC87100D8A502 /* TimeComponentView.swift */,
 			);
 			path = NextPrayerWidget;
 			sourceTree = "<group>";

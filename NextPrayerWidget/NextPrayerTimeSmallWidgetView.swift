@@ -48,13 +48,13 @@ struct NextPrayerTimeSmallWidgetView: View {
             
             VStack(spacing: 8) {
                 HStack(spacing: 4) {
-                    TimeComponentView(time: getHour())
+                    TimeComponentView(date: entry.nextPrayerDate, component: .hour)
                     
                     Text(":")
                         .font(.custom("Impact", size: 28))
                         .offset(y: -4)
                     
-                    TimeComponentView(time: getMinute())
+                    TimeComponentView(date: entry.nextPrayerDate, component: .minute)
                 }
                 .frame(maxHeight: .infinity)
                 
@@ -76,19 +76,5 @@ struct NextPrayerTimeSmallWidgetView: View {
             .clipShape(.rect(topLeadingRadius: 16, topTrailingRadius: 16))
         }
         .background(Color(.secondarySystemBackground))
-    }
-    
-    func getHour() -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH"
-        formatter.timeZone = .current
-        return formatter.string(from: entry.nextPrayerDate)
-    }
-    
-    func getMinute() -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "mm"
-        formatter.timeZone = .current
-        return formatter.string(from: entry.nextPrayerDate)
     }
 }

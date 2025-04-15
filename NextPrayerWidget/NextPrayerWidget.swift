@@ -12,8 +12,7 @@ struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> NextPrayerTimeEntry {
         MainActor.assumeIsolated {
             if let entry = getTimelineEntriesFromArchive().first {
-                let placeholderEntry = NextPrayerTimeEntry(date: .now, nextPrayerDate: entry.date, prayer: entry.prayer)
-                return placeholderEntry
+                return entry
             }
             
             let nextPrayerTime = Calendar.current.date(byAdding: .hour, value: 3, to: Date()) ?? Date()
@@ -25,8 +24,7 @@ struct Provider: TimelineProvider {
     func getSnapshot(in context: Context, completion: @escaping @Sendable (NextPrayerTimeEntry) -> Void) {
         Task {
             if let entry = await getTimelineEntries().first {
-                let snapShotEntry = NextPrayerTimeEntry(date: .now, nextPrayerDate: entry.date, prayer: entry.prayer)
-                completion(snapShotEntry)
+                completion(entry)
             } else {
                 let nextPrayerTime = Calendar.current.date(byAdding: .hour, value: 3, to: Date()) ?? Date()
                 
@@ -214,13 +212,13 @@ struct NextPrayerTimeMediumWidgetView: View {
             
             HStack(spacing: 16) {
                 HStack {
-                    TimeComponentView(time: "04")
+                    TimeComponentView(date: entry.nextPrayerDate, component: .hour)
                     
                     Text(":")
                         .font(.custom("Impact", size: 28))
                         .offset(y: -4)
                     
-                    TimeComponentView(time: "45")
+                    TimeComponentView(date: entry.nextPrayerDate, component: .minute)
                 }
                 
                 HStack(spacing: 0) {
@@ -258,6 +256,7 @@ struct NextPrayerTimeMediumWidgetView: View {
                         .padding([.leading, .top, .trailing], 2)
                     }
                     .padding(8)
+                    .padding(.leading, 4)
                     .background(Color(.secondarySystemBackground))
                 }
             }
@@ -288,6 +287,6 @@ struct NextPrayerWidget: Widget {
 #Preview(as: .systemMedium) {
     NextPrayerWidget()
 } timeline: {
-    NextPrayerTimeEntry(date: .now, nextPrayerDate: Calendar.current.date(byAdding: .hour, value: 3, to: .now) ?? .now, prayer: .isha)
-    NextPrayerTimeEntry(date: Calendar.current.date(byAdding: .hour, value: 3, to: .now) ?? .now, nextPrayerDate: Calendar.current.date(byAdding: .hour, value: 4, to: .now) ?? .now, prayer: .dhuhr)
+    NextPrayerTimeEntry(date: .now, nextPrayerDate: Calendar.current.date(byAdding: .hour, value: 2, to: .now) ?? .now, prayer: .isha)
+    NextPrayerTimeEntry(date: Calendar.current.date(byAdding: .hour, value: 2, to: .now) ?? .now, nextPrayerDate: Calendar.current.date(byAdding: .hour, value: 4, to: .now) ?? .now, prayer: .dhuhr)
 }
