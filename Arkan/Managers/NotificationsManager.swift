@@ -42,10 +42,10 @@ class NotificationsManager {
         return try await UNUserNotificationCenter.current().requestAuthorization(options: options)
     }
     
-    /// Schedules prayer times notifications for the next 30 days
+    /// Schedules prayer times notifications for the next 12 days
     ///
     /// > Important: Make sure to update the user's location before calling this method
-    static func schedulePrayerTimesNotificationsForTheNext30Days() async throws {
+    static func schedulePrayerTimesNotificationsForTheNext12Days() async throws {
         guard try await requestAuthorization() else { throw NotificationError.notAuthorized }
         
         let latitude = UserDefaults.shared.double(forKey: UDKey.latitude.rawValue)
@@ -57,23 +57,23 @@ class NotificationsManager {
         let isMaghribNotificationDisabled = UserDefaults.shared.bool(forKey: UDKey.isMaghribNotificationDisabled.rawValue)
         let isIshaNotificationDisabled = UserDefaults.shared.bool(forKey: UDKey.isIshaNotificationDisabled.rawValue)
         
-        /// First thing to do is to download the prayer times for the next 30 days
+        /// First thing to do is to download the prayer times for the next 12 days
         /// Getting the starting and end dates
         let startingDate = Date()
-        let endingDate = Calendar.current.date(byAdding: .day, value: 30, to: startingDate)!
+        let endingDate = Calendar.current.date(byAdding: .day, value: 12, to: startingDate)!
         
         /// Getting the API response date
         let apiResponseData = try await NetworkManager.getPrayerTimesAPIResponseData(from: startingDate, to: endingDate, latitude: latitude, longitude: longitude)
         
-        /// Decoding the API response data to get an array containing the prayer times for the next 30 days
+        /// Decoding the API response data to get an array containing the prayer times for the next 12 days
         let decodedAPIResponse = try JSONDecoder().decode(PrayerTimesForSpecificPeriodAPIResponse.self, from: apiResponseData)
-        let prayerTimesInfosForTheNext30Days = decodedAPIResponse.data
+        let prayerTimesInfosForTheNext12Days = decodedAPIResponse.data
         
         /// We'll clear previous or to be more precise 'upcoming' notifications before we schedule the new ones
         clearScheduledNotifications()
         
         /// Now we loop through the downloaded data and schedule a notification for every prayer
-        for prayerTimesInfo in prayerTimesInfosForTheNext30Days {
+        for prayerTimesInfo in prayerTimesInfosForTheNext12Days {
             for index in 0..<5 {
                 let prayer = Prayer.allCases[index]
                 

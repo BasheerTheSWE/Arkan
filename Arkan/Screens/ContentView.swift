@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import WidgetKit
+import UserNotifications
 
 struct ContentView: View {
     
@@ -79,6 +80,11 @@ struct ContentView: View {
         }
         .animation(.default, value: city)
         .animation(.default, value: countryCode)
+        .onAppear {
+            UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+                print("Pending notifications: \(requests.count)")
+            }
+        }
     }
     
     private func getPrayerTimesForToday() async {
@@ -110,7 +116,7 @@ struct ContentView: View {
             try await locationFetcher.updateUserLocation()
         }
         
-        try await NotificationsManager.schedulePrayerTimesNotificationsForTheNext30Days()
+        try await NotificationsManager.schedulePrayerTimesNotificationsForTheNext12Days()
     }
 }
 

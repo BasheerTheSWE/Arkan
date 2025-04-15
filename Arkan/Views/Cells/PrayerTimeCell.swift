@@ -103,7 +103,7 @@ struct PrayerTimeCell: View {
             break
         }
         
-        Task { try? await NotificationsManager.schedulePrayerTimesNotificationsForTheNext30Days() }
+        Task { try? await NotificationsManager.schedulePrayerTimesNotificationsForTheNext12Days() }
     }
     
     private func isPrayerNotificationDisabled() -> Bool {
