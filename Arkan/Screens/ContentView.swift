@@ -82,6 +82,10 @@ struct ContentView: View {
         .animation(.default, value: countryCode)
         .onAppear {
             UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+                requests.forEach { request in
+                    print(request.content.title)
+                    print(request.trigger)
+                }
                 print("Pending notifications: \(requests.count)")
             }
         }

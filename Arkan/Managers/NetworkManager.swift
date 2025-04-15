@@ -48,6 +48,16 @@ final class NetworkManager {
         return data
     }
     
+    /// Downloads the prayer times for a specified period.
+    ///
+    /// But weird thing is happening, the response's prayer times are always in UTC and you'll have to convert them to the user's local timing.
+    ///
+    /// - Parameters:
+    ///   - startingDate: The starting date of the range.
+    ///   - endingDate: The ending date of the range.
+    ///   - latitude: The latitude of the user's location to get accurate prayer times.
+    ///   - longitude: The longitude of the user's location to get accurate prayer times.
+    /// - Returns: API response's data ... should be decoded using ``PrayerTimesForSpecificPeriodAPIResponse``.
     static func getPrayerTimesAPIResponseData(from startingDate: Date, to endingDate: Date, latitude: Double, longitude: Double) async throws -> Data {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy"
@@ -55,7 +65,7 @@ final class NetworkManager {
         let formattedStartingDate = formatter.string(from: startingDate)
         let formattedEndingDate = formatter.string(from: endingDate)
         
-        guard let url = URL(string: "https://api.aladhan.com/v1/calendar/from/\(formattedStartingDate)/to/\(formattedEndingDate)?latitude=\(latitude)&longitude=\(longitude)&shafaq=general&calendarMethod=UAQ") else { throw NetworkError.invalidURL }
+        guard let url = URL(string: "https://api.aladhan.com/v1/calendar/from/\(formattedStartingDate)/to/\(formattedEndingDate)?latitude=\(latitude)&longitude=\(longitude)&shafaq=general&timezonestring=UTC&calendarMethod=UAQ") else { throw NetworkError.invalidURL }
         
         var request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad)
         request.httpMethod = "GET"

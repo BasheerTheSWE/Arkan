@@ -51,6 +51,9 @@ class NotificationsManager {
         let latitude = UserDefaults.shared.double(forKey: UDKey.latitude.rawValue)
         let longitude = UserDefaults.shared.double(forKey: UDKey.longitude.rawValue)
         
+        print(latitude)
+        print(longitude)
+        
         let isFajrNotificationDisabled = UserDefaults.shared.bool(forKey: UDKey.isFajrNotificationDisabled.rawValue)
         let isDhuhrNotificationDisabled = UserDefaults.shared.bool(forKey: UDKey.isDhuhrNotificationDisabled.rawValue)
         let isAsrNotificationDisabled = UserDefaults.shared.bool(forKey: UDKey.isAsrNotificationDisabled.rawValue)
@@ -130,12 +133,34 @@ class NotificationsManager {
     
     // MARK: - PRIVATE
     static func getPrayerDate(timeString: String, dateString: String) -> Date? {
-        let dateTimeString = "\(dateString) \(timeString)"
-        
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy HH:mm"
         formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(identifier: "UTC") // Because your input is in UTC
         
-        return formatter.date(from: dateTimeString)
+        let dateTimeString = "\(dateString) \(timeString)"
+        
+        guard let utcDate = formatter.date(from: dateTimeString) else {
+            return nil
+        }
+        
+        // Convert to local time by formatting it with user's time zone
+        let localFormatter = DateFormatter()
+        localFormatter.dateFormat = "dd-MM-yyyy HH:mm"
+        localFormatter.locale = Locale(identifier: "en_US_POSIX")
+        localFormatter.timeZone = TimeZone.current // User's local time zone
+        
+        let localDateString = localFormatter.string(from: utcDate)
+        return localFormatter.date(from: localDateString)
     }
+    
+//    static func getPrayerDate(timeString: String, dateString: String) -> Date? {
+//        let dateTimeString = "\(dateString) \(timeString)"
+//        
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "dd-MM-yyyy HH:mm"
+//        formatter.locale = Locale(identifier: "en_US_POSIX")
+//        
+//        return formatter.date(from: dateTimeString)
+//    }
 }
