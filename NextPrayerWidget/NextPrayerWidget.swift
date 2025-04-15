@@ -12,9 +12,11 @@ struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> NextPrayerTimeEntry {
         MainActor.assumeIsolated {
             if let entry = getTimelineEntriesFromArchive().first {
-                return entry
+                let placeholderEntry = NextPrayerTimeEntry(date: .now, nextPrayerTime: entry.date, prayer: entry.prayer, timeString: entry.timeString)
+                return placeholderEntry
             }
             
+            print("2")
             let nextPrayerTime = Calendar.current.date(byAdding: .hour, value: 3, to: Date()) ?? Date()
             
             let formatter = DateFormatter()
@@ -26,9 +28,11 @@ struct Provider: TimelineProvider {
     }
     
     func getSnapshot(in context: Context, completion: @escaping @Sendable (NextPrayerTimeEntry) -> Void) {
-        MainActor.assumeIsolated {
-            if let entry = getTimelineEntriesFromArchive().first {
-                completion(entry)
+        print("Snapshot")
+        Task {
+            if let entry = await getTimelineEntries().first {
+                let snapShotEntry = NextPrayerTimeEntry(date: .now, nextPrayerTime: entry.date, prayer: entry.prayer, timeString: entry.timeString)
+                completion(snapShotEntry)
             } else {
                 let nextPrayerTime = Calendar.current.date(byAdding: .hour, value: 3, to: Date()) ?? Date()
                 
@@ -65,9 +69,10 @@ struct Provider: TimelineProvider {
             /// We don't want to schedule a future update for previous data!! Obviously!
             if prayerTimeObject.date > currentDate {
                 /// Creating a timeline entry
-                let nextPrayerTime = index < prayerTimeObjects.count - 1 ? prayerTimeObjects[index + 1].date : prayerTimeObject.date
+                let entryDate = entries.isEmpty ? Date() : prayerTimeObject.date
+                let nextPrayerDate = index < prayerTimeObjects.count - 1 && !entries.isEmpty ? prayerTimeObjects[index + 1].date : prayerTimeObject.date
                 
-                let entry = NextPrayerTimeEntry(date: prayerTimeObject.date, nextPrayerTime: nextPrayerTime, prayer: prayerTimeObject.prayer, timeString: prayerTimeObject.timeString)
+                let entry = NextPrayerTimeEntry(date: entryDate, nextPrayerTime: nextPrayerDate, prayer: prayerTimeObject.prayer, timeString: prayerTimeObject.timeString)
                 
                 entries.append(entry)
             }

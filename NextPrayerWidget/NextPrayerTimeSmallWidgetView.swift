@@ -32,25 +32,28 @@ struct NextPrayerTimeSmallWidgetView: View {
     var body: some View {
         VStack(spacing: 0) {
 //            Text(entry.city.isEmpty || entry.countryCode.isEmpty ? "Location Unavailable" : "\(entry.city), \(entry.countryCode)")
-            Text(entry.prayer.rawValue + " Time")
-                .font(.system(size: 10, weight: .bold, design: .rounded))
-                .lineLimit(1)
-                .scaledToFit()
-                .minimumScaleFactor(0.25)
-                .padding(.vertical, 8)
-                .padding(.horizontal)
-            
-            VStack(spacing: 8) {
+            HStack {
                 Image(systemName: systemImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 18, height: 18)
+                    .frame(width: 10, height: 10)
                 
+                Text(entry.prayer.rawValue)
+                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .lineLimit(1)
+                    .scaledToFit()
+                    .minimumScaleFactor(0.25)
+            }
+            .padding(.vertical, 8)
+            .padding(.horizontal)
+            
+            VStack(spacing: 8) {
                 HStack(spacing: 4) {
                     TimeComponentView(time: getHour())
                     
                     Text(":")
                         .font(.custom("Impact", size: 28))
+                        .offset(y: -4)
                     
                     TimeComponentView(time: getMinute())
                 }
@@ -58,24 +61,17 @@ struct NextPrayerTimeSmallWidgetView: View {
                 
                 HStack {
                     Text("Time Left: ")
-                        .font(.system(size: 8, weight: .medium, design: .monospaced))
+                        .font(.system(size: 8, weight: .bold, design: .monospaced))
                         .fixedSize()
                     
                     Text(timerInterval: Date()...entry.nextPrayerTime, countsDown: true)
                         .font(.system(size: 8, weight: .bold, design: .monospaced))
                         .multilineTextAlignment(.trailing)
                         .frame(maxWidth: .infinity)
-                        .onAppear {
-//                            print("_________info_________")
-//                            print(Calendar.current.date(byAdding: .second, value: 0, to: .now)!)
-//                            print(Date())
-//                            print(entry.nextPrayerTime)
-                        }
                 }
                 .padding(.horizontal, 4)
             }
-            .padding([.leading, .bottom, .trailing])
-            .padding(.top, 8)
+            .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemBackground))
             .clipShape(.rect(topLeadingRadius: 16, topTrailingRadius: 16))
@@ -102,6 +98,7 @@ private struct TimeComponentView: View {
             .lineLimit(1)
             .scaledToFit()
             .minimumScaleFactor(0.1)
+            .scaleEffect(y: 1.2)
             .padding(4)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.secondarySystemBackground))
