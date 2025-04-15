@@ -100,21 +100,21 @@ class NotificationsManager {
                 let timeString = prayerTimesInfo.timings.getTime(for: prayer, use24HourFormat: true) // format: hh:mm
                 let dateString = prayerTimesInfo.date.gregorian.date // In the format of dd-MM-yyyy
                 
-                if let prayerDateComponents = getDateComponents(timeString: timeString, dateString: dateString) {
+                if let prayerDate = getPrayerDate(timeString: timeString, dateString: dateString) {
                     print("Notification was scheduled for \(prayer.rawValue)")
-                    scheduleNotification(title: "Time for \(prayer.rawValue)", body: notificationBody, dateMatching: prayerDateComponents)
+                    scheduleNotification(title: "Time for \(prayer.rawValue)", body: notificationBody, date: prayerDate)
                 }
             }
         }
     }
     
-    static func scheduleNotification(title: String, body: String, dateMatching: DateComponents) {
+    static func scheduleNotification(title: String, body: String, date: Date) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = .default
         
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateMatching, repeats: false)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents(in: .current, from: date), repeats: false)
         
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request)
@@ -129,16 +129,13 @@ class NotificationsManager {
     }
     
     // MARK: - PRIVATE
-    static func getDateComponents(timeString: String, dateString: String) -> DateComponents? {
+    static func getPrayerDate(timeString: String, dateString: String) -> Date? {
         let dateTimeString = "\(dateString) \(timeString)"
         
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy HH:mm"
         formatter.locale = Locale(identifier: "en_US_POSIX")
         
-        guard let date = formatter.date(from: dateTimeString) else { return nil }
-        
-        let calendar = Calendar.current
-        return calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+        return formatter.date(from: dateTimeString)
     }
 }

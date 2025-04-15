@@ -75,14 +75,10 @@ struct ContentView: View {
             await getPrayerTimesForToday()
             WidgetCenter.shared.reloadAllTimelines()
             
-//            try? await schedulePrayerTimesNotificationsForTheNext30Days()
+            try? await schedulePrayerTimesNotificationsForTheNext30Days()
         }
         .animation(.default, value: city)
         .animation(.default, value: countryCode)
-        .onAppear {
-            NotificationsManager.scheduleNotification(title: "Test", body: "TestBody", dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: Calendar.current.date(byAdding: .second, value: 10, to: .now)!))
-            print("test notification scheduled")
-        }
     }
     
     private func getPrayerTimesForToday() async {
