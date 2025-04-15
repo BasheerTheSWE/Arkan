@@ -9,12 +9,34 @@ import WidgetKit
 import SwiftUI
 
 struct Provider: TimelineProvider {
+    func placeholder(in context: Context) -> NextPrayerTimeEntry {
+        MainActor.assumeIsolated {
+            if let entry = getTimelineEntriesFromArchive().first {
+                return entry
+            }
+            
+            let nextPrayerTime = Calendar.current.date(byAdding: .hour, value: 3, to: Date()) ?? Date()
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "HH:mm"
+            let timeString = formatter.string(from: nextPrayerTime)
+            
+            return NextPrayerTimeEntry(date: Date(), nextPrayerTime: nextPrayerTime, prayer: .fajr, timeString: timeString)
+        }
+    }
+    
     func getSnapshot(in context: Context, completion: @escaping @Sendable (NextPrayerTimeEntry) -> Void) {
         MainActor.assumeIsolated {
             if let entry = getTimelineEntriesFromArchive().first {
                 completion(entry)
             } else {
-                completion(NextPrayerTimeEntry(date: Date(), prayer: .fajr, timeString: "03:50"))
+                let nextPrayerTime = Calendar.current.date(byAdding: .hour, value: 3, to: Date()) ?? Date()
+                
+                let formatter = DateFormatter()
+                formatter.dateFormat = "HH:mm"
+                let timeString = formatter.string(from: nextPrayerTime)
+                
+                completion(NextPrayerTimeEntry(date: Date(), nextPrayerTime: nextPrayerTime, prayer: .fajr, timeString: timeString))
             }
         }
     }
@@ -22,91 +44,114 @@ struct Provider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping @Sendable (Timeline<NextPrayerTimeEntry>) -> Void) {
         Task {
             let entries = await getTimelineEntries()
+            
             completion(Timeline(entries: entries, policy: .atEnd))
         }
     }
     
-    func placeholder(in context: Context) -> NextPrayerTimeEntry {
-        MainActor.assumeIsolated {
-            if let entry = getTimelineEntriesFromArchive().first {
-                return entry
-            }
-            
-            return NextPrayerTimeEntry(date: Date(), prayer: .fajr, timeString: "03:50")
-        }
-    }
-    
+    // MARK: Helper functions
     private func getTimelineEntries() async -> [NextPrayerTimeEntry] {
-        let todayPrayerTimesEntries = await getTimelineEntriesForDate(date: .now)
+        var entries = [NextPrayerTimeEntry]()
         
-        if !todayPrayerTimesEntries.isEmpty {
-            return todayPrayerTimesEntries
+        let todayPrayerTimeObjects = await getPrayerTimeObjects(forDate: .now)
+        let tomorrowPrayerTimeObjects = await getPrayerTimeObjects(forDate: Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now)
+        
+        let prayerTimeObjects = todayPrayerTimeObjects + tomorrowPrayerTimeObjects
+        
+        let currentDate = Date()
+        
+        for (index, prayerTimeObject) in prayerTimeObjects.enumerated() {
+            /// Checking to see if the prayer has passed or not
+            /// We don't want to schedule a future update for previous data!! Obviously!
+            if prayerTimeObject.date > currentDate {
+                /// Creating a timeline entry
+                let nextPrayerTime = index < prayerTimeObjects.count - 1 ? prayerTimeObjects[index + 1].date : prayerTimeObject.date
+                
+                let entry = NextPrayerTimeEntry(date: prayerTimeObject.date, nextPrayerTime: nextPrayerTime, prayer: prayerTimeObject.prayer, timeString: prayerTimeObject.timeString)
+                
+                entries.append(entry)
+            }
         }
         
-        /// Reaching here means this is the end of Today after Isha, and there're no more prayers to schedule
-        /// So we'll schedule tomorrow's prayers
-        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now
-        let tomorrowPrayerTimesEntries = await getTimelineEntriesForDate(date: tomorrow)
-        
-        return tomorrowPrayerTimesEntries
+        return entries
     }
     
     @MainActor private func getTimelineEntriesFromArchive() -> [NextPrayerTimeEntry] {
-        let todayPrayerTimesEntries = getTimelineEntriesFromArchiveForDate(date: .now)
+        var entries = [NextPrayerTimeEntry]()
         
-        if !todayPrayerTimesEntries.isEmpty {
-            return todayPrayerTimesEntries
+        let todayPrayerTimeObjects = getPrayerTimeObjectsFromArchive(forDate: .now)
+        let tomorrowPrayerTimeObjects = getPrayerTimeObjectsFromArchive(forDate: Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now)
+        
+        let prayerTimeObjects = todayPrayerTimeObjects + tomorrowPrayerTimeObjects
+        
+        let currentDate = Date()
+        
+        for (index, prayerTimeObject) in prayerTimeObjects.enumerated() {
+            /// Checking to see if the prayer has passed or not
+            /// We don't want to schedule a future update for previous data!! Obviously!
+            if prayerTimeObject.date > currentDate {
+                /// Creating a timeline entry
+                let nextPrayerTime = index < prayerTimeObjects.count - 1 ? prayerTimeObjects[index + 1].date : prayerTimeObject.date
+                
+                let entry = NextPrayerTimeEntry(date: prayerTimeObject.date, nextPrayerTime: nextPrayerTime, prayer: prayerTimeObject.prayer, timeString: prayerTimeObject.timeString)
+                
+                entries.append(entry)
+            }
         }
         
-        /// Reaching here means this is the end of Today after Isha, and there're no more prayers to schedule
-        /// So we'll schedule tomorrow's prayers
-        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now
-        let tomorrowPrayerTimesEntries = getTimelineEntriesFromArchiveForDate(date: tomorrow)
-        
-        return tomorrowPrayerTimesEntries
+        return entries
     }
     
-    private func getTimelineEntriesForDate(date: Date) async -> [NextPrayerTimeEntry] {
-        var result = [NextPrayerTimeEntry]()
+    private func getPrayerTimeObjects(forDate date: Date) async -> [PrayerTimeObject] {
+        var prayerTimes = [PrayerTimeObject]()
         
+        /// We'll download new prayer times from the server or use mock data if the download fails
         var prayerTimesInfo = PrayerTimesInfo.getMockDataForSpecificDate(date: date)
         
         if let downloadedPrayerTimesInfo = try? await PrayerTimesManager.getOrDownloadPrayerTimesInfo(forDate: date) {
             prayerTimesInfo = downloadedPrayerTimesInfo
         }
         
+        /// Getting the date of every prayer
         for prayer in Prayer.allCases {
-            if let entryDate = prayerTimesInfo.getDateObject(forPrayer: prayer), entryDate > Date() {
-                let entry = NextPrayerTimeEntry(date: entryDate, prayer: prayer, timeString: prayerTimesInfo.timings.getTime(for: prayer, use24HourFormat: true))
-                result.append(entry)
+            if let prayerDate = prayerTimesInfo.getDateObject(forPrayer: prayer) {
+                prayerTimes.append(PrayerTimeObject(prayer: prayer, date: prayerDate, timeString: prayerTimesInfo.timings.getTime(for: prayer, use24HourFormat: true)))
             }
         }
         
-        return result
+        return prayerTimes
     }
     
-    @MainActor private func getTimelineEntriesFromArchiveForDate(date: Date) -> [NextPrayerTimeEntry] {
-        var result = [NextPrayerTimeEntry]()
+    @MainActor private func getPrayerTimeObjectsFromArchive(forDate date: Date) -> [PrayerTimeObject] {
+        var prayerTimes = [PrayerTimeObject]()
         
+        /// We'll download new prayer times from the server or use mock data if the download fails
         var prayerTimesInfo = PrayerTimesInfo.getMockDataForSpecificDate(date: date)
         
         if let downloadedPrayerTimesInfo = try? PrayerTimesManager.getPrayerTimesFromArchive(forDate: date) {
             prayerTimesInfo = downloadedPrayerTimesInfo
         }
         
+        /// Getting the date of every prayer
         for prayer in Prayer.allCases {
-            if let entryDate = prayerTimesInfo.getDateObject(forPrayer: prayer), entryDate > Date() {
-                let entry = NextPrayerTimeEntry(date: entryDate, prayer: prayer, timeString: prayerTimesInfo.timings.getTime(for: prayer, use24HourFormat: true))
-                result.append(entry)
+            if let prayerDate = prayerTimesInfo.getDateObject(forPrayer: prayer) {
+                prayerTimes.append(PrayerTimeObject(prayer: prayer, date: prayerDate, timeString: prayerTimesInfo.timings.getTime(for: prayer, use24HourFormat: true)))
             }
         }
         
-        return result
+        return prayerTimes
+    }
+    
+    private struct PrayerTimeObject {
+        let prayer: Prayer
+        let date: Date
+        let timeString: String
     }
 }
 
 struct NextPrayerTimeEntry: TimelineEntry {
     let date: Date
+    let nextPrayerTime: Date
     let prayer: Prayer
     let timeString: String
     
@@ -152,6 +197,6 @@ struct NextPrayerWidget: Widget {
 #Preview(as: .systemSmall) {
     NextPrayerWidget()
 } timeline: {
-    NextPrayerTimeEntry(date: .now, prayer: .asr, timeString: "03:50")
-    NextPrayerTimeEntry(date: .now, prayer: .asr, timeString: "3:50")
+    NextPrayerTimeEntry(date: .now, nextPrayerTime: Calendar.current.date(byAdding: .hour, value: 3, to: .now) ?? .now, prayer: .fajr, timeString: "03:50")
+    NextPrayerTimeEntry(date: Calendar.current.date(byAdding: .hour, value: 3, to: .now) ?? .now, nextPrayerTime: Calendar.current.date(byAdding: .hour, value: 4, to: .now) ?? .now, prayer: .dhuhr, timeString: "12:19")
 }

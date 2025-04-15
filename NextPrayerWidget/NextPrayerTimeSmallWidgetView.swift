@@ -61,10 +61,16 @@ struct NextPrayerTimeSmallWidgetView: View {
                         .font(.system(size: 8, weight: .medium, design: .monospaced))
                         .fixedSize()
                     
-                    Text(timerInterval: Date()...entry.date, countsDown: true)
+                    Text(timerInterval: Date()...entry.nextPrayerTime, countsDown: true)
                         .font(.system(size: 8, weight: .bold, design: .monospaced))
                         .multilineTextAlignment(.trailing)
                         .frame(maxWidth: .infinity)
+                        .onAppear {
+//                            print("_________info_________")
+//                            print(Calendar.current.date(byAdding: .second, value: 0, to: .now)!)
+//                            print(Date())
+//                            print(entry.nextPrayerTime)
+                        }
                 }
                 .padding(.horizontal, 4)
             }

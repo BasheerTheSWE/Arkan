@@ -41,11 +41,10 @@ struct DedicationView: View {
                 Text("لِأَرْوَاحٍ رَحَلَتْ وَ لَمْ تَكْتَفِي قُلُوْبُنَا مِنْ حُبِّهَا")
                     .font(.custom("ReemKufi", size: 14))
             }
-            .foregroundStyle(.white)
             .padding(.bottom, 12)
             .frame(maxWidth: .infinity)
             .padding()
-            .background(colorScheme == .dark ? Color(.secondarySystemBackground) : .black)
+            .background(Color(.secondarySystemGroupedBackground))
             
             ScrollView {
                 LazyVStack {
