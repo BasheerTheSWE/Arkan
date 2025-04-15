@@ -51,9 +51,6 @@ class NotificationsManager {
         let latitude = UserDefaults.shared.double(forKey: UDKey.latitude.rawValue)
         let longitude = UserDefaults.shared.double(forKey: UDKey.longitude.rawValue)
         
-        print(latitude)
-        print(longitude)
-        
         let isFajrNotificationDisabled = UserDefaults.shared.bool(forKey: UDKey.isFajrNotificationDisabled.rawValue)
         let isDhuhrNotificationDisabled = UserDefaults.shared.bool(forKey: UDKey.isDhuhrNotificationDisabled.rawValue)
         let isAsrNotificationDisabled = UserDefaults.shared.bool(forKey: UDKey.isAsrNotificationDisabled.rawValue)
@@ -63,7 +60,7 @@ class NotificationsManager {
         /// First thing to do is to download the prayer times for the next 12 days
         /// Getting the starting and end dates
         let startingDate = Date()
-        let endingDate = Calendar.current.date(byAdding: .day, value: 12, to: startingDate)!
+        let endingDate = Calendar.current.date(byAdding: .day, value: 11, to: startingDate)!
         
         /// Getting the API response date
         let apiResponseData = try await NetworkManager.getPrayerTimesAPIResponseData(from: startingDate, to: endingDate, latitude: latitude, longitude: longitude)
@@ -103,9 +100,16 @@ class NotificationsManager {
                 let timeString = prayerTimesInfo.timings.getTime(for: prayer, use24HourFormat: true) // format: hh:mm
                 let dateString = prayerTimesInfo.date.gregorian.date // In the format of dd-MM-yyyy
                 
-                if let prayerDate = getPrayerDate(timeString: timeString, dateString: dateString) {
+                if let prayerDate = getPrayerDate(timeString: timeString, dateString: dateString), prayerDate > Date() {
                     print("Notification was scheduled for \(prayer.rawValue)")
+                    print("-----At: \(prayerDate)")
                     scheduleNotification(title: "Time for \(prayer.rawValue)", body: notificationBody, date: prayerDate)
+                    
+                    if prayerTimesInfo == prayerTimesInfosForTheNext12Days.last && prayer == .isha {
+                        /// This is the last scheduled notification
+                        /// We'll need to let the user know that in order to get more prayer notifications they need to open the app
+                        scheduleNotification(title: "Reminders stopped", body: "Open the app to keep getting prayer alerts", date: Calendar.current.date(byAdding: .minute, value: 5, to: prayerDate) ?? prayerDate)
+                    }
                 }
             }
         }
