@@ -15,21 +15,10 @@ struct DedicationView: View {
     private let honoredLovedOnes = [
         "حمد داؤد خيرين",
         "الطيب حمد داؤد",
+        "مريم حمدون عبدالمولى",
+        "ام خيان حامد احمد",
+        "نصرة محمد فضل الله",
         "عبد اللطيف محمد سيد",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""
     ]
     
     var body: some View {
@@ -41,10 +30,18 @@ struct DedicationView: View {
                 Text("لِأَرْوَاحٍ رَحَلَتْ وَ لَمْ تَكْتَفِي قُلُوْبُنَا مِنْ حُبِّهَا")
                     .font(.custom("ReemKufi", size: 14))
             }
+            .foregroundStyle(.white)
             .padding(.bottom, 12)
             .frame(maxWidth: .infinity)
             .padding()
-            .background(Color(.secondarySystemGroupedBackground))
+            .background(colorScheme == .dark ? Color(.secondarySystemBackground) : .black)
+            .overlay(alignment: .topTrailing) {
+                PlainIconButton(systemImage: "xmark", size: 12) {
+                    dismiss()
+                }
+                .foregroundStyle(.white)
+                .padding()
+            }
             
             ScrollView {
                 LazyVStack {
@@ -52,8 +49,7 @@ struct DedicationView: View {
                         HStack {
                             Text(name)
                                 .font(.custom("Amiri-Regular", size: 14))
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                                .environment(\.layoutDirection, .leftToRight)
+                                .frame(maxWidth: .infinity)
                         }
                         .padding(.horizontal)
                         .padding(.vertical, 8)

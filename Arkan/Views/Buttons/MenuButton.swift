@@ -19,12 +19,12 @@ struct MenuButton: View {
                 VStack(spacing: 4) {
                     ForEach(0..<3) { index in
                         RoundedRectangle(cornerRadius: .infinity)
-                            .frame(width: 15, height: 1.5)
+                            .frame(width: 15, height: 1)
                             .opacity(index == 1 && isToggled ? 0 : 1)
                             .offset(x: isToggled && index == 1 ? 2 : 0, y: isToggled && index == 1 ? 5 : 0)
-                            .rotationEffect(.degrees(isToggled ? (48 * (index == 0 ? -1 : 1)) : 0), anchor: .trailing)
+                            .rotationEffect(.degrees(isToggled ? (42 * (index == 0 ? -1 : 1)) : 0), anchor: .trailing)
                             .scaleEffect(x: isToggled && index != 1 ? 1.25 : 1)
-                            .offset(x: isToggled && index != 1 ? -3 : 0)
+                            .offset(x: isToggled && index != 1 ? -2.5 : 0)
                     }
                 }
             }

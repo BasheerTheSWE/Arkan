@@ -80,15 +80,6 @@ struct ContentView: View {
         }
         .animation(.default, value: city)
         .animation(.default, value: countryCode)
-        .onAppear {
-            UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
-                requests.forEach { request in
-                    print(request.content.title)
-                    print(request.trigger)
-                }
-                print("Pending notifications: \(requests.count)")
-            }
-        }
     }
     
     private func getPrayerTimesForToday() async {
@@ -150,5 +141,4 @@ struct ContentView: View {
  
  Qibla Widget (future?)
  Adds value if Qibla direction is planned
- 
  */
