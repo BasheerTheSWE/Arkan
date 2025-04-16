@@ -37,15 +37,15 @@ struct MainHeaderView: View {
             
             if isShowingMenuItems {
                 VStack {
-                    MenuOptionButton(title: "Quran (coming soon)") {
-                        
-                    }
-                    
                     MenuOptionButton(title: "In Loving Memory") {
                         isPresentingDedication = true
                     }
                     .sheet(isPresented: $isPresentingDedication) {
                         DedicationView()
+                    }
+                    
+                    MenuOptionButton(title: "Available Widgets") {
+                        
                     }
                     
                     MenuOptionButton(title: "Settings") {

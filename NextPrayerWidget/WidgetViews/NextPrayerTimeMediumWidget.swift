@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NextPrayerTimeMediumWidget: View {
         
-    private let entry: Provider.Entry
+    let entry: Provider.Entry
     
     var body: some View {
         VStack(spacing: 0) {

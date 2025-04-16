@@ -45,6 +45,7 @@
 		3A57DC412DAFE874002EB9A1 /* DailyPrayerTimesLargeSizeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A57DC402DAFE874002EB9A1 /* DailyPrayerTimesLargeSizeWidget.swift */; };
 		3A57DC462DAFE992002EB9A1 /* HijriDateInlineWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A57DC452DAFE992002EB9A1 /* HijriDateInlineWidget.swift */; };
 		3A57DC482DAFE99F002EB9A1 /* HijriDateCircularWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A57DC472DAFE99F002EB9A1 /* HijriDateCircularWidget.swift */; };
+		3A57DC4A2DAFF062002EB9A1 /* AvailableWidgetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A57DC492DAFF062002EB9A1 /* AvailableWidgetsView.swift */; };
 		3A70357C2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A70357B2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift */; };
 		3A70357D2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A70357B2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift */; };
 		3A77B9612DAEC87100D8A502 /* TimeComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77B9602DAEC87100D8A502 /* TimeComponentView.swift */; };
@@ -203,6 +204,7 @@
 		3A57DC402DAFE874002EB9A1 /* DailyPrayerTimesLargeSizeWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyPrayerTimesLargeSizeWidget.swift; sourceTree = "<group>"; };
 		3A57DC452DAFE992002EB9A1 /* HijriDateInlineWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HijriDateInlineWidget.swift; sourceTree = "<group>"; };
 		3A57DC472DAFE99F002EB9A1 /* HijriDateCircularWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HijriDateCircularWidget.swift; sourceTree = "<group>"; };
+		3A57DC492DAFF062002EB9A1 /* AvailableWidgetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableWidgetsView.swift; sourceTree = "<group>"; };
 		3A70357B2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesForSpecificDateAPIResponse.swift; sourceTree = "<group>"; };
 		3A77B9602DAEC87100D8A502 /* TimeComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeComponentView.swift; sourceTree = "<group>"; };
 		3A94BBDB2DAA096600EF3FCD /* Arkan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arkan.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -442,6 +444,7 @@
 				3A94BBF82DAA0D5D00EF3FCD /* OnboardingView.swift */,
 				3A94BC1B2DAA440E00EF3FCD /* SettingsView.swift */,
 				3AF6CD132DAC32BB00A1045C /* DedicationView.swift */,
+				3A57DC492DAFF062002EB9A1 /* AvailableWidgetsView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -803,6 +806,7 @@
 				3A94BBFB2DAA0DA800EF3FCD /* NetworkManager.swift in Sources */,
 				3A94BBF32DAA0C3900EF3FCD /* PlainIconButton.swift in Sources */,
 				3A94BC272DAA831300EF3FCD /* Prayer.swift in Sources */,
+				3A57DC4A2DAFF062002EB9A1 /* AvailableWidgetsView.swift in Sources */,
 				3AF6CD1C2DACFE2A00A1045C /* SwiftDataManager.swift in Sources */,
 				3A94BC672DAAB7E300EF3FCD /* PrayerTimesManager.swift in Sources */,
 				3A94BC162DAA3E8200EF3FCD /* MetaData.swift in Sources */,
