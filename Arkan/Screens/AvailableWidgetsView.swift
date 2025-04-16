@@ -24,6 +24,7 @@ struct AvailableWidgetsView: View {
                         .padding(.horizontal)
                         .background(Color(.secondarySystemBackground))
                         .clipShape(.rect(cornerRadius: 12))
+                        .tint(.black)
                     
                     ForEach(WidgetOverview.all) { widgetOverview in
                         VStack(spacing: 0) {

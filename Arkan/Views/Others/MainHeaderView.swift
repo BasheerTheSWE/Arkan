@@ -14,6 +14,7 @@ struct MainHeaderView: View {
     @State private var isShowingMenuItems = false
     
     @State private var isPresentingDedication = false
+    @State private var isPresentingAvailableWidgets = false
     @State private var isPresentingSettings = false
     
     var body: some View {
@@ -45,7 +46,10 @@ struct MainHeaderView: View {
                     }
                     
                     MenuOptionButton(title: "Available Widgets") {
-                        
+                        isPresentingAvailableWidgets = true
+                    }
+                    .sheet(isPresented: $isPresentingAvailableWidgets) {
+                        AvailableWidgetsView()
                     }
                     
                     MenuOptionButton(title: "Settings") {

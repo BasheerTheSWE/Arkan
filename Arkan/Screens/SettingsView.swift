@@ -93,6 +93,21 @@ struct SettingsView: View {
                         .font(.system(size: 12))
                 }
                 
+                if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
+                   let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+                    Section {
+                        HStack {
+                            Text("Version")
+                            
+                            Spacer()
+                            
+                            Text(version + " (\(build))")
+                                .foregroundStyle(.secondary)
+                        }
+                        .font(.system(size: 14, design: .rounded))
+                    }
+                }
+                
                 Section {
                     (
                         Text("App By ")
