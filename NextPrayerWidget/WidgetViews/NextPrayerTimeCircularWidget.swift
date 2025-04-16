@@ -9,24 +9,12 @@ import SwiftUI
 
 struct NextPrayerTimeCircularWidget: View {
     
-    private let systemImage: String
-    private let progress: CGFloat
-    
     private let entry: Provider.Entry
+    private let progress: CGFloat
     
     // MARK: - INIT
     init(entry: Provider.Entry) {
         self.entry = entry
-        
-        let images = [
-            "sunrise",
-            "sun.max",
-            "cloud.sun",
-            "sunset",
-            "moon"
-        ]
-        
-        self.systemImage = images[Prayer.allCases.firstIndex(of: entry.nextPrayer) ?? 0]
         self.progress = CGFloat(Prayer.allCases.firstIndex(of: entry.nextPrayer) ?? 0) / 4.0
     }
     
@@ -62,7 +50,7 @@ struct NextPrayerTimeCircularWidget: View {
                 }
             }
             .overlay(alignment: .bottom) {
-                Image(systemName: systemImage)
+                Image(systemName: entry.nextPrayer.getSystemImage())
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 16, height: 16)

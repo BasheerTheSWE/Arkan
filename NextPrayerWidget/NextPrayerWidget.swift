@@ -169,12 +169,39 @@ struct NextPrayerWidgetEntryView : View {
         case .systemMedium:
             NextPrayerTimeMediumWidget(entry: entry)
             
+        case .accessoryInline:
+            NextPrayerTimeInlineWidget(entry: entry)
+            
         case .accessoryCircular:
             NextPrayerTimeCircularWidget(entry: entry)
             
         default:
             Text("Unsupported Size")
         }
+    }
+}
+
+struct NextPrayerTimeInlineWidget: View {
+    
+    let entry: Provider.Entry
+    
+    var body: some View {
+        HStack {
+            Image(systemName: entry.nextPrayer.getSystemImage())
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+            
+            Text("\(entry.nextPrayer.getAbbreviatedName()) at \(getTimeString())")
+                .font(.system(size: 8))
+                .foregroundStyle(.secondary)
+        }
+    }
+    
+    private func getTimeString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        formatter.timeZone = .current
+        return formatter.string(from: entry.nextPrayerDate)
     }
 }
 
@@ -189,11 +216,11 @@ struct NextPrayerWidget: Widget {
         .configurationDisplayName("Next Prayer Time")
         .description("Display the time for your next prayer")
         .contentMarginsDisabled()
-        .supportedFamilies([.systemSmall, .systemMedium, .accessoryCircular])
+        .supportedFamilies([.systemSmall, .systemMedium, .accessoryInline, .accessoryCircular])
     }
 }
 
-#Preview(as: .accessoryCircular) {
+#Preview(as: .accessoryInline) {
     NextPrayerWidget()
 } timeline: {
     NextPrayerTimeEntry(date: .now, nextPrayerDate: Calendar.current.date(byAdding: .hour, value: 2, to: .now) ?? .now, prayer: .asr)

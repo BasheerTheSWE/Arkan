@@ -16,9 +16,7 @@ struct PrayerTimeCell: View {
     @AppStorage(UDKey.isAsrNotificationDisabled.rawValue) private var isAsrNotificationDisabled = false
     @AppStorage(UDKey.isMaghribNotificationDisabled.rawValue) private var isMaghribNotificationDisabled = false
     @AppStorage(UDKey.isIshaNotificationDisabled.rawValue) private var isIshaNotificationDisabled = false
-    
-    private let systemImage: String
-    
+        
     private let prayer: Prayer
     private let prayerTimes: PrayerTimes?
         
@@ -26,22 +24,12 @@ struct PrayerTimeCell: View {
     init(index: Int, prayerTimesInfo: PrayerTimesInfo?) {
         self.prayer = Prayer.allCases[index]
         self.prayerTimes = prayerTimesInfo?.timings
-        
-        let images = [
-            "sunrise",
-            "sun.max",
-            "cloud.sun",
-            "sunset",
-            "moon"
-        ]
-        
-        self.systemImage = images[index]
     }
     
     // MARK: - VIEW
     var body: some View {
         HStack {
-            Image(systemName: systemImage)
+            Image(systemName: prayer.getSystemImage())
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 18, height: 18)

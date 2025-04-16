@@ -8,27 +8,9 @@
 import SwiftUI
 
 struct NextPrayerTimeMediumWidget: View {
-    
-    private let systemImage: String
-    
+        
     private let entry: Provider.Entry
     
-    // MARK: - INIT
-    init(entry: Provider.Entry) {
-        self.entry = entry
-        
-        let images = [
-            "sunrise",
-            "sun.max",
-            "cloud.sun",
-            "sunset",
-            "moon"
-        ]
-        
-        self.systemImage = images[Prayer.allCases.firstIndex(of: entry.nextPrayer) ?? 0]
-    }
-    
-    // MARK: - VIEW
     var body: some View {
         VStack(spacing: 0) {
             Text(entry.city.isEmpty || entry.countryCode.isEmpty ? "Location Unavailable" : "\(entry.city), \(entry.countryCode)")

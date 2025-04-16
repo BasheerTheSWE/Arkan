@@ -9,30 +9,12 @@ import SwiftUI
 
 struct NextPrayerTimeSmallWidget: View {
     
-    private let systemImage: String
-    
     private let entry: Provider.Entry
     
-    // MARK: - INIT
-    init(entry: Provider.Entry) {
-        self.entry = entry
-        
-        let images = [
-            "sunrise",
-            "sun.max",
-            "cloud.sun",
-            "sunset",
-            "moon"
-        ]
-        
-        self.systemImage = images[Prayer.allCases.firstIndex(of: entry.nextPrayer) ?? 0]
-    }
-    
-    // MARK: - VIEW
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Image(systemName: systemImage)
+                Image(systemName: entry.nextPrayer.getSystemImage())
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 12, height: 12)

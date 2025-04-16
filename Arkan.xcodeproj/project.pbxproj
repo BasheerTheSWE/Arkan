@@ -554,8 +554,8 @@
 		3A94BC4F2DAAA1EB00EF3FCD /* DailyPrayerTimesWidget */ = {
 			isa = PBXGroup;
 			children = (
-				3A94BC492DAAA1EB00EF3FCD /* AppIntent.swift */,
 				3A94BC4A2DAAA1EB00EF3FCD /* Assets.xcassets */,
+				3A94BC492DAAA1EB00EF3FCD /* AppIntent.swift */,
 				3A94BC4B2DAAA1EB00EF3FCD /* DailyPrayerTimesWidget.swift */,
 				3A94BC4C2DAAA1EB00EF3FCD /* DailyPrayerTimesWidgetBundle.swift */,
 				3A94BC4D2DAAA1EB00EF3FCD /* DailyPrayerTimesWidgetControl.swift */,
@@ -569,11 +569,11 @@
 			isa = PBXGroup;
 			children = (
 				3AF6CD3E2DAD6B2800A1045C /* Assets.xcassets */,
-				3AF6CD3F2DAD6B2800A1045C /* Info.plist */,
 				3AF6CD402DAD6B2800A1045C /* NextPrayerWidget.swift */,
 				3AF6CD412DAD6B2800A1045C /* NextPrayerWidgetBundle.swift */,
 				3AF6CD422DAD6B2800A1045C /* NextPrayerWidgetControl.swift */,
 				3A57DC432DAFE8E8002EB9A1 /* WidgetViews */,
+				3AF6CD3F2DAD6B2800A1045C /* Info.plist */,
 			);
 			path = NextPrayerWidget;
 			sourceTree = "<group>";

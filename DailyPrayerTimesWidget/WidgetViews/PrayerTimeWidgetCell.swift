@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct PrayerTimeWidgetCell: View {
-        
-    private let systemImage: String
     
     private let prayer: Prayer
     private let prayerTimes: PrayerTimes?
@@ -23,23 +21,13 @@ struct PrayerTimeWidgetCell: View {
         self.prayerTimes = prayerTimesInfo?.timings
         self.isCompact = isCompact
         self.prefers24HourTimeFormat = prefers24HourTimeFormat
-        
-        let images = [
-            "sunrise",
-            "sun.max",
-            "cloud.sun",
-            "sunset",
-            "moon"
-        ]
-        
-        self.systemImage = images[index]
     }
     
     // MARK: - VIEW
     var body: some View {
         if isCompact {
             VStack {
-                Image(systemName: systemImage)
+                Image(systemName: prayer.getSystemImage())
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 24, height: 24)
@@ -52,7 +40,7 @@ struct PrayerTimeWidgetCell: View {
             }
         } else {
             HStack {
-                Image(systemName: systemImage)
+                Image(systemName: prayer.getSystemImage())
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 18, height: 18)
