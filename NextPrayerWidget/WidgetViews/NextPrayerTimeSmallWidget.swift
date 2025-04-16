@@ -1,5 +1,5 @@
 //
-//  NextPrayerTimeSmallWidgetView.swift
+//  NextPrayerTimeSmallWidget.swift
 //  NextPrayerWidgetExtension
 //
 //  Created by Basheer Abdulmalik on 14/04/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NextPrayerTimeSmallWidgetView: View {
+struct NextPrayerTimeSmallWidget: View {
     
     private let systemImage: String
     

@@ -164,179 +164,17 @@ struct NextPrayerWidgetEntryView : View {
     var body: some View {
         switch widgetFamily {
         case .systemSmall:
-            NextPrayerTimeSmallWidgetView(entry: entry)
+            NextPrayerTimeSmallWidget(entry: entry)
             
         case .systemMedium:
-            NextPrayerTimeMediumWidgetView(entry: entry)
+            NextPrayerTimeMediumWidget(entry: entry)
             
         case .accessoryCircular:
-            NextPrayerTimeCircularWidgetView(entry: entry)
+            NextPrayerTimeCircularWidget(entry: entry)
             
         default:
             Text("Unsupported Size")
         }
-    }
-}
-
-struct NextPrayerTimeCircularWidgetView: View {
-    
-    private let systemImage: String
-    private let progress: CGFloat
-    
-    private let entry: Provider.Entry
-    
-    // MARK: - INIT
-    init(entry: Provider.Entry) {
-        self.entry = entry
-        
-        let images = [
-            "sunrise",
-            "sun.max",
-            "cloud.sun",
-            "sunset",
-            "moon"
-        ]
-        
-        self.systemImage = images[Prayer.allCases.firstIndex(of: entry.nextPrayer) ?? 0]
-        self.progress = CGFloat(Prayer.allCases.firstIndex(of: entry.nextPrayer) ?? 0) / 4.0
-    }
-    
-    // MARK: - VIEW
-    var body: some View {
-        Text(getTimeString())
-            .font(.system(size: 24, weight: .bold))
-            .lineLimit(1)
-            .scaledToFit()
-            .minimumScaleFactor(0.2)
-            .padding(.horizontal, 12)
-            .padding(.bottom, 4)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background {
-                ZStack {
-                    Circle()
-                        .trim(from: 0.0, to: 0.8)
-                        .stroke(Color.white, style: StrokeStyle(lineWidth: 6, lineCap: .round))
-                        .rotationEffect(.degrees(126))
-                    
-                    Circle()
-                        .trim(from: 0.0, to: 0.001)
-                        .stroke(Color.black, style: StrokeStyle(lineWidth: 12, lineCap: .round))
-                        .rotationEffect(.degrees(126.0 + (286 * progress)))
-                }
-                .compositingGroup()
-                .luminanceToAlpha()
-                .overlay {
-                    Circle()
-                        .trim(from: 0.0, to: 0.001)
-                        .stroke(Color(.label), style: StrokeStyle(lineWidth: 7, lineCap: .round))
-                        .rotationEffect(.degrees(126.0 + (286 * progress)))
-                }
-            }
-            .overlay(alignment: .bottom) {
-                Image(systemName: systemImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 16, height: 16)
-            }
-    }
-    
-    private func getTimeString() -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        formatter.timeZone = .current
-        return formatter.string(from: entry.nextPrayerDate)
-    }
-}
-
-
-struct NextPrayerTimeMediumWidgetView: View {
-    
-    private let systemImage: String
-    
-    private let entry: Provider.Entry
-    
-    // MARK: - INIT
-    init(entry: Provider.Entry) {
-        self.entry = entry
-        
-        let images = [
-            "sunrise",
-            "sun.max",
-            "cloud.sun",
-            "sunset",
-            "moon"
-        ]
-        
-        self.systemImage = images[Prayer.allCases.firstIndex(of: entry.nextPrayer) ?? 0]
-    }
-    
-    // MARK: - VIEW
-    var body: some View {
-        VStack(spacing: 0) {
-            Text(entry.city.isEmpty || entry.countryCode.isEmpty ? "Location Unavailable" : "\(entry.city), \(entry.countryCode)")
-                .font(.system(size: 12, weight: .bold, design: .rounded))
-                .lineLimit(1)
-                .scaledToFit()
-                .minimumScaleFactor(0.25)
-                .padding(.vertical, 8)
-                .padding(.horizontal)
-            
-            HStack(spacing: 16) {
-                HStack {
-                    TimeComponentView(date: entry.nextPrayerDate, component: .hour)
-                    
-                    Text(":")
-                        .font(.custom("Impact", size: 28))
-                        .offset(y: -4)
-                    
-                    TimeComponentView(date: entry.nextPrayerDate, component: .minute)
-                }
-                
-                HStack(spacing: 0) {
-                    Rectangle()
-                        .fill(Color(.label))
-                        .frame(width: 4)
-                    
-                    VStack(spacing: 0) {
-                        VStack(alignment: .leading, spacing: -4) {
-                            Text("Next Prayer")
-                                .font(.system(size: 10, weight: .bold))
-                                .foregroundStyle(.secondary)
-                                .lineLimit(1)
-                                .scaledToFit()
-                                .minimumScaleFactor(0.1)
-                            
-                            Text(entry.nextPrayer.rawValue)
-                                .font(.system(size: 75, weight: .heavy))
-                                .lineLimit(1)
-                                .scaledToFit()
-                                .minimumScaleFactor(0.1)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                        
-                        HStack {
-                            Text("Time Left: ")
-                                .font(.system(size: 8, weight: .bold, design: .monospaced))
-                                .fixedSize()
-                            
-                            Text(timerInterval: Date()...entry.nextPrayerDate, countsDown: true)
-                                .font(.system(size: 8, weight: .bold, design: .monospaced))
-                                .multilineTextAlignment(.trailing)
-                                .frame(maxWidth: .infinity)
-                        }
-                        .padding([.leading, .top, .trailing], 2)
-                    }
-                    .padding(8)
-                    .padding(.leading, 4)
-                    .background(Color(.secondarySystemBackground))
-                }
-            }
-            .padding()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.systemBackground))
-            .clipShape(.rect(topLeadingRadius: 16, topTrailingRadius: 16))
-        }
-        .background(Color(.secondarySystemBackground))
     }
 }
 
@@ -359,5 +197,5 @@ struct NextPrayerWidget: Widget {
     NextPrayerWidget()
 } timeline: {
     NextPrayerTimeEntry(date: .now, nextPrayerDate: Calendar.current.date(byAdding: .hour, value: 2, to: .now) ?? .now, prayer: .asr)
-//    NextPrayerTimeEntry(date: Calendar.current.date(byAdding: .hour, value: 2, to: .now) ?? .now, nextPrayerDate: Calendar.current.date(byAdding: .hour, value: 4, to: .now) ?? .now, prayer: .dhuhr)
+    NextPrayerTimeEntry(date: Calendar.current.date(byAdding: .hour, value: 2, to: .now) ?? .now, nextPrayerDate: Calendar.current.date(byAdding: .hour, value: 4, to: .now) ?? .now, prayer: .maghrib)
 }

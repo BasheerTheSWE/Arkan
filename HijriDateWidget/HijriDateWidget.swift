@@ -30,7 +30,7 @@ struct Provider: TimelineProvider {
         }
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+    func getTimeline(in context: Context, completion: @escaping (Timeline<HijriDateEntry>) -> ()) {
         Task {
             var entries: [HijriDateEntry] = []
             let currentDate = Date()
@@ -77,45 +77,13 @@ struct HijriDateWidgetEntryView : View {
     var body: some View {
         switch widgetFamily {
         case .accessoryInline:
-            HijriDateAccessoryInlineWidgetView(entry: entry)
+            HijriDateInlineWidget(entry: entry)
             
         case .accessoryCircular:
-            VStack(spacing: 2) {
-                Image(systemName: "moon.stars.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 12, height: 12)
-                
-                Text("\(entry.hijriDate.day), \(entry.hijriDate.month.en.prefix(2))")
-                    .font(.system(size: 28, weight: .medium))
-                    .lineLimit(1)
-                    .scaledToFit()
-                    .minimumScaleFactor(0.2)
-            }
-            .padding(10)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(.regularMaterial)
-            .clipShape(.circle)
+            HijriDateCircularWidget(entry: entry)
             
         default:
             Text("Unsupported Size")
-        }
-    }
-}
-
-struct HijriDateAccessoryInlineWidgetView: View {
-    
-    var entry: Provider.Entry
-    
-    var body: some View {
-        HStack {
-            Image(systemName: "moon.stars.fill")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-            
-            Text("\(entry.hijriDate.day), \(entry.hijriDate.month.en)")
-                .font(.system(size: 8))
-                .foregroundStyle(.secondary)
         }
     }
 }
