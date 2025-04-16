@@ -10,6 +10,36 @@
 		3A1BCF2B2DAB76DE00005FA5 /* LocationFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1BCF2A2DAB76DE00005FA5 /* LocationFetcher.swift */; };
 		3A1BCF2C2DAB76DE00005FA5 /* LocationFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1BCF2A2DAB76DE00005FA5 /* LocationFetcher.swift */; };
 		3A1BCF372DAB9E7700005FA5 /* ReemKufi.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A1BCF362DAB9E7700005FA5 /* ReemKufi.ttf */; };
+		3A57DC062DAFCCA3002EB9A1 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A94BC312DAAA1DF00EF3FCD /* WidgetKit.framework */; };
+		3A57DC072DAFCCA3002EB9A1 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A94BC332DAAA1DF00EF3FCD /* SwiftUI.framework */; };
+		3A57DC142DAFCCA4002EB9A1 /* HijriDateWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3A57DC052DAFCCA3002EB9A1 /* HijriDateWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3A57DC202DAFCCCC002EB9A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A57DC1A2DAFCCCC002EB9A1 /* Assets.xcassets */; };
+		3A57DC222DAFCCCC002EB9A1 /* HijriDateWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A57DC1B2DAFCCCC002EB9A1 /* HijriDateWidget.swift */; };
+		3A57DC232DAFCCCC002EB9A1 /* HijriDateWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A57DC1C2DAFCCCC002EB9A1 /* HijriDateWidgetBundle.swift */; };
+		3A57DC242DAFCCCC002EB9A1 /* HijriDateWidgetControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A57DC1D2DAFCCCC002EB9A1 /* HijriDateWidgetControl.swift */; };
+		3A57DC252DAFCFB1002EB9A1 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BBFA2DAA0DA800EF3FCD /* NetworkManager.swift */; };
+		3A57DC262DAFCFB8002EB9A1 /* PrayerTimesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC662DAAB7E300EF3FCD /* PrayerTimesManager.swift */; };
+		3A57DC272DAFCFC5002EB9A1 /* SwiftDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD1A2DACFE2A00A1045C /* SwiftDataManager.swift */; };
+		3A57DC282DAFCFCB002EB9A1 /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD1D2DAD419B00A1045C /* NotificationsManager.swift */; };
+		3A57DC292DAFCFD0002EB9A1 /* ArchivedPrayerTimesForGregorianYear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC202DAA677800EF3FCD /* ArchivedPrayerTimesForGregorianYear.swift */; };
+		3A57DC2A2DAFCFD4002EB9A1 /* ArchivedPrayerTimesForSpecificDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD172DACDFB800A1045C /* ArchivedPrayerTimesForSpecificDate.swift */; };
+		3A57DC2B2DAFCFDE002EB9A1 /* PrayerTimesForSpecificDateAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A70357B2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift */; };
+		3A57DC2C2DAFCFE4002EB9A1 /* PrayerTimesForSpecificPeriodAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD202DAD449100A1045C /* PrayerTimesForSpecificPeriodAPIResponse.swift */; };
+		3A57DC2D2DAFCFE8002EB9A1 /* PrayerTimesInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC012DAA2BD900EF3FCD /* PrayerTimesInfo.swift */; };
+		3A57DC2E2DAFCFED002EB9A1 /* PrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC032DAA2BF200EF3FCD /* PrayerTimes.swift */; };
+		3A57DC2F2DAFCFF1002EB9A1 /* DateInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC052DAA2BFF00EF3FCD /* DateInfo.swift */; };
+		3A57DC302DAFCFF5002EB9A1 /* GregorianDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC072DAA2C0A00EF3FCD /* GregorianDate.swift */; };
+		3A57DC312DAFCFF9002EB9A1 /* HijriDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC092DAA2C1600EF3FCD /* HijriDate.swift */; };
+		3A57DC322DAFCFFD002EB9A1 /* HijriWeekday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC0B2DAA2C2200EF3FCD /* HijriWeekday.swift */; };
+		3A57DC332DAFD001002EB9A1 /* MetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC152DAA3E8200EF3FCD /* MetaData.swift */; };
+		3A57DC342DAFD005002EB9A1 /* MetaDataMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC172DAA3E9400EF3FCD /* MetaDataMethod.swift */; };
+		3A57DC352DAFD015002EB9A1 /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC292DAA893E00EF3FCD /* Date+Ext.swift */; };
+		3A57DC362DAFD019002EB9A1 /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF6CD0C2DAC046D00A1045C /* UserDefaults+Ext.swift */; };
+		3A57DC372DAFD01D002EB9A1 /* UDKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC242DAA7F7200EF3FCD /* UDKey.swift */; };
+		3A57DC382DAFD021002EB9A1 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC262DAA831300EF3FCD /* Prayer.swift */; };
+		3A57DC392DAFD030002EB9A1 /* HijriMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BC0D2DAA2C3000EF3FCD /* HijriMonth.swift */; };
+		3A57DC3A2DAFD03A002EB9A1 /* LocationFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1BCF2A2DAB76DE00005FA5 /* LocationFetcher.swift */; };
+		3A57DC3B2DAFD04B002EB9A1 /* PrayerTimesForGregorianYearAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BBFD2DAA1EBA00EF3FCD /* PrayerTimesForGregorianYearAPIResponse.swift */; };
 		3A70357C2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A70357B2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift */; };
 		3A70357D2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A70357B2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift */; };
 		3A77B9612DAEC87100D8A502 /* TimeComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77B9602DAEC87100D8A502 /* TimeComponentView.swift */; };
@@ -113,6 +143,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		3A57DC122DAFCCA4002EB9A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A94BBD32DAA096600EF3FCD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3A57DC042DAFCCA3002EB9A1;
+			remoteInfo = HijriDateWidgetExtension;
+		};
 		3A94BC412DAAA1E100EF3FCD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3A94BBD32DAA096600EF3FCD /* Project object */;
@@ -138,6 +175,7 @@
 			files = (
 				3AF6CD382DAD6B1500A1045C /* NextPrayerWidgetExtension.appex in Embed Foundation Extensions */,
 				3A94BC432DAAA1E100EF3FCD /* DailyPrayerTimesWidgetExtension.appex in Embed Foundation Extensions */,
+				3A57DC142DAFCCA4002EB9A1 /* HijriDateWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -148,6 +186,13 @@
 		3A1BCF2A2DAB76DE00005FA5 /* LocationFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationFetcher.swift; sourceTree = "<group>"; };
 		3A1BCF2D2DAB799800005FA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3A1BCF362DAB9E7700005FA5 /* ReemKufi.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ReemKufi.ttf; sourceTree = "<group>"; };
+		3A57DC052DAFCCA3002EB9A1 /* HijriDateWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HijriDateWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A57DC192DAFCCBA002EB9A1 /* HijriDateWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HijriDateWidgetExtension.entitlements; sourceTree = "<group>"; };
+		3A57DC1A2DAFCCCC002EB9A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3A57DC1B2DAFCCCC002EB9A1 /* HijriDateWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HijriDateWidget.swift; sourceTree = "<group>"; };
+		3A57DC1C2DAFCCCC002EB9A1 /* HijriDateWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HijriDateWidgetBundle.swift; sourceTree = "<group>"; };
+		3A57DC1D2DAFCCCC002EB9A1 /* HijriDateWidgetControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HijriDateWidgetControl.swift; sourceTree = "<group>"; };
+		3A57DC1E2DAFCCCC002EB9A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A70357B2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesForSpecificDateAPIResponse.swift; sourceTree = "<group>"; };
 		3A77B9602DAEC87100D8A502 /* TimeComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeComponentView.swift; sourceTree = "<group>"; };
 		3A94BBDB2DAA096600EF3FCD /* Arkan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arkan.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,6 +253,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3A57DC022DAFCCA3002EB9A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3A57DC072DAFCCA3002EB9A1 /* SwiftUI.framework in Frameworks */,
+				3A57DC062DAFCCA3002EB9A1 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3A94BBD82DAA096600EF3FCD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -245,14 +299,28 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		3A57DC1F2DAFCCCC002EB9A1 /* HijriDateWidget */ = {
+			isa = PBXGroup;
+			children = (
+				3A57DC1A2DAFCCCC002EB9A1 /* Assets.xcassets */,
+				3A57DC1B2DAFCCCC002EB9A1 /* HijriDateWidget.swift */,
+				3A57DC1C2DAFCCCC002EB9A1 /* HijriDateWidgetBundle.swift */,
+				3A57DC1D2DAFCCCC002EB9A1 /* HijriDateWidgetControl.swift */,
+				3A57DC1E2DAFCCCC002EB9A1 /* Info.plist */,
+			);
+			path = HijriDateWidget;
+			sourceTree = "<group>";
+		};
 		3A94BBD22DAA096600EF3FCD = {
 			isa = PBXGroup;
 			children = (
+				3A57DC192DAFCCBA002EB9A1 /* HijriDateWidgetExtension.entitlements */,
 				3AF6CD4A2DAD6B3F00A1045C /* NextPrayerWidgetExtension.entitlements */,
 				3A94BC572DAAB27C00EF3FCD /* DailyPrayerTimesWidgetExtension.entitlements */,
 				3A94BBEC2DAA0C1F00EF3FCD /* Arkan */,
 				3A94BC4F2DAAA1EB00EF3FCD /* DailyPrayerTimesWidget */,
 				3AF6CD432DAD6B2800A1045C /* NextPrayerWidget */,
+				3A57DC1F2DAFCCCC002EB9A1 /* HijriDateWidget */,
 				3A94BC302DAAA1DF00EF3FCD /* Frameworks */,
 				3A94BBDC2DAA096600EF3FCD /* Products */,
 			);
@@ -264,6 +332,7 @@
 				3A94BBDB2DAA096600EF3FCD /* Arkan.app */,
 				3A94BC2F2DAAA1DF00EF3FCD /* DailyPrayerTimesWidgetExtension.appex */,
 				3AF6CD272DAD6B1300A1045C /* NextPrayerWidgetExtension.appex */,
+				3A57DC052DAFCCA3002EB9A1 /* HijriDateWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -473,6 +542,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3A57DC042DAFCCA3002EB9A1 /* HijriDateWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3A57DC182DAFCCA4002EB9A1 /* Build configuration list for PBXNativeTarget "HijriDateWidgetExtension" */;
+			buildPhases = (
+				3A57DC012DAFCCA3002EB9A1 /* Sources */,
+				3A57DC022DAFCCA3002EB9A1 /* Frameworks */,
+				3A57DC032DAFCCA3002EB9A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HijriDateWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = HijriDateWidgetExtension;
+			productReference = 3A57DC052DAFCCA3002EB9A1 /* HijriDateWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		3A94BBDA2DAA096600EF3FCD /* Arkan */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3A94BBE62DAA096700EF3FCD /* Build configuration list for PBXNativeTarget "Arkan" */;
@@ -487,6 +575,7 @@
 			dependencies = (
 				3A94BC422DAAA1E100EF3FCD /* PBXTargetDependency */,
 				3AF6CD372DAD6B1500A1045C /* PBXTargetDependency */,
+				3A57DC132DAFCCA4002EB9A1 /* PBXTargetDependency */,
 			);
 			name = Arkan;
 			packageProductDependencies = (
@@ -543,6 +632,9 @@
 				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
+					3A57DC042DAFCCA3002EB9A1 = {
+						CreatedOnToolsVersion = 16.3;
+					};
 					3A94BBDA2DAA096600EF3FCD = {
 						CreatedOnToolsVersion = 16.3;
 					};
@@ -571,11 +663,20 @@
 				3A94BBDA2DAA096600EF3FCD /* Arkan */,
 				3A94BC2E2DAAA1DF00EF3FCD /* DailyPrayerTimesWidgetExtension */,
 				3AF6CD262DAD6B1300A1045C /* NextPrayerWidgetExtension */,
+				3A57DC042DAFCCA3002EB9A1 /* HijriDateWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3A57DC032DAFCCA3002EB9A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3A57DC202DAFCCCC002EB9A1 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3A94BBD92DAA096600EF3FCD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -605,6 +706,39 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3A57DC012DAFCCA3002EB9A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3A57DC262DAFCFB8002EB9A1 /* PrayerTimesManager.swift in Sources */,
+				3A57DC2D2DAFCFE8002EB9A1 /* PrayerTimesInfo.swift in Sources */,
+				3A57DC282DAFCFCB002EB9A1 /* NotificationsManager.swift in Sources */,
+				3A57DC2F2DAFCFF1002EB9A1 /* DateInfo.swift in Sources */,
+				3A57DC322DAFCFFD002EB9A1 /* HijriWeekday.swift in Sources */,
+				3A57DC252DAFCFB1002EB9A1 /* NetworkManager.swift in Sources */,
+				3A57DC372DAFD01D002EB9A1 /* UDKey.swift in Sources */,
+				3A57DC222DAFCCCC002EB9A1 /* HijriDateWidget.swift in Sources */,
+				3A57DC2E2DAFCFED002EB9A1 /* PrayerTimes.swift in Sources */,
+				3A57DC302DAFCFF5002EB9A1 /* GregorianDate.swift in Sources */,
+				3A57DC272DAFCFC5002EB9A1 /* SwiftDataManager.swift in Sources */,
+				3A57DC2B2DAFCFDE002EB9A1 /* PrayerTimesForSpecificDateAPIResponse.swift in Sources */,
+				3A57DC2A2DAFCFD4002EB9A1 /* ArchivedPrayerTimesForSpecificDate.swift in Sources */,
+				3A57DC3B2DAFD04B002EB9A1 /* PrayerTimesForGregorianYearAPIResponse.swift in Sources */,
+				3A57DC382DAFD021002EB9A1 /* Prayer.swift in Sources */,
+				3A57DC2C2DAFCFE4002EB9A1 /* PrayerTimesForSpecificPeriodAPIResponse.swift in Sources */,
+				3A57DC392DAFD030002EB9A1 /* HijriMonth.swift in Sources */,
+				3A57DC292DAFCFD0002EB9A1 /* ArchivedPrayerTimesForGregorianYear.swift in Sources */,
+				3A57DC3A2DAFD03A002EB9A1 /* LocationFetcher.swift in Sources */,
+				3A57DC332DAFD001002EB9A1 /* MetaData.swift in Sources */,
+				3A57DC342DAFD005002EB9A1 /* MetaDataMethod.swift in Sources */,
+				3A57DC232DAFCCCC002EB9A1 /* HijriDateWidgetBundle.swift in Sources */,
+				3A57DC312DAFCFF9002EB9A1 /* HijriDate.swift in Sources */,
+				3A57DC242DAFCCCC002EB9A1 /* HijriDateWidgetControl.swift in Sources */,
+				3A57DC352DAFD015002EB9A1 /* Date+Ext.swift in Sources */,
+				3A57DC362DAFD019002EB9A1 /* UserDefaults+Ext.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3A94BBD72DAA096600EF3FCD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -721,6 +855,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		3A57DC132DAFCCA4002EB9A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3A57DC042DAFCCA3002EB9A1 /* HijriDateWidgetExtension */;
+			targetProxy = 3A57DC122DAFCCA4002EB9A1 /* PBXContainerItemProxy */;
+		};
 		3A94BC422DAAA1E100EF3FCD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3A94BC2E2DAAA1DF00EF3FCD /* DailyPrayerTimesWidgetExtension */;
@@ -734,6 +873,64 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		3A57DC152DAFCCA4002EB9A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = HijriDateWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6TNKUF97WJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HijriDateWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = HijriDateWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.BasheerTheSWE.Arkan.HijriDateWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3A57DC162DAFCCA4002EB9A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = HijriDateWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6TNKUF97WJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HijriDateWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = HijriDateWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.BasheerTheSWE.Arkan.HijriDateWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		3A94BBE42DAA096600EF3FCD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1052,6 +1249,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3A57DC182DAFCCA4002EB9A1 /* Build configuration list for PBXNativeTarget "HijriDateWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A57DC152DAFCCA4002EB9A1 /* Debug */,
+				3A57DC162DAFCCA4002EB9A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		3A94BBD62DAA096600EF3FCD /* Build configuration list for PBXProject "Arkan" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
