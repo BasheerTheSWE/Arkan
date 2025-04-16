@@ -43,7 +43,7 @@ struct NextPrayerTimeCircularWidgetView: View {
             .background {
                 Circle()
                     .trim(from: 0.0, to: 0.75)
-                    .stroke(Color(.label).tertiary, style: StrokeStyle(lineWidth: 6, lineCap: .round))
+                    .stroke(.regularMaterial, style: StrokeStyle(lineWidth: 6, lineCap: .round))
                     .rotationEffect(.degrees(135))
                     .overlay {
                         Circle()
