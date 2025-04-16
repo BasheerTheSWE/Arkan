@@ -79,6 +79,24 @@ struct HijriDateWidgetEntryView : View {
         case .accessoryInline:
             HijriDateAccessoryInlineWidgetView(entry: entry)
             
+        case .accessoryCircular:
+            VStack(spacing: 2) {
+                Image(systemName: "moon.stars.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 12, height: 12)
+                
+                Text("\(entry.hijriDate.day), \(entry.hijriDate.month.en.prefix(2))")
+                    .font(.system(size: 28, weight: .medium))
+                    .lineLimit(1)
+                    .scaledToFit()
+                    .minimumScaleFactor(0.2)
+            }
+            .padding(10)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(.regularMaterial)
+            .clipShape(.circle)
+            
         default:
             Text("Unsupported Size")
         }
@@ -118,10 +136,11 @@ struct HijriDateWidget: Widget {
         }
         .configurationDisplayName("Hijri Date")
         .description("View today’s Hijri date at a glance")
+        .supportedFamilies([.accessoryInline, .accessoryCircular])
     }
 }
 
-#Preview(as: .accessoryInline) {
+#Preview(as: .accessoryCircular) {
     HijriDateWidget()
 } timeline: {
     HijriDateEntry(date: .now, hijriDate: .mock)
