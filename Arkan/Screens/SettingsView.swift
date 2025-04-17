@@ -26,12 +26,15 @@ struct SettingsView: View {
             List {
                 Section {
                     PrayerTimeFormatPicker()
-                    
-                    SettingsRowCell(title: "Update Location", systemImage: "location.north.fill") {
-                        
-                    }
                 } header: {
                     Text("General")
+                        .font(.system(size: 12))
+                }
+                
+                Section {
+                    UpdateLocationButton()
+                } header: {
+                    Text("Location")
                         .font(.system(size: 12))
                 } footer: {
                     Text("Location updates automatically. If you’re experiencing issues, you can update it manually.")
@@ -240,6 +243,75 @@ private struct PrayerTimeFormatPicker: View {
             .onChange(of: prefers24HourTimeFormatState) { _, _ in
                 prefers24HourTimeFormat = prefers24HourTimeFormatState
             }
+        }
+    }
+}
+
+// MARK: - LOCATION
+private struct UpdateLocationButton: View {
+    
+    @AppStorage(UDKey.city.rawValue) private var city = ""
+    @AppStorage(UDKey.country.rawValue) private var country = ""
+    
+    @AppStorage(UDKey.latitude.rawValue) private var latitude = 0.0
+    @AppStorage(UDKey.longitude.rawValue) private var longitude = 0.0
+    
+    @State private var locationFetcher = LocationFetcher()
+    @State private var isUpdatingLocation = false
+    @State private var didSucceedToUpdateLocation = false
+    @State private var didFailToUpdateLocation = false
+    
+    var body: some View {
+        Button {
+            updateLocation()
+        } label: {
+            HStack {
+                Image(systemName: "location.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 14, height: 14)
+                    .padding(.trailing, 8)
+                
+                Text("Manually Update Location")
+                    .font(.system(size: 14, design: .rounded))
+                    .foregroundStyle(Color(.label))
+                
+                Spacer()
+                
+                if isUpdatingLocation {
+                    ProgressView()
+                        .controlSize(.small)
+                        .transition(.blurReplace)
+                }
+                
+                Image(systemName: "chevron.right")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 8, height: 8)
+            }
+        }
+        .disabled(isUpdatingLocation)
+        .alert("Failed to Update Location", isPresented: $didFailToUpdateLocation) {} message: {
+            Text("An error occurred while updating you location.\n\nThis might be due to a network issue, so make sure you have a stable connection or try again later.")
+        }
+        .alert("Location Updated", isPresented: $didSucceedToUpdateLocation) {} message: {
+            Text("Your location was updated successfully." + (!city.isEmpty && !country.isEmpty ? "\n\n\(city), \(country)" : "") + (latitude != 0.0 && longitude != 0.0 ? "\n\(latitude)\n\(longitude)" : ""))
+        }
+    }
+    
+    private func updateLocation() {
+        withAnimation { isUpdatingLocation = true }
+        
+        Task {
+            do {
+                try await locationFetcher.updateUserLocation()
+                didSucceedToUpdateLocation = true
+            } catch {
+                print(error.localizedDescription)
+                didFailToUpdateLocation = true
+            }
+            
+            withAnimation { isUpdatingLocation = false }
         }
     }
 }

@@ -35,7 +35,7 @@ struct ContentView: View {
                 Spacer()
                 
                 if !city.isEmpty && !countryCode.isEmpty {
-                    VStack {
+                    VStack(spacing: 8) {
                         Text("\(city), \(countryCode)")
                             .font(.system(size: 24, weight: .bold, design: .rounded))
                             .contentTransition(.numericText())
