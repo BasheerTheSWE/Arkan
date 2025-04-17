@@ -161,6 +161,7 @@ struct SettingsView: View {
     }
 }
 
+// MARK: - SETTINGS REUSABLE VIEWS
 private struct SettingsPlainRowCell: View {
     
     let title: String
@@ -210,6 +211,7 @@ private struct SettingsRowCell: View {
     }
 }
 
+// MARK: - PRAYER TIME PICKER
 private struct PrayerTimeFormatPicker: View {
     
     @AppStorage(UDKey.prefers24HourTimeFormat.rawValue) private var prefers24HourTimeFormat = false
@@ -251,8 +253,12 @@ private struct PrayerTimeFormatPicker: View {
     }
 }
 
+// MARK: - ADHAN SOUND PICKER
 private struct AdhanSoundPicker: View {
     
+    @AppStorage(UDKey.selectedNotificationsSound.rawValue) private var selectedNotificationsSound = 0
+    
+    @State private var selectedNotificationsSoundState = UserDefaults.shared.integer(forKey: UDKey.selectedNotificationsSound.rawValue)
     @State private var isPresentingSounds = false
     
     var body: some View {
@@ -272,8 +278,8 @@ private struct AdhanSoundPicker: View {
             Button {
                 isPresentingSounds = true
             } label: {
-                Text("1")
-                    .font(.system(size: 10, weight: .bold))
+                Text(String(selectedNotificationsSoundState + 1))
+                    .font(.system(size: 12, weight: .bold))
                     .foregroundStyle(.secondary)
                     .frame(width: 75, height: 30)
                     .background(Color(.secondarySystemFill))
@@ -282,56 +288,25 @@ private struct AdhanSoundPicker: View {
             }
             .buttonStyle(.borderless)
             .popover(isPresented: $isPresentingSounds) {
-                AvailableAdhanSoundsView()
+                AvailableAdhanSoundsView(selection: $selectedNotificationsSoundState)
                     .presentationCompactAdaptation(.popover)
             }
+            .onChange(of: selectedNotificationsSoundState) { _, _ in
+                selectedNotificationsSound = selectedNotificationsSoundState
+            }
+            .animation(.default, value: selectedNotificationsSoundState)
         }
     }
 }
 
 private struct AvailableAdhanSoundsView: View {
     
-    private enum AvailableNotificationsSound: String {
-        case systemDefault = "System Default"
-        case test1 = "Test Sound 1"
-        case test2 = "Test Sound 2"
-        case test3 = "Test Sound 3"
-        case test4 = "Test Sound 4"
-    }
-    
-    @AppStorage(UDKey.selectedNotificationsSound.rawValue) private var selectedNotificationsSound = 0
+    @Binding var selection: Int
     
     var body: some View {
         VStack {
-            ForEach(0..<5) { _ in
-                Button {
-                    
-                } label: {
-                    HStack {
-                        Image(systemName: "circle")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 12, height: 12)
-                        
-                        Text("Basheer Abdulmalik")
-                            .font(.system(size: 12, weight: .medium, design: .rounded))
-                        
-                        Spacer()
-                        
-                        Button {
-                            
-                        } label: {
-                            Image(systemName: "play.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 12, height: 12)
-                        }
-                    }
-                    .padding()
-                    .frame(width: 250)
-                    .background(Color(.secondarySystemGroupedBackground))
-                    .clipShape(.rect(cornerRadius: 8))
-                }
+            ForEach(AvailableNotificationsSound.allCases) { availableSound in
+                AvailableNotificationsSoundCell(sound: availableSound, selection: $selection)
             }
         }
         .padding()
@@ -339,7 +314,57 @@ private struct AvailableAdhanSoundsView: View {
     }
 }
 
+private enum AvailableNotificationsSound: String, CaseIterable, Identifiable {
+    case systemDefault = "System Default"
+    case test1 = "Test Sound 1"
+    case test2 = "Test Sound 2"
+    case test3 = "Test Sound 3"
+    case test4 = "Test Sound 4"
+    
+    var id: Int {
+        AvailableNotificationsSound.allCases.firstIndex(of: self) ?? 0
+    }
+}
+
+private struct AvailableNotificationsSoundCell: View {
+        
+    let sound: AvailableNotificationsSound
+    @Binding var selection: Int
+    
+    var body: some View {
+        Button {
+            withAnimation { selection = sound.id }
+        } label: {
+            HStack {
+                Image(systemName: sound.id == selection ? "checkmark.circle.fill" : "circle")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 12, height: 12)
+                
+                Text(sound.rawValue)
+                    .font(.system(size: 12, weight: .medium, design: .rounded))
+                
+                Spacer()
+                
+                Button {
+                    
+                } label: {
+                    Image(systemName: "play.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 12, height: 12)
+                }
+            }
+            .padding()
+            .frame(width: 250)
+            .background(Color(.secondarySystemGroupedBackground))
+            .clipShape(.rect(cornerRadius: 8))
+        }
+    }
+}
+
 #Preview {
     SettingsView()
         .tint(Color(.label))
+        .defaultAppStorage(UserDefaults(suiteName: "group.BasheerTheSWE.Arkan.PrayerTime")!)
 }
