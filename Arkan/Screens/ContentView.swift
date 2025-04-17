@@ -9,8 +9,13 @@ import SwiftUI
 import SwiftData
 import WidgetKit
 import UserNotifications
+import StoreKit
 
 struct ContentView: View {
+    
+    @Environment(\.requestReview) private var requestReview
+    
+    @AppStorage(UDKey.appOpensCount.rawValue) private var appOpensCount = 0
     
     @AppStorage(UDKey.countryCode.rawValue) private var countryCode = ""
     @AppStorage(UDKey.city.rawValue) private var city = ""
@@ -72,6 +77,7 @@ struct ContentView: View {
             .frame(maxHeight: .infinity)
         }
         .background(Color(.systemGroupedBackground))
+        .onAppear { checkForRatingRequest() }
         .task {
             await getPrayerTimesForToday()
             WidgetCenter.shared.reloadAllTimelines()
@@ -113,6 +119,14 @@ struct ContentView: View {
         
         try await NotificationsManager.schedulePrayerTimesNotificationsForTheNext12Days()
     }
+    
+    private func checkForRatingRequest() {
+        appOpensCount += 1
+        
+        if [2, 10, 50, 100].contains(appOpensCount) {
+            requestReview()
+        }
+    }
 }
 
 #Preview {
@@ -121,11 +135,6 @@ struct ContentView: View {
 }
 
 /*
- Next Prayer Widget
- Shows only the next upcoming prayer
- 
- Daily Prayer Times
- Shows all 5 daily times (Fajr to Isha)
  
  Current Prayer Widget
  Highlights the prayer in progress
@@ -135,9 +144,6 @@ struct ContentView: View {
  
  Location + Times
  Includes city name + daily times
- 
- Hijri Date Widget
- Shows Islamic date + prayer or time info
  
  Qibla Widget (future?)
  Adds value if Qibla direction is planned

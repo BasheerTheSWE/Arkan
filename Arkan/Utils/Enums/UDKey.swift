@@ -22,4 +22,7 @@ enum UDKey: String {
     case isIshaNotificationDisabled // Bool
     
     case selectedNotificationsSound // Int
+    
+    // Analytics
+    case appOpensCount
 }

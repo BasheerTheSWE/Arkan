@@ -25,27 +25,28 @@ struct AvailableWidgetsView: View {
                         .background(Color(.secondarySystemBackground))
                         .clipShape(.rect(cornerRadius: 12))
                         .tint(.black)
+                        .padding(.vertical, 8)
                     
                     ForEach(WidgetOverview.all) { widgetOverview in
                         VStack(spacing: 0) {
                             Text(widgetOverview.title + " Widgets")
                                 .font(.system(size: 14, weight: .bold, design: .rounded))
                                 .foregroundStyle(.white)
-                                .padding(12)
+                                .padding(8)
                             
                             Image(isShowingDarkWidgets ? widgetOverview.darkImage : widgetOverview.lightImage)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .clipShape(.rect(cornerRadius: 24))
+                                .clipShape(.rect(cornerRadius: 12))
                             
                         }
                         .background(colorScheme == .dark ? Color(.secondarySystemBackground) : .black)
-                        .clipShape(.rect(cornerRadius: 24))
+                        .clipShape(.rect(cornerRadius: 12))
                     }
                 }
-                .padding()
+                .padding([.leading, .bottom, .trailing])
             }
-            .navigationTitle("Widgets")
+            .navigationTitle("Available Widgets")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     PlainIconButton(systemImage: "xmark", size: 12) {
