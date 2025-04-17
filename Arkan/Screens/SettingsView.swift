@@ -27,6 +27,8 @@ struct SettingsView: View {
     @State private var contactSubject: ContactSubject?
     @State private var userCanNotSendMail = false
     
+    @State private var isPresentingRateUs = false
+    
     var body: some View {
         NavigationStack {
             List {
@@ -53,7 +55,10 @@ struct SettingsView: View {
                 
                 Section {
                     SettingsRowCell(title: "Rate Us", systemImage: "heart.fill") {
-                        leaveReview()
+                        isPresentingRateUs = true
+                    }
+                    .sheet(isPresented: $isPresentingRateUs) {
+                        RatingRequestView()
                     }
                     
                     if let url = URL(string: "https://apps.apple.com/us/app/transcribe-speech-to-text/id6743344111") {
@@ -151,12 +156,6 @@ struct SettingsView: View {
             contactSubject = subject
         } else {
             userCanNotSendMail = true
-        }
-    }
-    
-    private func leaveReview() {
-        if let url = URL(string: "https://apps.apple.com/us/app/transcribe-speech-to-text/id6743344111?action=write-review") {
-            UIApplication.shared.open(url)
         }
     }
 }

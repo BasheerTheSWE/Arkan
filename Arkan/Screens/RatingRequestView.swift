@@ -31,7 +31,7 @@ struct RatingRequestView: View {
                             .font(.largeTitle.bold())
                             .fontDesign(.rounded)
                         
-                        Text("The best prayer times reminder app")
+                        Text("The best prayer-times reminder app")
                             .font(.caption)
                             .fontDesign(.rounded)
                             .foregroundStyle(.white.secondary)
@@ -55,7 +55,7 @@ struct RatingRequestView: View {
                 Spacer()
                 
                 LargeRatingRequestButton(title: "Rate us on the App Store") {
-                    
+                    leaveReview()
                 }
             }
             .padding()
@@ -68,7 +68,14 @@ struct RatingRequestView: View {
                 }
             }
         }
+        .foregroundStyle(.white)
         .tint(.white)
+    }
+    
+    private func leaveReview() {
+        if let url = URL(string: "https://apps.apple.com/us/app/birthday-countdown-365/id6741700632?action=write-review") {
+            UIApplication.shared.open(url)
+        }
     }
 }
 
