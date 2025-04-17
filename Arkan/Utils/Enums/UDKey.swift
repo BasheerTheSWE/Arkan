@@ -20,4 +20,6 @@ enum UDKey: String {
     case isAsrNotificationDisabled // Bool
     case isMaghribNotificationDisabled // Bool
     case isIshaNotificationDisabled // Bool
+    
+    case selectedNotificationsSound // Int
 }

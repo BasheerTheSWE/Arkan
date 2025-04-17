@@ -67,6 +67,7 @@ final class NetworkManager {
         
         guard let url = URL(string: "https://api.aladhan.com/v1/calendar/from/\(formattedStartingDate)/to/\(formattedEndingDate)?latitude=\(latitude)&longitude=\(longitude)&shafaq=general&timezonestring=UTC&calendarMethod=UAQ") else { throw NetworkError.invalidURL }
         
+        /// Since this response will be called every time the user launches the app, it's better to cache it
         var request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad)
         request.httpMethod = "GET"
         request.setValue("application/json", forHTTPHeaderField: "accept")

@@ -136,6 +136,11 @@ class NotificationsManager {
     }
     
     // MARK: - PRIVATE
+    /// Get's the equivalent prayer date in the user's localization based on UTC input.
+    /// - Parameters:
+    ///   - timeString: HH:mm UTC time format
+    ///   - dateString: dd-MM-yyyy UTC date format
+    /// - Returns: An optional `Date` object for the prayer time.
     static func getPrayerDate(timeString: String, dateString: String) -> Date? {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy HH:mm"
@@ -157,14 +162,4 @@ class NotificationsManager {
         let localDateString = localFormatter.string(from: utcDate)
         return localFormatter.date(from: localDateString)
     }
-    
-//    static func getPrayerDate(timeString: String, dateString: String) -> Date? {
-//        let dateTimeString = "\(dateString) \(timeString)"
-//        
-//        let formatter = DateFormatter()
-//        formatter.dateFormat = "dd-MM-yyyy HH:mm"
-//        formatter.locale = Locale(identifier: "en_US_POSIX")
-//        
-//        return formatter.date(from: dateTimeString)
-//    }
 }

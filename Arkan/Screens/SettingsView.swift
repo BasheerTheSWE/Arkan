@@ -45,6 +45,13 @@ struct SettingsView: View {
                 }
                 
                 Section {
+                    AdhanSoundPicker()
+                } header: {
+                    Text("Notifications")
+                        .font(.system(size: 12))
+                }
+                
+                Section {
                     SettingsRowCell(title: "Rate Us", systemImage: "heart.fill") {
                         leaveReview()
                     }
@@ -241,6 +248,94 @@ private struct PrayerTimeFormatPicker: View {
                 prefers24HourTimeFormat = prefers24HourTimeFormatState
             }
         }
+    }
+}
+
+private struct AdhanSoundPicker: View {
+    
+    @State private var isPresentingSounds = false
+    
+    var body: some View {
+        HStack {
+            Image(systemName: "bell.badge.fill")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 14, height: 14)
+                .padding(.trailing, 8)
+            
+            Text("Preferred Adhan Sound")
+                .font(.system(size: 14, design: .rounded))
+                .foregroundStyle(Color(.label))
+            
+            Spacer()
+            
+            Button {
+                isPresentingSounds = true
+            } label: {
+                Text("1")
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundStyle(.secondary)
+                    .frame(width: 75, height: 30)
+                    .background(Color(.secondarySystemFill))
+                    .clipShape(.rect(cornerRadius: 4))
+                    .contentTransition(.numericText())
+            }
+            .buttonStyle(.borderless)
+            .popover(isPresented: $isPresentingSounds) {
+                AvailableAdhanSoundsView()
+                    .presentationCompactAdaptation(.popover)
+            }
+        }
+    }
+}
+
+private struct AvailableAdhanSoundsView: View {
+    
+    private enum AvailableNotificationsSound: String {
+        case systemDefault = "System Default"
+        case test1 = "Test Sound 1"
+        case test2 = "Test Sound 2"
+        case test3 = "Test Sound 3"
+        case test4 = "Test Sound 4"
+    }
+    
+    @AppStorage(UDKey.selectedNotificationsSound.rawValue) private var selectedNotificationsSound = 0
+    
+    var body: some View {
+        VStack {
+            ForEach(0..<5) { _ in
+                Button {
+                    
+                } label: {
+                    HStack {
+                        Image(systemName: "circle")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 12, height: 12)
+                        
+                        Text("Basheer Abdulmalik")
+                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                        
+                        Spacer()
+                        
+                        Button {
+                            
+                        } label: {
+                            Image(systemName: "play.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 12, height: 12)
+                        }
+                    }
+                    .padding()
+                    .frame(width: 250)
+                    .background(Color(.secondarySystemGroupedBackground))
+                    .clipShape(.rect(cornerRadius: 8))
+                }
+            }
+        }
+        .padding()
+        .background(Color(.systemGroupedBackground))
     }
 }
 
