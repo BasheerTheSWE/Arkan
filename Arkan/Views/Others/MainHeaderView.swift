@@ -20,8 +20,13 @@ struct MainHeaderView: View {
     var body: some View {
         VStack {
             HStack {
-                PlainIconButton(systemImage: "square.and.arrow.up") {
-                    
+                if let url = URL(string: "https://apps.apple.com/us/app/arkan-prayer-times/id6744721733") {
+                    ShareLink(item: url) {
+                        Image(systemName: "square.and.arrow.up")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 16, height: 16)
+                    }
                 }
                 
                 Spacer()

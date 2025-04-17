@@ -56,7 +56,7 @@ struct SettingsView: View {
                         RatingRequestView()
                     }
                     
-                    if let url = URL(string: "https://apps.apple.com/us/app/transcribe-speech-to-text/id6743344111") {
+                    if let url = URL(string: "https://apps.apple.com/us/app/arkan-prayer-times/id6744721733") {
                         ShareLink(item: url) {
                             HStack {
                                 Image(systemName: "sharedwithyou")
@@ -214,7 +214,7 @@ private struct PrayerTimeFormatPicker: View {
     
     var body: some View {
         HStack {
-            Image(systemName: "clock")
+            Image(systemName: "hourglass")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 14, height: 14)

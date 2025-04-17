@@ -73,7 +73,7 @@ struct RatingRequestView: View {
     }
     
     private func leaveReview() {
-        if let url = URL(string: "https://apps.apple.com/us/app/birthday-countdown-365/id6741700632?action=write-review") {
+        if let url = URL(string: "https://apps.apple.com/us/app/arkan-prayer-times/id6744721733?action=write-review") {
             UIApplication.shared.open(url)
         }
     }
