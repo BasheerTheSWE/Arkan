@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MessageUI
 
 struct AvailableWidgetsView: View {
     
@@ -13,6 +14,9 @@ struct AvailableWidgetsView: View {
     @Environment(\.colorScheme) private var colorScheme
     
     @State private var isShowingDarkWidgets = false
+    
+    @State private var isRequestingWidget = false
+    @State private var userCanNotSendMail = false
     
     var body: some View {
         NavigationStack {
@@ -54,7 +58,28 @@ struct AvailableWidgetsView: View {
                     }
                 }
             }
+            .safeAreaInset(edge: .bottom) {
+                LargeButton(title: "Request Widget") {
+                    requestWidget()
+                }
+                .padding()
+                .background(.ultraThinMaterial)
+                .sheet(isPresented: $isRequestingWidget) {
+                    MailComposeView(subject: ContactSubject.widgetRequest.rawValue)
+                }
+            }
             .animation(.default, value: isShowingDarkWidgets)
+            .alert("Unable to Send Mail", isPresented: $userCanNotSendMail, actions: {}) {
+                Text("It seems like your device isn’t set up to send emails. Please check your email account settings and try again.\n\nAlternatively you can reach us on\nx.com - @BasheerTheSWE")
+            }
+        }
+    }
+    
+    private func requestWidget() {
+        if MFMailComposeViewController.canSendMail() {
+            isRequestingWidget = true
+        } else {
+            userCanNotSendMail = true
         }
     }
 }

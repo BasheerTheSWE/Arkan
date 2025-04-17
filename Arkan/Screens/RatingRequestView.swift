@@ -45,7 +45,7 @@ struct RatingRequestView: View {
                         .font(.largeTitle.bold())
                         .fontDesign(.rounded)
                     
-                    Text("A quick review from you will help us grow and improve. If you're enjoying the app, please consider leaving one.\n\n★★★★★")
+                    Text("A quick review from you will help us grow and improve. If you're enjoying the app, please consider leaving one.")
                         .font(.caption)
                         .fontDesign(.rounded)
                         .multilineTextAlignment(.center)

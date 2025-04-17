@@ -49,6 +49,11 @@
 		3A70357C2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A70357B2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift */; };
 		3A70357D2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A70357B2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift */; };
 		3A77B9612DAEC87100D8A502 /* TimeComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77B9602DAEC87100D8A502 /* TimeComponentView.swift */; };
+		3A8712FB2DB0C80D003E4229 /* LargeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8712FA2DB0C80D003E4229 /* LargeButton.swift */; };
+		3A8712FD2DB0C928003E4229 /* ContactSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8712FC2DB0C928003E4229 /* ContactSubject.swift */; };
+		3A8712FE2DB0C928003E4229 /* ContactSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8712FC2DB0C928003E4229 /* ContactSubject.swift */; };
+		3A8712FF2DB0C928003E4229 /* ContactSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8712FC2DB0C928003E4229 /* ContactSubject.swift */; };
+		3A8713002DB0C928003E4229 /* ContactSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8712FC2DB0C928003E4229 /* ContactSubject.swift */; };
 		3A94BBED2DAA0C1F00EF3FCD /* ArkanApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BBE92DAA0C1F00EF3FCD /* ArkanApp.swift */; };
 		3A94BBEE2DAA0C1F00EF3FCD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A94BBEB2DAA0C1F00EF3FCD /* ContentView.swift */; };
 		3A94BBEF2DAA0C1F00EF3FCD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A94BBEA2DAA0C1F00EF3FCD /* Assets.xcassets */; };
@@ -208,6 +213,8 @@
 		3A57DC492DAFF062002EB9A1 /* AvailableWidgetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableWidgetsView.swift; sourceTree = "<group>"; };
 		3A70357B2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesForSpecificDateAPIResponse.swift; sourceTree = "<group>"; };
 		3A77B9602DAEC87100D8A502 /* TimeComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeComponentView.swift; sourceTree = "<group>"; };
+		3A8712FA2DB0C80D003E4229 /* LargeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeButton.swift; sourceTree = "<group>"; };
+		3A8712FC2DB0C928003E4229 /* ContactSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSubject.swift; sourceTree = "<group>"; };
 		3A94BBDB2DAA096600EF3FCD /* Arkan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arkan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A94BBE92DAA0C1F00EF3FCD /* ArkanApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArkanApp.swift; sourceTree = "<group>"; };
 		3A94BBEA2DAA0C1F00EF3FCD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -414,6 +421,7 @@
 			children = (
 				3A94BBF22DAA0C3900EF3FCD /* PlainIconButton.swift */,
 				3A94BC192DAA3F2900EF3FCD /* MenuButton.swift */,
+				3A8712FA2DB0C80D003E4229 /* LargeButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -533,6 +541,7 @@
 		3A94BC232DAA7F6700EF3FCD /* Enums */ = {
 			isa = PBXGroup;
 			children = (
+				3A8712FC2DB0C928003E4229 /* ContactSubject.swift */,
 				3A94BC242DAA7F7200EF3FCD /* UDKey.swift */,
 				3A94BC262DAA831300EF3FCD /* Prayer.swift */,
 			);
@@ -755,6 +764,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A8713002DB0C928003E4229 /* ContactSubject.swift in Sources */,
 				3A57DC262DAFCFB8002EB9A1 /* PrayerTimesManager.swift in Sources */,
 				3A57DC2D2DAFCFE8002EB9A1 /* PrayerTimesInfo.swift in Sources */,
 				3A57DC282DAFCFCB002EB9A1 /* NotificationsManager.swift in Sources */,
@@ -803,11 +813,13 @@
 				3A70357C2DAB72E400F281F5 /* PrayerTimesForSpecificDateAPIResponse.swift in Sources */,
 				3A94BC082DAA2C0A00EF3FCD /* GregorianDate.swift in Sources */,
 				3A94BBF92DAA0D5D00EF3FCD /* OnboardingView.swift in Sources */,
+				3A8712FB2DB0C80D003E4229 /* LargeButton.swift in Sources */,
 				3A94BC042DAA2BF200EF3FCD /* PrayerTimes.swift in Sources */,
 				3A94BC062DAA2BFF00EF3FCD /* DateInfo.swift in Sources */,
 				3AF6CD112DAC1B3E00A1045C /* PrayerTimeWidgetCell.swift in Sources */,
 				3A94BBFB2DAA0DA800EF3FCD /* NetworkManager.swift in Sources */,
 				3A94BBF32DAA0C3900EF3FCD /* PlainIconButton.swift in Sources */,
+				3A8712FF2DB0C928003E4229 /* ContactSubject.swift in Sources */,
 				3A94BC272DAA831300EF3FCD /* Prayer.swift in Sources */,
 				3A57DC4A2DAFF062002EB9A1 /* AvailableWidgetsView.swift in Sources */,
 				3AF6CD1C2DACFE2A00A1045C /* SwiftDataManager.swift in Sources */,
@@ -844,6 +856,7 @@
 				3A57DC3F2DAFE859002EB9A1 /* DailyPrayerTimesMediumSizeWidget.swift in Sources */,
 				3A94BC5D2DAAB56E00EF3FCD /* GregorianDate.swift in Sources */,
 				3A94BC5A2DAAB55F00EF3FCD /* PrayerTimesInfo.swift in Sources */,
+				3A8712FD2DB0C928003E4229 /* ContactSubject.swift in Sources */,
 				3A94BC642DAAB59C00EF3FCD /* UDKey.swift in Sources */,
 				3A94BC512DAAA1EB00EF3FCD /* DailyPrayerTimesWidget.swift in Sources */,
 				3A94BC612DAAB58300EF3FCD /* MetaData.swift in Sources */,
@@ -882,6 +895,7 @@
 				3AF6CD652DAD96FF00A1045C /* NextPrayerTimeCircularWidget.swift in Sources */,
 				3AF6CD472DAD6B2800A1045C /* NextPrayerWidget.swift in Sources */,
 				3AF6CD512DAD831E00A1045C /* ArchivedPrayerTimesForGregorianYear.swift in Sources */,
+				3A8712FE2DB0C928003E4229 /* ContactSubject.swift in Sources */,
 				3AF6CD632DAD871C00A1045C /* NextPrayerTimeSmallWidget.swift in Sources */,
 				3AF6CD522DAD832200A1045C /* ArchivedPrayerTimesForSpecificDate.swift in Sources */,
 				3AF6CD4D2DAD830200A1045C /* NetworkManager.swift in Sources */,

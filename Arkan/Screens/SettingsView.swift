@@ -11,14 +11,6 @@ import WidgetKit
 
 struct SettingsView: View {
     
-    private enum ContactSubject: String, Identifiable {
-        case contactUs = "Feedback Regarding Arkan"
-        case featureRequest = "Arkan - Feature Request"
-        case bugReport = "Arkan - Bug Report"
-        
-        var id: String { self.rawValue }
-    }
-    
     @Environment(\.dismiss) private var dismiss
     
     @State private var isAttemptingToDeleteRecordings = false
